@@ -19,14 +19,6 @@ const Login = () => {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
 
-	// useEffect(() => {
-		
-	// 	router.replace({
-	// 		pathname: '/home/my-garden',
-	// 		params: { title: 'Menlo Park Planters', address: '1860 Santa Cruz Ave', days: 'Tuesday', times: '3:30pm' },
-	// 	});
-	// })
-
 	// login to user account with given credentials
 	const login = async (e) => {
 		e.preventDefault();
