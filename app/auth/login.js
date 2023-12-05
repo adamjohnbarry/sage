@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 import FormInputText from '../../assets/components/FormInputText';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
@@ -56,7 +56,7 @@ const Login = () => {
 						gardenName = garden.data().name;
 						gardenAddress = garden.data().address;
 						gardenDays = 'Mondays & Thursdays';
-						gardenTimes = '3.30pm';
+						gardenTimes = '3:30pm';
 
 						router.replace({
 							pathname: '/home/my-garden',

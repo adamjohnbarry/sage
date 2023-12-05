@@ -4,6 +4,7 @@ const colors = {
 	secondary: '#1C3A32',
 	black: '#000000',
 	white: '#FFFFFF',
+	white10: 'rgba(255,255,255,0.1)',
 	lightGrey: '#F0EEE9',
 	darkGrey: '#787775',
 	navbar: '#EFF7D3',
