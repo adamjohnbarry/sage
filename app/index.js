@@ -1,8 +1,7 @@
-import { Image, ImageBackground, StyleSheet, Text } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import LoginScreenImage from '../assets/images/login-screen.png';
 import SageLogo from '../assets/images/sage-white.png';
 import Button from '../assets/components/Button';
-import { View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fontSizes, spacing } from '../assets/theme/theme';
 import globalStyles from '../assets/styles/GlobalStyles';
