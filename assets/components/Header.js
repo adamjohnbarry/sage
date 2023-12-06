@@ -14,7 +14,6 @@ const Header = ({ navigation, route, safeArea }) => {
 	const gardenTimes = user?.garden?.times || 'No times set';
 
 	let title = route.params?.title || '';
-	let description = route.params?.description || '';
 	let color = route.params?.color || colors.primary;
 	let hasBackButton = route.params?.hasBackButton || false;
 
@@ -30,7 +29,6 @@ const Header = ({ navigation, route, safeArea }) => {
 			)}
 			<View style={globalStyles.headerBody}>
 				<Text style={globalStyles.headerTitle}>{gardenName}</Text>
-				{description && <Text style={globalStyles.headerDescription}>{description}</Text>}
 				{gardenAddress && gardenDays && gardenTimes && (
 					<Text style={globalStyles.headerDescription}>
 						Meets at <Text style={globalStyles.fontBold}>{gardenAddress}</Text> at <Text style={globalStyles.fontBold}>{gardenTimes}</Text> on{' '}

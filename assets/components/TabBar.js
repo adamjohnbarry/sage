@@ -42,7 +42,6 @@ const TabBar = ({ safeArea }) => {
                     pathname: '/home/my-garden',
                     params: {
                         title: user.gardenName || 'My Garden', // Use user data
-                        description: user.gardenAddress || 'Hi', // Use user data
                     },
                 })}>
                 <MyGarden color={iconColor('/home/my-garden')} />
