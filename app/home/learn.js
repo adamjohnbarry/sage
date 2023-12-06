@@ -5,6 +5,7 @@ import LearnHeader from '../../assets/components/LearnHeader';
 import FeaturedArticle from '../../assets/components/FeaturedArticle';
 import ArticleCard from '../../assets/components/ArticleCard';
 import { ARTICLES } from '../../assets/data/articles'
+import Help from '../../assets/icons/Help';
 
 const FILTERS = Object.keys(ARTICLES);
 
@@ -46,7 +47,7 @@ const Learn = () => {
 				scrollEventThrottle={16} // Define how often the scroll event fires
 			>
 				<View>
-					<View height={150} style={{ marginBottom: -150, backgroundColor: colors.secondary }} />
+					<View height={180} style={{ marginBottom: -160, marginTop: -30, backgroundColor: colors.secondary }} />
 					<View style={styles.articles}>
 						{ARTICLES[FILTERS[activeFilter]].featured && ARTICLES['For you'].featured.length > 0 && (
 							<ScrollView horizontal={true} style={styles.featured} showsHorizontalScrollIndicator={false}>
