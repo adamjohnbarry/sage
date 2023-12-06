@@ -15,23 +15,10 @@ import { useUser } from '../../assets/contexts/UserContext';
 import useGardenDetails from '../../assets/hooks/useGardenDetails';
 
 const MyGarden = () => {
-	const { user, setUser } = useUser();
+	const { user } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
 	const { gardenDetails, error } = useGardenDetails();
-
-	console.log(gardenDetails);
-	console.log(user);
-
-	// as soon as we get to congratulations page update the garden name and day / time
-	useEffect(() => {
-		if (gardenDetails) {
-			setUser({
-				...user,
-				...gardenDetails,
-			});
-		}
-	}, [gardenDetails]);
 
 	// send invite to a friend
 	const sendInvite = async () => {
@@ -46,12 +33,18 @@ const MyGarden = () => {
 		}
 	};
 
+	// We directly use the garden information from the user context
+	const gardenName = user?.garden?.name || 'My Garden';
+	const gardenAddress = user?.garden?.address || 'Address not set';
+	const gardenDays = user?.garden?.days || 'Days not set';
+	const gardenTimes = user?.garden?.times || 'Times not set';
+
 	return (
 		<>
 			{/* update the header to reflect the name, location, days, and times */}
 			<Tabs.Screen
 				options={{
-					header: (props) => <Header {...props} title='Yo' safeArea={safeArea} />,
+					header: (props) => <Header {...props} title={gardenName} safeArea={safeArea} />,
 				}}
 			/>
 			{/* update the header to reflect the name */}

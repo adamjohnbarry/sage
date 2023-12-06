@@ -1,5 +1,3 @@
-// hooks/useGardenDetails.js
-
 import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
@@ -23,6 +21,8 @@ const useGardenDetails = () => {
             const gardenSnap = await getDoc(gardenRef);
 
             if (gardenSnap.exists()) {
+                console.log('Garden found')
+                console.log(gardenSnap.data());
                 setGardenDetails(gardenSnap.data());
             } else {
                 throw new Error('Garden not found');
