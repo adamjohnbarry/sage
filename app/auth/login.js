@@ -19,6 +19,13 @@ const Login = () => {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
 
+	// useEffect(() => {
+	// 	router.replace({
+	// 		pathname: '/home/my-garden',
+	// 		params: { title: "garden name", address: "addy", days: "Tues", times: '2-2' },
+	// 	});
+	// })
+
 	// login to user account with given credentials
 	const login = async (e) => {
 		e.preventDefault();
@@ -27,6 +34,8 @@ const Login = () => {
 		setPasswordError('');
 
 		const auth = getAuth();
+
+
 
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
