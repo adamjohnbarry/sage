@@ -31,7 +31,7 @@ const MyGarden = () => {
 				...gardenDetails,
 			});
 		}
-	}, [gardenDetails, user]);
+	}, [gardenDetails]);
 
 	// send invite to a friend
 	const sendInvite = async () => {
