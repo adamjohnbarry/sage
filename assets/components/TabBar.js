@@ -7,8 +7,10 @@ import MyGarden from '../icons/MyGarden';
 import Settings from '../icons/Settings';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BlurView } from 'expo-blur';
+import { useUser } from '../contexts/UserContext';
 
 const TabBar = ({ safeArea }) => {
+    const { user } = useUser();
     const router = useRouter();
     const currentPath = usePathname();
     const isActive = (path) => currentPath === path;
@@ -39,8 +41,8 @@ const TabBar = ({ safeArea }) => {
                 onPress={() => router.replace({
                     pathname: '/home/my-garden',
                     params: {
-                        title: 'My Garden',
-                        description: 'Hi',
+                        title: user.gardenName || 'My Garden', // Use user data
+                        description: user.gardenAddress || 'Hi', // Use user data
                     },
                 })}>
                 <MyGarden color={iconColor('/home/my-garden')} />

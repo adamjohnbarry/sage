@@ -13,8 +13,10 @@ import { useContext, useEffect, useState } from 'react';
 import { Tabs } from 'expo-router';
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const MyGarden = () => {
+	const { user, setUser } = useUser(); 
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
 
@@ -42,14 +44,15 @@ const MyGarden = () => {
 		// update the congratulations page to reflect garden's details
 		getGardenDetails()
 			.then((garden) => {
-				setGardenName(garden.data().name);
-				setGardenAddress(garden.data().address);
-				setGardenDays('Mondays & Thursdays');
-				setGardenTimes('3.30pm');
+				setUser({
+					...user,
+					gardenName: garden.data().name,
+					gardenAddress: garden.data().address,
+					gardenDays: 'Mondays & Thursdays',
+					gardenTimes: '3.30pm',
+				});
 			})
-			.catch((err) => {
-				console.log(`${err.code}: ${err.message}`);
-			});
+			.catch((err) => console.log(`${err.code}: ${err.message}`));
 	}, []);
 
 	// send invite to a friend

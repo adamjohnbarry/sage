@@ -1,5 +1,6 @@
 import { Slot } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { UserProvider } from '../assets/contexts/UserContext';
 import { LangContext, SafeAreaContext } from '../assets/contexts/contexts';
 import { langEN } from '../assets/utils/utils';
 
@@ -13,11 +14,13 @@ const _layout = () => {
 	};
 
 	return (
-		<SafeAreaContext.Provider value={safeArea}>
-			<LangContext.Provider value={langEN}>
-				<Slot />
-			</LangContext.Provider>
-		</SafeAreaContext.Provider>
+		<UserProvider>
+			<SafeAreaContext.Provider value={safeArea}>
+				<LangContext.Provider value={langEN}>
+					<Slot />
+				</LangContext.Provider>
+			</SafeAreaContext.Provider>
+		</UserProvider>
 	);
 };
 

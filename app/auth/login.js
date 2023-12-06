@@ -35,8 +35,6 @@ const Login = () => {
 
 		const auth = getAuth();
 
-
-
 		signInWithEmailAndPassword(auth, email, password)
 			.then((userCredential) => {
 				// Signed in
