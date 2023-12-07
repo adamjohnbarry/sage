@@ -2,8 +2,6 @@ import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useState } from 'react';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import PersonButton from '../../assets/components/PersonButton';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 import NotificationCard from './NotificationCard';
 
 export default function Attendance({ type, members, sendInvite }) {

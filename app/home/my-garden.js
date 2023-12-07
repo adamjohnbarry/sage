@@ -1,18 +1,16 @@
 import * as SMS from 'expo-sms';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Card from '../../assets/components/Card';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { FontAwesome5 } from '@expo/vector-icons';
 import Header from '../../assets/components/Header';
 import { ScrollView } from 'react-native-gesture-handler';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
-import LoginScreenImage from '../../assets/images/login-screen.png';
-import PersonButton from '../../assets/components/PersonButton';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
-import { useContext, useEffect } from 'react';
 import { Tabs } from 'expo-router';
 import { useUser } from '../../assets/contexts/UserContext';
 import Attendance from '../../assets/components/Attendance';
+import { useState, useEffect, useContext } from 'react';
 
 const MEMBERS = [
 	{
@@ -47,10 +45,26 @@ const MyGarden = () => {
 	const { user } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
+	const [members, setMembers] = useState(MEMBERS);
+	const [showAttendanceNotification, setShowAttendanceNotifcation] = useState(true);
 
-	const attendingMembers = MEMBERS.filter(member => member.attendingNextSession === 1);
-	const notAttendingMembers = MEMBERS.filter(member => member.attendingNextSession === 0);
-	const hasntRespondedMembers = MEMBERS.filter(member => member.attendingNextSession === -1);
+	useEffect(() => {
+		const userExists = members.some(member => member.name === 'Me');
+
+		if (!userExists) {
+			const newUser = {
+				name: 'Me',
+				photo: { uri: user.photo }, // Use the URI directly for network images
+				attendingNextSession: -1,
+			};
+			setMembers(currentMembers => [...currentMembers, newUser]);
+		}
+	}, [user, members]);
+
+	const attendingMembers = members.filter(member => member.attendingNextSession === 1);
+	const notAttendingMembers = members.filter(member => member.attendingNextSession === 0);
+	const hasntRespondedMembers = members.filter(member => member.attendingNextSession === -1);
+
 
 	// send invite to a friend
 	const sendInvite = async () => {
@@ -64,6 +78,25 @@ const MyGarden = () => {
 			console.log('Cannot use SMS on this device.');
 		}
 	};
+
+	function handleYesAttending() {
+		setMembers(currentMembers =>
+			currentMembers.map(member =>
+				member.name === 'Me' ? { ...member, attendingNextSession: 1 } : member
+			)
+		);
+		setShowAttendanceNotifcation(false);
+	}
+
+	function handleNoAttending() {
+		setMembers(currentMembers =>
+			currentMembers.map(member =>
+				member.name === 'Me' ? { ...member, attendingNextSession: 0 } : member
+			)
+		);
+		setShowAttendanceNotifcation(false);
+	}
+
 
 	useEffect(() => {
 		console.log('user', user);
@@ -83,28 +116,30 @@ const MyGarden = () => {
 			{/* update the header to reflect the name */}
 			<ScrollView style={globalStyles.containerWhite}>
 				<View style={[globalStyles.container, globalStyles.containerMain]}>
-					<Card>
-						<View style={styles.cardHeader}>
-							<Text style={styles.cardTextMain}>Are you coming this Friday?</Text>
-							<Pressable style={styles.cardHeaderCancel}>
-								<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
-							</Pressable>
-						</View>
-						<View style={styles.cardButtonGroup}>
-							<Pressable style={styles.cardButton}>
-								<View style={[styles.cardButtonIcon, styles.cardButtonYes]}>
-									<FontAwesome5 name='check' size={fontSizes.body} color={colors.white} />
-								</View>
-								<Text style={styles.cardButtonText}>Yes</Text>
-							</Pressable>
-							<Pressable style={styles.cardButton}>
-								<View style={[styles.cardButtonIcon, styles.cardButtonNo]}>
+					{showAttendanceNotification && (
+						<Card>
+							<View style={styles.cardHeader}>
+								<Text style={styles.cardTextMain}>Are you coming this Friday?</Text>
+								<Pressable style={styles.cardHeaderCancel}>
 									<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
-								</View>
-								<Text style={styles.cardButtonText}>No</Text>
-							</Pressable>
-						</View>
-					</Card>
+								</Pressable>
+							</View>
+							<View style={styles.cardButtonGroup}>
+								<TouchableOpacity onPress={handleYesAttending} style={styles.cardButton}>
+									<View style={[styles.cardButtonIcon, styles.cardButtonYes]}>
+										<FontAwesome5 name='check' size={fontSizes.body} color={colors.white} />
+									</View>
+									<Text style={styles.cardButtonText}>Yes</Text>
+								</TouchableOpacity>
+								<TouchableOpacity onPress={handleNoAttending} style={styles.cardButton}>
+									<View style={[styles.cardButtonIcon, styles.cardButtonNo]}>
+										<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
+									</View>
+									<Text style={styles.cardButtonText}>No</Text>
+								</TouchableOpacity>
+							</View>
+						</Card>
+					)}
 					<Attendance type='attending' members={attendingMembers} sendInvite={sendInvite} />
 					<Attendance type='notAttending' members={notAttendingMembers} sendInvite={sendInvite} />
 					<Attendance type='hasntResponded' members={hasntRespondedMembers} sendInvite={sendInvite} />
