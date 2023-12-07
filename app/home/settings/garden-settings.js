@@ -48,6 +48,10 @@ const GardenSettings = () => {
 				setInviteWord(gardenObj.inviteWord);
 				// setGardenAddress(gardenObj.address);
 				setGardenAddress('45 University Ave, PA');
+				setMembers([{
+					name: 'Me',
+					photo: require('../../../assets/images/nathan.webp'),
+				}]);
 			})
 			.catch((err) => {
 				console.log(`${err.code}: ${err.message}`);

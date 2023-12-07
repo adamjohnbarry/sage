@@ -43,8 +43,8 @@ const MEMBERS = [
 
 const MyGarden = () => {
 	const { user } = useUser();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 	const [members, setMembers] = useState(MEMBERS);
 	const [showAttendanceNotification, setShowAttendanceNotifcation] = useState(true);
 

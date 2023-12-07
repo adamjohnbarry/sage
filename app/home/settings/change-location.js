@@ -16,7 +16,7 @@ const ChangeLocation = () => {
 
 	const [privateAddress, setPrivateAddress] = useState('');
 	const [localGardens, setLocalGardens] = useState(gardens);
-	const [activeGardenItem, setActiveGardenItem] = useState();
+	const [activeGardenItem, setActiveGardenItem] = useState('45 University Ave, PA');
 
 	// handle garden item change
 	const handleGardenItemChange = (address) => {
@@ -31,7 +31,7 @@ const ChangeLocation = () => {
 	// save garden location
 	const saveGardenLocation = () => {
 		// use localAddress if it's selected, else use privateAddress
-		const address = activeGardenItem || privateAddress;
+		const address = activeGardenItem || privateAddress || '45 University Ave, PA';
 
 		setGarden({ ...garden, address });
 	};

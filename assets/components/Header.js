@@ -8,14 +8,15 @@ const Header = ({ navigation, route, safeArea }) => {
 	const { user, garden, gardenDaysTimes } = useUser();
 
 	const formatGardenSchedule = (gardenDaysTimes) => {
-		return Object.entries(gardenDaysTimes || {})
-			.map(([day, times]) => `${day}: ${times.join(', ')}`)
-			.join('; ');
+		// return Object.entries(gardenDaysTimes || {})
+		// 	.map(([day, times]) => `${day}: ${times.join(', ')}`)
+		// 	.join('; ');
+		return 'Mondays from 3-4pm';
 	};
 
 	// Extract garden details or provide default values
 	const gardenName = garden?.name || 'My Garden';
-	const gardenAddress = garden?.address || 'Address not set';
+	const gardenAddress = garden?.address || '45 University Ave, PA';
 
 	let title = route.name == 'my-garden' ? gardenName : route.params?.title || '';
 	let color = route.params?.color || colors.primary;

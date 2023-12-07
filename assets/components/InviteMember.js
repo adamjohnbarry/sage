@@ -8,7 +8,7 @@ const InviteMember = ({ photo, name, removeOnPress }) => {
 
 	return (
 		<View style={styles.inviteMember}>
-			<Image source={{ uri: photo }} style={styles.inviteMemberPhoto} />
+			<Image source={photo} style={styles.inviteMemberPhoto} />
 			<Text style={styles.inviteMemberName}>{name}</Text>
 			<Pressable style={styles.inviteMemberRemoveButton} onPress={removeOnPress}>
 				<Text style={styles.inviteMemberRemoveText}>{lang.button.remove}</Text>
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
 	},
 	inviteMemberPhoto: {
 		height: spacing.xlSpacing * 2,
+		width: spacing.xlSpacing * 2,
 		aspectRatio: 1 / 1,
 		borderRadius: spacing.xlSpacing,
 	},

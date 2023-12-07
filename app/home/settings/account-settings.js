@@ -11,7 +11,7 @@ const AccountSettings = () => {
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
-	const [name, setName] = useState('');
+	const [name, setName] = useState('Brendan McLaughlin');
 
 	// pre populate the account settings fields
 	useEffect(() => {
