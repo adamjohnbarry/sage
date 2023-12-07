@@ -9,7 +9,7 @@ import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 import LoginScreenImage from '../../assets/images/login-screen.png';
 import PersonButton from '../../assets/components/PersonButton';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Tabs } from 'expo-router';
 import { useUser } from '../../assets/contexts/UserContext';
 
@@ -23,7 +23,7 @@ const MyGarden = () => {
 		const isAvailable = await SMS.isAvailableAsync();
 
 		if (isAvailable) {
-			const { result } = await SMS.sendSMSAsync(['+353862240066'], lang.myGarden.chat.textMessage, {});
+			const { result } = await SMS.sendSMSAsync([], lang.invite.textMessage, {});
 
 			console.log(result);
 		} else {

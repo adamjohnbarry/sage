@@ -12,7 +12,6 @@ const AccountSettings = () => {
 	const lang = useContext(LangContext);
 
 	const [name, setName] = useState('');
-	const [password, setPassword] = useState('');
 
 	// pre populate the account settings fields
 	useEffect(() => {
@@ -30,7 +29,6 @@ const AccountSettings = () => {
 		getUserDetails()
 			.then((user) => {
 				setName(user.data().name);
-				setPassword(user.data().password);
 			})
 			.catch((err) => {
 				console.log(`${err.code}: ${err.message}`);
@@ -47,15 +45,6 @@ const AccountSettings = () => {
 					<View style={globalStyles.formGroup}>
 						<Text style={globalStyles.formLabel}>{lang.form.name.label}</Text>
 						<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={(text) => setName(text)} />
-					</View>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.passwordRegistration.label}</Text>
-						<FormInputText
-							placeholder={lang.form.passwordRegistration.placeholder}
-							value={password}
-							secureTextEntry={true}
-							onChangeText={(text) => setPassword(text)}
-						/>
 					</View>
 				</View>
 				<View style={globalStyles.buttonGroup}>

@@ -51,18 +51,18 @@ const JoinGroup = () => {
 		} else if (!garden) {
 			setInviteWordError(lang.error.inviteWordDoesntExistError);
 		} else {
-			// update the user's garden id and add user as member to garden
 			const userRef = doc(db, 'users', auth.currentUser.uid);
 			const user = await getDoc(userRef);
-			const userData = user.data();
 			const gardenRef = doc(db, 'gardens', garden.id);
 
+			// update the user's garden id to be this garden
 			await updateDoc(userRef, {
 				gardenId: garden.id,
 			});
 
+			// update garden to add user as new member
 			await updateDoc(gardenRef, {
-				members: { name: userData.name, phoneNumber: userData.phoneNumber },
+				members: [user.id],
 			});
 
 			router.replace('/home/my-garden');

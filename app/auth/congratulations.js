@@ -45,7 +45,7 @@ const Congratulations = () => {
 						<Text style={styles.congratulationsGardenName}>
 							{user?.garden?.name}
 						</Text>
-						{/* <Text style={styles.congratulationsGardenTime}>
+						{/* {/* <Text style={styles.congratulationsGardenTime}>
 							{gardenDays} @ {gardenTimes}
 						</Text> */}
 					</View>

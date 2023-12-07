@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, ScrollView, Text, View } from 'react-native';
 import FormInputText from '../../assets/components/FormInputText';
 import { useContext, useEffect, useState } from 'react';
 import Button from '../../assets/components/Button';
@@ -23,8 +23,8 @@ const ChooseLocation = () => {
 	const [localGardens, setLocalGardens] = useState(gardens);
 	const [selected, setSelected] = useState(false);
 
-	function handleCardPress(item) {
-		setLocalAddress(item.name);
+	function handleCardPress(garden) {
+		setLocalAddress(garden.name);
 	}
 
 	const filterLocalGardens = (text) => {
@@ -48,23 +48,19 @@ const ChooseLocation = () => {
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
 			<View style={globalStyles.formContainer}>
-				<View style={[globalStyles.form, globalStyles.containerFlex]}>
-					<View style={globalStyles.formGroup}>
+				<ScrollView style={[globalStyles.containerScroll]}>
+					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
 						<Text style={globalStyles.formLabel}>{lang.form.privateGarden.label}</Text>
 						<FormInputText placeholder={lang.form.privateGarden.placeholder} value={privateAddress} onChangeText={(text) => setPrivateAddress(text)} />
 					</View>
-					<Separator text='OR' />
-					<View style={globalStyles.containerScroll}>
+					<Separator text='OR' marginBottom={true} />
+					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
 						<Text style={globalStyles.formLabel}>{lang.form.localGarden.label}</Text>
-						<FlatList
-							data={localGardens}
-							style={(globalStyles.verticalScroll, { marginTop: spacing.smSpacing })}
-							ItemSeparatorComponent={() => <View style={{ height: spacing.lgSpacing }} />}
-							renderItem={({ item }) => <GardenItem {...item} selected={selected} onSelect={() => handleCardPress(item)} />}
-							keyExtractor={(item, i) => i}
-						/>
+						{localGardens.map((garden, i) => (
+							<GardenItem key={i} {...garden} selected={selected} onSelect={() => handleCardPress(garden)} />
+						))}
 					</View>
-				</View>
+				</ScrollView>
 				<View style={globalStyles.buttonGroup}>
 					<Button text={lang.button.continue} onPress={saveGardenLocation} />
 				</View>

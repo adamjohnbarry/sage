@@ -12,7 +12,7 @@ const Header = ({ navigation, route, safeArea }) => {
 	};
 
 	// Extract garden details or provide default values
-	const gardenName = user?.garden?.name || 'My Garden';
+	const gardenName = garden?.name || 'My Garden';
 	const gardenAddress = garden?.address || 'Address not set';
 
 	let title = route.name == 'my-garden' ? gardenName : route.params?.title || '';

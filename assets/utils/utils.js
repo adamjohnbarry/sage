@@ -94,18 +94,18 @@ const langEN = {
 			title: 'Learn',
 		},
 	},
-	myGarden: {
-		chat: {
-			textMessage:
-				'We would love for you to join our gardening group! We meet weekly on Fridays to work on our garden. Tap this to join us! https://wwww.sage.com/join/',
-		},
+	invite: {
+		textMessage:
+			'We would love for you to join our gardening group! We meet weekly on Fridays to work on our garden. Tap this to join us! https://wwww.sage.com/join/',
 	},
 	settings: {
 		settings: {
 			title: 'Settings',
 		},
 		accountSettings: {},
-		gardenSettings: {},
+		changeLocation: {
+			title: 'Change Location',
+		},
 		settingsList: [
 			{ title: 'Garden Settings' },
 			{ title: 'Account Settings' },
@@ -172,6 +172,9 @@ const langEN = {
 		changeLanguage: {
 			label: 'Language',
 		},
+		changeLocation: {
+			label: 'Change Location',
+		},
 	},
 	button: {
 		continue: 'Continue',
@@ -188,6 +191,8 @@ const langEN = {
 		yes: 'Yes',
 		save: 'Save',
 		deleteAccount: 'Delete Account',
+		inviteMembers: 'Invite Members',
+		remove: 'Remove',
 	},
 	error: {
 		emailFormat: 'Please enter a properly formatted email.',
