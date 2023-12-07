@@ -26,6 +26,8 @@ const Congratulations = () => {
 				const success = await submitRegistration();
 				if (confettiRef.current && success) {
 					confettiRef.current.startConfetti();
+				} else {
+					setError('There was an error create your garden. Please try again.');
 				}
 			} catch (e) {
 				console.error(e);
@@ -47,9 +49,17 @@ const Congratulations = () => {
 
 	if (error) {
 		return (
-			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
-				<Text>{error}</Text>
-			</View>
+			<>
+				<Stack.Screen options={{ headerShown: false }} />
+				<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom, }]}>
+					<View style={styles.congratulations}>
+						<Text style={styles.congratulationsCongrats}>Oops!</Text>
+						<Text style={styles.congratulationsGardenTime}>{error}</Text>
+					</View>
+					<Button text={lang.button.restart} onPress={() => { router.replace({ pathname: '/' }); }} />
+				</View>
+			</>
+
 		);
 	}
 
@@ -60,7 +70,7 @@ const Congratulations = () => {
 			{/* the main congratulations content for the container */}
 			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
 				<Confetti confettiCount={400} duration={4500} ref={confettiRef} />
-				<SageWordmark width={80}/>
+				<SageWordmark width={80} />
 				<View style={styles.congratulations}>
 					<View>
 						<Text style={styles.congratulationsGardenName}>{garden?.name}</Text>
