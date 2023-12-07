@@ -20,21 +20,21 @@ const Login = () => {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
 
-	useEffect(() => {
-		router.replace({
-			pathname: '/home/my-garden',
-			params: { title: 'garden name', address: 'addy', days: 'Tues', times: '2-2' },
-		});
-	});
+	// useEffect(() => {
+	// 	router.replace({
+	// 		pathname: '/home/my-garden',
+	// 		params: { title: 'garden name', address: 'addy', days: 'Tues', times: '2-2' },
+	// 	});
+	// });
 
 	// login to user account with given credentials
 	const login = async (e) => {
 		e.preventDefault();
 		setEmailError('');
 		setPasswordError('');
-	
+
 		const auth = getAuth();
-	
+
 		try {
 			const userCredential = await signInWithEmailAndPassword(auth, email, password);
 			// Signed in
@@ -53,7 +53,6 @@ const Login = () => {
 			}
 		}
 	};
-	
 
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>

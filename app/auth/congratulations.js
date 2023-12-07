@@ -59,9 +59,9 @@ const Congratulations = () => {
 				<View style={styles.congratulations}>
 					<View>
 						<Text style={styles.congratulationsGardenName}>{gardenName}</Text>
-						<Text style={styles.congratulationsGardenTime}>
+						{/* <Text style={styles.congratulationsGardenTime}>
 							{gardenDays} @ {gardenTimes}
-						</Text>
+						</Text> */}
 					</View>
 					<View>
 						<Text style={styles.congratulationsCongrats}>{lang.createGroup.congratulations.title}</Text>

@@ -10,10 +10,9 @@ import { BlurView } from 'expo-blur';
 import { useUser } from '../contexts/UserContext';
 
 const TabBar = ({ safeArea }) => {
-    const { user } = useUser();
-    const router = useRouter();
-    const currentPath = usePathname();
-    const isActive = (path) => currentPath === path;
+	const { user } = useUser();
+	const router = useRouter();
+	const currentPath = usePathname();
 	const isActive = (path) => currentPath === path;
 	const iconColor = (path) => (isActive(path) ? colors.black : 'rgba(0,0,0,0.5)');
 
@@ -35,20 +34,21 @@ const TabBar = ({ safeArea }) => {
 				<Learn color={iconColor('/home/learn')} />
 				<Text style={[styles.tabText, isActive('/home/learn') ? styles.activeTabText : styles.inactiveTabText]}>Learn</Text>
 			</TouchableOpacity>
-            { /* My Garden Tab */}
-            <TouchableOpacity
-                style={styles.tabContainer}
-                onPress={() => router.replace({
-                    pathname: '/home/my-garden',
-                    params: {
-                        title: user?.gardenName || 'My Garden', // Use user data
-                    },
-                })}>
-                <MyGarden color={iconColor('/home/my-garden')} />
-                <Text style={[styles.tabText, isActive('/home/my-garden') ? styles.activeTabText : styles.inactiveTabText]}>
-                    My Garden
-                </Text>
-            </TouchableOpacity>
+			{/* My Garden Tab */}
+			<TouchableOpacity
+				style={styles.tabContainer}
+				onPress={() =>
+					router.replace({
+						pathname: '/home/my-garden',
+						params: {
+							title: user?.gardenName || 'My Garden', // Use user data
+						},
+					})
+				}
+			>
+				<MyGarden color={iconColor('/home/my-garden')} />
+				<Text style={[styles.tabText, isActive('/home/my-garden') ? styles.activeTabText : styles.inactiveTabText]}>My Garden</Text>
+			</TouchableOpacity>
 			{/* Settings Tab */}
 			<TouchableOpacity
 				style={styles.tabContainer}

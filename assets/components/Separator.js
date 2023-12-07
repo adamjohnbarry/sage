@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { fontSizes, spacing } from '../theme/theme';
 
-const Separator = ({ text, color = 'black' }) => {
+const Separator = ({ text, color = 'black', marginBottom }) => {
 	return (
-		<View style={styles.separator}>
+		<View style={[styles.separator, marginBottom && { marginBottom: spacing.xlSpacing }]}>
 			<View style={[styles.separatorLine, { borderColor: color }]} />
 			{text && <Text style={[styles.separatorText, { color }]}>{text}</Text>}
 			{text && <View style={[styles.separatorLine, { borderColor: color }]} />}

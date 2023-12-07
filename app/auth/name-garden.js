@@ -57,12 +57,7 @@ const NameGarden = () => {
 				await addDoc(collection(db, 'gardens'), {
 					name: gardenName,
 					inviteWord: inviteWord.toLowerCase(),
-					members: [
-						{
-							name: user.data().name,
-							phoneNumber: user.data().phoneNumber,
-						},
-					],
+					members: [user.id],
 				})
 					.then(async (gardenRef) => {
 						await updateDoc(userRef, {
