@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import TimeSlot from '../../assets/components/TimeSlot';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useUser } from '../../assets/contexts/UserContext';
@@ -11,15 +11,15 @@ import { useUser } from '../../assets/contexts/UserContext';
 const PickDayAndTime = () => {
 	const router = useRouter();
 	const { setGardenDaysTimes } = useUser();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [selectedTimes, setSelectedTimes] = useState([]);
 
 	function handleTimeSelection(day, time) {
 		// Create a copy of the current state
 		const newSelectedTimes = { ...selectedTimes };
-	
+
 		// Check if the day already exists
 		if (newSelectedTimes[day]) {
 			// If the time is already selected, remove it
@@ -33,11 +33,10 @@ const PickDayAndTime = () => {
 			// If the day doesn't exist, add the day with the time
 			newSelectedTimes[day] = [time];
 		}
-	
+
 		// Update the state with the new object
 		setSelectedTimes(newSelectedTimes);
 	}
-	
 
 	// set the days and times for the garden's meetings
 	const setGardenDayAndTime = async () => {
@@ -64,7 +63,12 @@ const PickDayAndTime = () => {
 							<Text style={globalStyles.formLabel}>{day}</Text>
 							<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
 								{lang.createGroup.pickDayAndTime.times.map((time, i) => (
-									<TimeSlot key={i} time={time} onSelect={() => handleTimeSelection(day, time)} lastSlot={i == lang.createGroup.pickDayAndTime.times.length - 1 ? true : false} />
+									<TimeSlot
+										key={i}
+										time={time}
+										onSelect={() => handleTimeSelection(day, time)}
+										lastSlot={i == lang.createGroup.pickDayAndTime.times.length - 1 ? true : false}
+									/>
 								))}
 							</ScrollView>
 						</View>

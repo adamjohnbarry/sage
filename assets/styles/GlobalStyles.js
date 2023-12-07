@@ -83,6 +83,13 @@ const globalStyles = StyleSheet.create({
 		marginLeft: spacing.lgSpacing,
 		marginRight: spacing.lgSpacing,
 	},
+	formContainerScroll: {
+		flex: 1,
+		backgroundColor: colors.white,
+		marginTop: spacing.lgSpacing,
+		marginLeft: spacing.lgSpacing,
+		marginRight: spacing.lgSpacing,
+	},
 	form: {
 		flex: 1,
 		gap: spacing.xlSpacing,

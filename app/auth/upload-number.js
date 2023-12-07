@@ -5,14 +5,15 @@ import globalStyles from '../../assets/styles/GlobalStyles';
 import PhoneInput from 'react-native-phone-input';
 import validator from 'validator';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 
 const UploadNumber = () => {
 	const router = useRouter();
 	const { user, setUser } = useUser();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
+
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [phoneNumberError, setPhoneNumberError] = useState('');
 
@@ -34,7 +35,8 @@ const UploadNumber = () => {
 		if (phoneNumberError) {
 			console.log(lang.error.phoneNumberUploadError);
 		} else {
-			setUser({ ...user, phoneNumber })
+			setUser({ ...user, phoneNumber });
+
 			router.push({
 				pathname: '/auth/upload-photo',
 				params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },

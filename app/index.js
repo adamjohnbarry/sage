@@ -6,12 +6,12 @@ import { useRouter } from 'expo-router';
 import { colors, fontSizes, spacing } from '../assets/theme/theme';
 import globalStyles from '../assets/styles/GlobalStyles';
 import { useContext } from 'react';
-import { LangContext, SafeAreaContext } from '../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../assets/contexts/Contexts';
 
 const Root = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	return (
 		<View style={[globalStyles.containerFlex]}>
@@ -21,8 +21,8 @@ const Root = () => {
 						<Image source={SageLogo} />
 					</View>
 					<View style={styles.bodyContainer}>
-						<Text style={styles.tagline}>{lang.auth.intial.title}</Text>
-						<Text style={styles.description}>{lang.auth.intial.description}</Text>
+						<Text style={styles.tagline}>{lang.auth.initial.title}</Text>
+						<Text style={styles.description}>{lang.auth.initial.description}</Text>
 					</View>
 					<View style={globalStyles.buttonGroup}>
 						<Button

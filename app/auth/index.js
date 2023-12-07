@@ -8,12 +8,12 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 import { setDoc, doc, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 
 const Register = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');

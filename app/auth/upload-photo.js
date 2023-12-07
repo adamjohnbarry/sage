@@ -8,14 +8,14 @@ import * as ImagePicker from 'expo-image-picker';
 import FormPhoto from '../../assets/components/FormPhoto';
 import { getAuth } from 'firebase/auth';
 
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const UploadPhoto = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [photo, setPhoto] = useState(
 		'https://media.licdn.com/dms/image/D4E03AQGVq7H6Aowx6g/profile-displayphoto-shrink_800_800/0/1701141939944?e=1706745600&v=beta&t=RW_G2QxAaxB4bUckWs00TUPe9fGCSbdcngVtnoZejEM'

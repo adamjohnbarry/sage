@@ -6,17 +6,14 @@ const TimeSlot = ({ time, lastSlot, onSelect }) => {
 	const [pressed, setPressed] = useState(false);
 
 	const handlePress = () => {
-        setPressed((prevState) => !prevState);
-        if (onSelect) {
-            onSelect(time, !pressed); // passing the new state of pressed
-        }
-    };
+		setPressed((prevState) => !prevState);
+		if (onSelect) {
+			onSelect(time, !pressed); // passing the new state of pressed
+		}
+	};
 
 	return (
-		<Pressable
-			style={[styles.timeSlot, lastSlot && styles.timeSlotLast, pressed && styles.timeSlotPressed]}
-			onPress={handlePress}
-		>
+		<Pressable style={[styles.timeSlot, lastSlot && styles.timeSlotLast, pressed && styles.timeSlotPressed]} onPress={handlePress}>
 			<Text style={[styles.timeSlotText, pressed && styles.timeSlotTextPressed]}>{time}</Text>
 		</Pressable>
 	);

@@ -4,15 +4,15 @@ import { useContext, useEffect, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import FormInputText from '../../assets/components/FormInputText';
 import ContactItem from '../../assets/components/ContactItem';
 import { spacing } from '../../assets/theme/theme';
 
 const InviteFriends = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [searchContacts, setSearchContacts] = useState('');
 	const [contacts, setContacts] = useState();
@@ -44,6 +44,11 @@ const InviteFriends = () => {
 		setFilteredContacts(filteredContacts);
 	};
 
+	// handle inviting friends
+	const inviteFriends = () => {
+		router.push('/auth/congratulations');
+	};
+
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
 			<View style={globalStyles.formContainer}>
@@ -63,7 +68,7 @@ const InviteFriends = () => {
 				</View>
 				<View style={globalStyles.buttonGroup}>
 					<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
-					<Button text={lang.button.finish} />
+					<Button text={lang.button.finish} onPress={inviteFriends} />
 				</View>
 			</View>
 		</View>

@@ -3,14 +3,14 @@ import globalStyles from '../../../assets/styles/GlobalStyles';
 import { getAuth, deleteUser } from 'firebase/auth';
 import SettingsButton from '../../../assets/components/SettingsButton';
 import { useContext } from 'react';
-import { LangContext } from '../../../assets/contexts/contexts';
+import { LangContext } from '../../../assets/contexts/Contexts';
 import { useRouter } from 'expo-router';
 import { colors } from '../../../assets/theme/theme';
 import { Alert } from 'react-native';
 
 const Settings = () => {
 	const router = useRouter();
-	const lang = useContext(LangContext);
+	const { lang } = useContext(LangContext);
 	const auth = getAuth();
 	const user = auth.currentUser;
 

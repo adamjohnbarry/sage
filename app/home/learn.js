@@ -4,8 +4,7 @@ import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 import LearnHeader from '../../assets/components/LearnHeader';
 import FeaturedArticle from '../../assets/components/FeaturedArticle';
 import ArticleCard from '../../assets/components/ArticleCard';
-import { ARTICLES } from '../../assets/data/articles'
-import Help from '../../assets/icons/Help';
+import { ARTICLES } from '../../assets/data/articles';
 
 const FILTERS = Object.keys(ARTICLES);
 
@@ -30,12 +29,7 @@ const Learn = () => {
 	return (
 		<View style={styles.container}>
 			<Animated.View style={[styles.header, { height: headerHeight }]}>
-				<LearnHeader
-					title='Learn'
-					filters={FILTERS}
-					activeFilter={activeFilter}
-					onFilterPress={onFilterPress}
-				/>
+				<LearnHeader title='Learn' filters={FILTERS} activeFilter={activeFilter} onFilterPress={onFilterPress} />
 			</Animated.View>
 			<ScrollView
 				bounces={false}
@@ -59,14 +53,14 @@ const Learn = () => {
 						{Object.entries(ARTICLES[FILTERS[activeFilter]].sections).map(([sectionTitle, articles], index) => (
 							<View key={index} style={styles.sectionContainer}>
 								<View style={styles.sectionHeader}>
-									<Text style={[styles.sectionTitle, (!ARTICLES[FILTERS[activeFilter]].featured && index === 0) ? styles.whiteText : {}]}>
-										{sectionTitle}
-									</Text>
+									<Text style={[styles.sectionTitle, !ARTICLES[FILTERS[activeFilter]].featured && index === 0 ? styles.whiteText : {}]}>{sectionTitle}</Text>
 									<TouchableOpacity>
-										<Text style={[
-											{ color: colors.black, paddingBottom: 8, fontSize: fontSizes.body, textDecorationLine: 'underline' },
-											(!ARTICLES[FILTERS[activeFilter]].featured && index === 0) ? { color: colors.white } : {}
-										]}>
+										<Text
+											style={[
+												{ color: colors.black, paddingBottom: 8, fontSize: fontSizes.body, textDecorationLine: 'underline' },
+												!ARTICLES[FILTERS[activeFilter]].featured && index === 0 ? { color: colors.white } : {},
+											]}
+										>
 											See all
 										</Text>
 									</TouchableOpacity>
@@ -97,8 +91,7 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.secondary,
 		zIndex: 10,
 	},
-	articles: {
-	},
+	articles: {},
 	featured: {
 		paddingHorizontal: spacing.xlSpacing,
 		paddingVertical: spacing.lgSpacing,
@@ -123,7 +116,7 @@ const styles = StyleSheet.create({
 	},
 	whiteText: {
 		color: colors.white,
-	}
+	},
 });
 
 export default Learn;

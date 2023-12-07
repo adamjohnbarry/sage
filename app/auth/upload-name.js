@@ -4,14 +4,14 @@ import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 
 const UploadName = () => {
 	const router = useRouter();
 	const { user, setUser } = useUser();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [name, setName] = useState('');
 
@@ -31,7 +31,7 @@ const UploadName = () => {
 	// update account with name
 	const updateDisplayName = async (e) => {
 		e.preventDefault();
-		setUser({ ...user, name })
+		setUser({ ...user, name });
 		router.push({
 			pathname: '/auth/upload-number',
 			params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },

@@ -1,22 +1,23 @@
 import { Slot } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { UserProvider } from '../assets/contexts/UserContext';
-import { LangContext, SafeAreaContext } from '../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../assets/contexts/Contexts';
 import { langEN } from '../assets/utils/utils';
+import { useState } from 'react';
 
 const _layout = () => {
 	const insets = useSafeAreaInsets();
-
-	// create object with dimensions for safe area use
 	const safeArea = {
 		paddingTop: insets.top,
 		paddingBottom: insets.bottom,
 	};
 
+	const [lang, setLang] = useState(langEN);
+
 	return (
 		<UserProvider>
-			<SafeAreaContext.Provider value={safeArea}>
-				<LangContext.Provider value={langEN}>
+			<SafeAreaContext.Provider value={{ safeArea }}>
+				<LangContext.Provider value={{ lang, setLang }}>
 					<Slot />
 				</LangContext.Provider>
 			</SafeAreaContext.Provider>

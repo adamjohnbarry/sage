@@ -5,14 +5,14 @@ import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 
 const Login = () => {
 	const router = useRouter();
 	const { fetchUserAndGardenDetails } = useUser();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
