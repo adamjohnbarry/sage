@@ -8,6 +8,7 @@ const langEN = {
 		register: {
 			title: 'Create Account',
 			description: 'Before we get to gardening, we need some basic information about you!',
+			photoUploadSuccessful: 'Image successfully uploaded',
 		},
 		login: {
 			title: 'Log In',
@@ -20,7 +21,7 @@ const langEN = {
 		howDoIGetAnInviteWord: {
 			title: 'How to get an invite word',
 			description:
-				'If you are trying to join a group, ask any of the current group members to send you the invite word.\n\nThey can find it by opening Sage and tapping the settings icon as shown below.',
+				'If you are trying to join a group, ask any of the current group members to send you the invite word.\n\nThey can find it by opening Sage, going to the settings page, and tapping the garden settings section.',
 		},
 	},
 	createGroup: {
@@ -52,21 +53,21 @@ const langEN = {
 			description: 'Select a gardening location for your group. Allow Sage to access your location so we can find some gardens in your area.',
 			gardens: [
 				{
-					name: 'Little House Garden',
+					name: '45 University Ave, PA',
 					image:
 						'https://hips.hearstapps.com/hmg-prod/images/claude-monets-house-and-gardens-in-giverny-france-news-photo-1042013294-1562610151.jpg?crop=1.00xw:0.753xh;0,0.0671xh&resize=1200:*',
 					distance: 5,
 					driveTime: 12,
 				},
 				{
-					name: "Jeremy's Garden",
+					name: '23 Stanford Way, CA',
 					image:
 						'https://www.thespruce.com/thmb/IHY_gzo-3Y5terRR2mdPQf0gnSY=/4711x0/filters:no_upscale():max_bytes(150000):strip_icc()/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg',
 					distance: 1,
 					driveTime: 3,
 				},
 				{
-					name: "Adam's Garden",
+					name: '42 Mulholland Dr, UT',
 					image:
 						'https://www.bhg.com/thmb/SdH3liapyw5vZZf-LKe_MmgvYuA=/4000x0/filters:no_upscale():strip_icc()/BHG-What-Is-a-Permaculture-Garden-3AWGe3jUq5hAt8vbh3yisf-f3d0c14454b44bf5b319234918574b9e.jpg',
 					distance: 3,
@@ -161,7 +162,6 @@ const langEN = {
 		},
 		localGarden: {
 			label: 'Local Garden',
-			placeholder: 'Search garden names or locations',
 		},
 		searchContacts: {
 			placeholder: 'Search contacts',
@@ -188,6 +188,22 @@ const langEN = {
 		yes: 'Yes',
 		save: 'Save',
 		deleteAccount: 'Delete Account',
+	},
+	error: {
+		emailFormat: 'Please enter a properly formatted email.',
+		passwordLength: 'Password must be at least 8 characters long.',
+		passwordMatching: 'Passwords do not match.',
+		userRegistration: 'Could not register user.',
+		nameEmpty: 'Name cannot be empty.',
+		nameUploadError: "Could not update user's name.",
+		validPhoneNumber: 'Please enter a valid phone number.',
+		phoneNumberUploadError: "Could not update user's number.",
+		photoRetrievalError: "Could not retrieve user's photo.",
+		photoUploadError: "Could not update user's photo.",
+		inviteWordLengthError: 'Invite word cannot be empty.',
+		inviteWordDoesntExistError: 'Invite word does not exist.',
+		inviteWordAlreadyExistsError: 'Invite word has already been taken.',
+		gardenNameEmpty: 'Garden name cannot be empty.',
 	},
 };
 

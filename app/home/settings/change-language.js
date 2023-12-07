@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import globalStyles from '../../../assets/styles/GlobalStyles';
 import { useContext, useEffect, useState } from 'react';
 import { LangContext, SafeAreaContext } from '../../../assets/contexts/contexts';
-import FormInputText from '../../../assets/components/FormInputText';
+import FormButton from '../../../assets/components/FormButton';
 import Button from '../../../assets/components/Button';
 
 const ChangeLanguage = () => {
@@ -18,6 +18,9 @@ const ChangeLanguage = () => {
 				<View style={globalStyles.form}>
 					<View style={globalStyles.formGroup}>
 						<Text style={globalStyles.formLabel}>{lang.form.changeLanguage.label}</Text>
+						<FormButton emoji='🇺🇸' label='English' onPress={saveAccountDetails} />
+						<FormButton emoji='🇩🇪' label='German' onPress={saveAccountDetails} />
+
 						{/* <FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={(text) => setName(text)} /> */}
 					</View>
 				</View>

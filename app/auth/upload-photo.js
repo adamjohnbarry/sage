@@ -10,7 +10,7 @@ import { getAuth } from 'firebase/auth';
 
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
-import { getStorage, ref } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const UploadPhoto = () => {
 	const router = useRouter();
@@ -20,6 +20,7 @@ const UploadPhoto = () => {
 	const [photo, setPhoto] = useState(
 		'https://media.licdn.com/dms/image/D4E03AQGVq7H6Aowx6g/profile-displayphoto-shrink_800_800/0/1701141939944?e=1706745600&v=beta&t=RW_G2QxAaxB4bUckWs00TUPe9fGCSbdcngVtnoZejEM'
 	);
+	const [photoUploaded, setPhotoUploaded] = useState(false);
 
 	// handle choosing a photo to upload from your library
 	const choosePhotoFromLibrary = async () => {
@@ -33,7 +34,30 @@ const UploadPhoto = () => {
 
 		// if we don't cancel the selection, then update the photo state
 		if (!result.canceled) {
-			setPhoto(result.assets[0].uri);
+			handleImageUpload(result.assets[0].uri);
+		}
+	};
+
+	// handle uploading the image to firestore
+	const handleImageUpload = async (uri) => {
+		const auth = getAuth();
+		const storage = getStorage();
+
+		// upload image to firestore
+		try {
+			const response = await fetch(uri);
+			const blob = await response.blob();
+
+			const storageRef = ref(storage, `images/${auth.currentUser.uid}-${new Date().getTime()}`);
+
+			const uploadedPhoto = await uploadBytes(storageRef, blob);
+			const downloadedPhoto = await getDownloadURL(storageRef);
+
+			setPhoto(downloadedPhoto);
+
+			setPhotoUploaded(true);
+		} catch (err) {
+			console.log(lang.error.photoUploadError);
 		}
 	};
 
@@ -41,14 +65,12 @@ const UploadPhoto = () => {
 	const updatePhotoURL = async (e) => {
 		e.preventDefault();
 
-		if (!photo) {
-			console.log("Could not update user's photo.");
+		if (!photo || !photoUploaded) {
+			console.log(lang.error.photoUploadError);
 		} else {
 			const auth = getAuth();
-			const storage = getStorage();
 			const db = getFirestore();
 
-			const profileRef = ref(storage, `images/${auth.currentUser.uid}-profile.jpg`);
 			const userRef = doc(db, 'users', auth.currentUser.uid);
 
 			// update the user's photo
@@ -76,7 +98,6 @@ const UploadPhoto = () => {
 						<FormPhoto source={photo} />
 					</View>
 					<View style={globalStyles.formGroup}>
-						<FormButton icon='camera' label={lang.form.takePhoto.label} />
 						<FormButton icon='photo-video' label={lang.form.chooseFromLibrary.label} onPress={choosePhotoFromLibrary} />
 					</View>
 				</View>

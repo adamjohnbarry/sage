@@ -74,14 +74,11 @@ const ChooseLocation = () => {
 						<FormInputText placeholder={lang.form.privateGarden.placeholder} value={privateAddress} onChangeText={(text) => setPrivateAddress(text)} />
 					</View>
 					<Separator text='OR' />
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.localGarden.label}</Text>
-						<FormInputText placeholder={lang.form.localGarden.placeholder} value={localAddress} onChangeText={filterLocalGardens} />
-					</View>
 					<View style={globalStyles.containerScroll}>
+						<Text style={globalStyles.formLabel}>{lang.form.localGarden.label}</Text>
 						<FlatList
 							data={localGardens}
-							style={globalStyles.verticalScroll}
+							style={(globalStyles.verticalScroll, { marginTop: spacing.smSpacing })}
 							ItemSeparatorComponent={() => <View style={{ height: spacing.lgSpacing }} />}
 							renderItem={({ item }) => <GardenItem {...item} selected={selected} onSelect={() => updateLocalGarden(item)} />}
 							keyExtractor={(item, i) => i}
