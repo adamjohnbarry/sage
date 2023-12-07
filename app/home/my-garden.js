@@ -11,46 +11,12 @@ import PersonButton from '../../assets/components/PersonButton';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
 import { useContext, useEffect, useState } from 'react';
 import { Tabs } from 'expo-router';
-import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const MyGarden = () => {
+	const { user, fetchUserAndGardenDetails } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
-
-	const [gardenName, setGardenName] = useState('');
-	const [gardenAddress, setGardenAddress] = useState('');
-	const [gardenDays, setGardenDays] = useState('');
-	const [gardenTimes, setGardenTimes] = useState('');
-
-	// as soon as we get to congratulations page update the garden name and day / time
-	useEffect(() => {
-		const auth = getAuth();
-		const db = getFirestore();
-
-		const userRef = doc(db, 'users', auth.currentUser.uid);
-
-		const getGardenDetails = async () => {
-			const user = await getDoc(userRef);
-
-			const gardenRef = doc(db, 'gardens', user.data().gardenId);
-			const garden = await getDoc(gardenRef);
-
-			return garden;
-		};
-
-		// update the congratulations page to reflect garden's details
-		getGardenDetails()
-			.then((garden) => {
-				setGardenName(garden.data().name);
-				setGardenAddress(garden.data().address);
-				setGardenDays('Mondays & Thursdays');
-				setGardenTimes('3.30pm');
-			})
-			.catch((err) => {
-				console.log(`${err.code}: ${err.message}`);
-			});
-	}, []);
 
 	// send invite to a friend
 	const sendInvite = async () => {
@@ -65,12 +31,19 @@ const MyGarden = () => {
 		}
 	};
 
+	useEffect(() => {
+		console.log('user', user);
+	}, [user]);
+
+	// We directly use the garden information from the user context
+	const gardenName = user?.garden?.name || 'My Garden';
+
 	return (
 		<>
 			{/* update the header to reflect the name, location, days, and times */}
 			<Tabs.Screen
 				options={{
-					header: (props) => <Header {...props} title='Yo' safeArea={safeArea} />,
+					header: (props) => <Header {...props} title={gardenName} safeArea={safeArea} />,
 				}}
 			/>
 			{/* update the header to reflect the name */}

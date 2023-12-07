@@ -1,35 +1,55 @@
 import { Text, View } from 'react-native';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
 import TimeSlot from '../../assets/components/TimeSlot';
 import { ScrollView } from 'react-native-gesture-handler';
-import { getFirestore } from 'firebase/firestore';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const PickDayAndTime = () => {
 	const router = useRouter();
+	const { setGardenDaysTimes } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
 
+	const [selectedTimes, setSelectedTimes] = useState([]);
+
+	function handleTimeSelection(day, time) {
+		// Create a copy of the current state
+		const newSelectedTimes = { ...selectedTimes };
+	
+		// Check if the day already exists
+		if (newSelectedTimes[day]) {
+			// If the time is already selected, remove it
+			if (newSelectedTimes[day].includes(time)) {
+				newSelectedTimes[day] = newSelectedTimes[day].filter((item) => item !== time);
+			} else {
+				// If the time is not selected, add it
+				newSelectedTimes[day].push(time);
+			}
+		} else {
+			// If the day doesn't exist, add the day with the time
+			newSelectedTimes[day] = [time];
+		}
+	
+		// Update the state with the new object
+		setSelectedTimes(newSelectedTimes);
+	}
+	
+
 	// set the days and times for the garden's meetings
 	const setGardenDayAndTime = async () => {
-		const db = getFirestore();
-
 		try {
-			// await updateDoc(userRef, {
-			// 	days,
-			// 	times,
-			// });
+			setGardenDaysTimes(selectedTimes);
+			router.push({
+				pathname: '/auth/invite-friends',
+				params: { index: 7, title: lang.createGroup.inviteFriends.title, description: lang.createGroup.inviteFriends.description },
+			});
 		} catch (err) {
 			console.log(`${err.code}: ${err.message}`);
 		}
-
-		router.push({
-			pathname: '/auth/invite-friends',
-			params: { index: 7, title: lang.createGroup.inviteFriends.title, description: lang.createGroup.inviteFriends.description },
-		});
 	};
 
 	return (
@@ -44,7 +64,7 @@ const PickDayAndTime = () => {
 							<Text style={globalStyles.formLabel}>{day}</Text>
 							<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
 								{lang.createGroup.pickDayAndTime.times.map((time, i) => (
-									<TimeSlot key={i} time={time} lastSlot={i == lang.createGroup.pickDayAndTime.times.length - 1 ? true : false} />
+									<TimeSlot key={i} time={time} onSelect={() => handleTimeSelection(day, time)} lastSlot={i == lang.createGroup.pickDayAndTime.times.length - 1 ? true : false} />
 								))}
 							</ScrollView>
 						</View>

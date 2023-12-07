@@ -6,10 +6,11 @@ import globalStyles from '../../assets/styles/GlobalStyles';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const Login = () => {
 	const router = useRouter();
+	const { fetchUserAndGardenDetails } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
 
@@ -29,63 +30,30 @@ const Login = () => {
 	// login to user account with given credentials
 	const login = async (e) => {
 		e.preventDefault();
-
 		setEmailError('');
 		setPasswordError('');
-
+	
 		const auth = getAuth();
-
-		signInWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				// Signed in
-				const db = getFirestore();
-
-				const user = userCredential.user;
-				const userRef = doc(db, 'users', user.uid);
-
-				let gardenName = '';
-				let gardenAddress = '';
-				let gardenDays = '';
-				let gardenTimes = '';
-
-				const getGardenDetails = async () => {
-					const user = await getDoc(userRef);
-
-					const gardenRef = doc(db, 'gardens', user.data().gardenId);
-					const garden = await getDoc(gardenRef);
-
-					return garden;
-				};
-
-				// update the home page to reflect the garden's details
-				getGardenDetails()
-					.then((garden) => {
-						gardenName = garden.data().name;
-						gardenAddress = garden.data().address;
-						gardenDays = 'Mondays & Thursdays';
-						gardenTimes = '3:30pm';
-
-						router.replace({
-							pathname: '/home/my-garden',
-							params: { title: gardenName, address: gardenAddress, days: gardenDays, times: gardenTimes },
-						});
-					})
-					.catch((err) => {
-						console.log(`${err.code}: ${err.message}`);
-					});
-			})
-			.catch((err) => {
-				if (err.code === 'auth/invalid-email') {
-					setEmailError('Please enter a valid email.');
-				} else if (err.code === 'auth/missing-password') {
-					setPasswordError('Please fill in password field.');
-				} else if (err.code === 'auth/invalid-login-credentials') {
-					setPasswordError('Email or password is incorrect.');
-				} else {
-					console.log(`${err.code}: ${err.message}`);
-				}
-			});
+	
+		try {
+			const userCredential = await signInWithEmailAndPassword(auth, email, password);
+			// Signed in
+			await fetchUserAndGardenDetails(userCredential.user.uid);
+			// Navigate to the 'My Garden' page after successful login and data fetch
+			router.replace({ pathname: '/home/my-garden' });
+		} catch (err) {
+			if (err.code === 'auth/invalid-email') {
+				setEmailError('Please enter a valid email.');
+			} else if (err.code === 'auth/wrong-password') {
+				setPasswordError('Password is incorrect.'); // Use 'auth/wrong-password' for incorrect password
+			} else if (err.code === 'auth/user-not-found') {
+				setPasswordError('Email does not exist.'); // Use 'auth/user-not-found' for email not existing
+			} else {
+				console.log(`${err.code}: ${err.message}`);
+			}
+		}
 	};
+	
 
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
