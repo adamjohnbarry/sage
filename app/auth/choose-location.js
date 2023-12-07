@@ -1,6 +1,6 @@
 import { FlatList, Text, View } from 'react-native';
 import FormInputText from '../../assets/components/FormInputText';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
@@ -8,11 +8,11 @@ import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
 import GardenItem from '../../assets/components/GardenItem';
 import { spacing } from '../../assets/theme/theme';
 import Separator from '../../assets/components/Separator';
-import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const ChooseLocation = () => {
 	const router = useRouter();
+	const { garden, setGarden } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
 
@@ -23,6 +23,10 @@ const ChooseLocation = () => {
 	const [localGardens, setLocalGardens] = useState(gardens);
 	const [selected, setSelected] = useState(false);
 
+	function handleCardPress(item) {
+		setLocalAddress(item.name);
+	}
+
 	const filterLocalGardens = (text) => {
 		setLocalAddress(text);
 
@@ -31,34 +35,10 @@ const ChooseLocation = () => {
 		// setLocalGardens(filteredGardens);
 	};
 
-	// update private garden selection
-	const updateLocalGarden = (garden) => {
-		setSelected(true);
-	};
-
 	// save garden location
 	const saveGardenLocation = async () => {
-		const auth = getAuth();
-		const db = getFirestore();
-
-		const userRef = doc(db, 'users', auth.currentUser.uid);
-		const user = await getDoc(userRef);
-
-		const gardenRef = doc(db, 'gardens', user.data().gardenId);
-		const address = privateAddress;
-
-		// TODO: The following needs to be fixed once we can singley select an item
-
-		// use local address if it is selected over private address
-		if (localAddress) {
-			address = localAddress;
-		}
-
-		// update the garden's address
-		await updateDoc(gardenRef, {
-			address,
-		});
-
+		const address = localAddress || privateAddress; // use localAddress if it's selected, else use privateAddress
+		setGarden({ ...garden, address })
 		router.push({
 			pathname: '/auth/pick-day-and-time',
 			params: { index: 6, title: lang.createGroup.pickDayAndTime.title, description: lang.createGroup.pickDayAndTime.description },
@@ -80,7 +60,7 @@ const ChooseLocation = () => {
 							data={localGardens}
 							style={(globalStyles.verticalScroll, { marginTop: spacing.smSpacing })}
 							ItemSeparatorComponent={() => <View style={{ height: spacing.lgSpacing }} />}
-							renderItem={({ item }) => <GardenItem {...item} selected={selected} onSelect={() => updateLocalGarden(item)} />}
+							renderItem={({ item }) => <GardenItem {...item} selected={selected} onSelect={() => handleCardPress(item)} />}
 							keyExtractor={(item, i) => i}
 						/>
 					</View>
