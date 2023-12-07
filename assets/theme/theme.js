@@ -11,6 +11,7 @@ const colors = {
 	success: '#2FC916',
 	error: '#FF0000',
 	errorLight: '#FCE5E5',
+	sunrise: '#E2E0D9',
 };
 
 // font sizes

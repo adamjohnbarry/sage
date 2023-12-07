@@ -12,11 +12,45 @@ import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
 import { useContext, useEffect } from 'react';
 import { Tabs } from 'expo-router';
 import { useUser } from '../../assets/contexts/UserContext';
+import Attendance from '../../assets/components/Attendance';
+
+const MEMBERS = [
+	{
+		name: 'Nathan Larimer',
+		photo: require('../../assets/images/nathan.webp'),
+		attendingNextSession: 1,
+	},
+	{
+		name: 'Nancy Kolton',
+		photo: require('../../assets/images/nancy.webp'),
+		attendingNextSession: 0,
+	},
+	{
+		name: 'Koby Karp',
+		photo: require('../../assets/images/koby.webp'),
+		attendingNextSession: -1,
+	},
+	{
+		name: 'Jason Sweeney',
+		photo: require('../../assets/images/jason.webp'),
+		attendingNextSession: 0,
+	},
+	{
+		name: 'Luna',
+		photo: require('../../assets/images/luna.webp'),
+		attendingNextSession: 1,
+	}
+
+];
 
 const MyGarden = () => {
-	const { user, fetchUserAndGardenDetails } = useUser();
+	const { user } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
+
+	const attendingMembers = MEMBERS.filter(member => member.attendingNextSession === 1);
+	const notAttendingMembers = MEMBERS.filter(member => member.attendingNextSession === 0);
+	const hasntRespondedMembers = MEMBERS.filter(member => member.attendingNextSession === -1);
 
 	// send invite to a friend
 	const sendInvite = async () => {
@@ -71,44 +105,9 @@ const MyGarden = () => {
 							</Pressable>
 						</View>
 					</Card>
-					<View>
-						<View>
-							<Text style={globalStyles.sectionTitleText}>Attending</Text>
-						</View>
-						<ScrollView style={[globalStyles.sectionBodyContainer, globalStyles.horizontalScroll]} horizontal={true}>
-							<PersonButton photo={LoginScreenImage} firstName='Me' onPress={sendInvite} />
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-						</ScrollView>
-					</View>
-					<View>
-						<View>
-							<Text style={globalStyles.sectionTitleText}>Not Attending</Text>
-						</View>
-						<Card color='grey'>
-							<View style={styles.cardHeader}>
-								<Text style={styles.cardTextMain}>Message Bob and Joe?</Text>
-								<Pressable style={styles.cardHeaderCancel}>
-									<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
-								</Pressable>
-							</View>
-						</Card>
-						<ScrollView style={[globalStyles.sectionBodyContainer, globalStyles.horizontalScroll]} horizontal={true}>
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-						</ScrollView>
-					</View>
-					<View>
-						<View>
-							<Text style={globalStyles.sectionTitleText}>Hasn't Responded</Text>
-						</View>
-						<ScrollView style={[globalStyles.sectionBodyContainer, globalStyles.horizontalScroll]} horizontal={true}>
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-							<PersonButton photo={LoginScreenImage} firstName='Me' />
-						</ScrollView>
-					</View>
+					<Attendance type='attending' members={attendingMembers} sendInvite={sendInvite} />
+					<Attendance type='notAttending' members={notAttendingMembers} sendInvite={sendInvite} />
+					<Attendance type='hasntResponded' members={hasntRespondedMembers} sendInvite={sendInvite} />
 				</View>
 			</ScrollView>
 		</>

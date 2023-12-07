@@ -2,6 +2,7 @@ import { Image, Pressable, StyleSheet, Text } from 'react-native';
 import { colors, fontSizes, spacing } from '../theme/theme';
 
 const PersonButton = ({ photo, firstName, onPress }) => {
+	console.log(photo);
 	return (
 		<Pressable style={styles.personButton} onPress={onPress}>
 			<Image source={photo} style={styles.personPhoto} />
