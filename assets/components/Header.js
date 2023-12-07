@@ -5,15 +5,17 @@ import globalStyles from '../styles/GlobalStyles';
 import { useUser } from '../contexts/UserContext';
 
 const Header = ({ navigation, route, safeArea }) => {
-	const { user } = useUser();
+	const { user, gardenDaysTimes } = useUser();
+
+	const formatGardenSchedule = (gardenDaysTimes) => {
+		return Object.entries(gardenDaysTimes || {}).map(([day, times]) => `${day}: ${times.join(', ')}`).join('; ');
+	};
 
 	// Extract garden details or provide default values
 	const gardenName = user?.garden?.name || 'My Garden';
 	const gardenAddress = user?.garden?.address || 'Address not set';
-	const gardenDays = user?.garden?.days || 'No days set';
-	const gardenTimes = user?.garden?.times || 'No times set';
 
-	let title = route.params?.title || '';
+	let title = route.name == 'my-garden' ? gardenName : route.params?.title || '';
 	let color = route.params?.color || colors.primary;
 	let hasBackButton = route.params?.hasBackButton || false;
 
@@ -28,13 +30,15 @@ const Header = ({ navigation, route, safeArea }) => {
 				</View>
 			)}
 			<View style={globalStyles.headerBody}>
-				<Text style={globalStyles.headerTitle}>{gardenName}</Text>
-				{gardenAddress && gardenDays && gardenTimes && (
-					<Text style={globalStyles.headerDescription}>
-						Meets at <Text style={globalStyles.fontBold}>{gardenAddress}</Text> at <Text style={globalStyles.fontBold}>{gardenTimes}</Text> on{' '}
-						<Text style={globalStyles.fontBold}>{gardenDays}</Text>
-					</Text>
-				)}
+				<Text style={globalStyles.headerTitle}>{title}</Text>
+				{gardenAddress && (route.name === 'my-garden') && (
+                    <Text style={globalStyles.headerDescription}>
+                        Meets at <Text style={globalStyles.fontBold}>{gardenAddress}</Text> 
+                        {gardenDaysTimes && (
+                          <Text> on <Text style={globalStyles.fontBold}>{formatGardenSchedule(gardenDaysTimes)}</Text></Text>
+                        )}
+                    </Text>
+                )}
 			</View>
 		</View>
 	);

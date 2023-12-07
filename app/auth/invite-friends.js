@@ -28,7 +28,6 @@ const InviteFriends = () => {
 
 				if (data.length > 0) {
 					setContacts(data);
-					// console.log(data[1].phoneNumbers[0].digits);
 				}
 			}
 		})();

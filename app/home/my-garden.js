@@ -12,13 +12,11 @@ import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
 import { useContext, useEffect, useState } from 'react';
 import { Tabs } from 'expo-router';
 import { useUser } from '../../assets/contexts/UserContext';
-import useGardenDetails from '../../assets/hooks/useGardenDetails';
 
 const MyGarden = () => {
-	const { user } = useUser();
+	const { user, fetchUserAndGardenDetails } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
-	const { gardenDetails, error } = useGardenDetails();
 
 	// send invite to a friend
 	const sendInvite = async () => {
@@ -33,11 +31,12 @@ const MyGarden = () => {
 		}
 	};
 
+	useEffect(() => {
+		console.log('user', user);
+	}, [user]);
+
 	// We directly use the garden information from the user context
 	const gardenName = user?.garden?.name || 'My Garden';
-	const gardenAddress = user?.garden?.address || 'Address not set';
-	const gardenDays = user?.garden?.days || 'Days not set';
-	const gardenTimes = user?.garden?.times || 'Times not set';
 
 	return (
 		<>

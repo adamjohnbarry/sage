@@ -41,7 +41,7 @@ const TabBar = ({ safeArea }) => {
                 onPress={() => router.replace({
                     pathname: '/home/my-garden',
                     params: {
-                        title: user.gardenName || 'My Garden', // Use user data
+                        title: user?.gardenName || 'My Garden', // Use user data
                     },
                 })}>
                 <MyGarden color={iconColor('/home/my-garden')} />

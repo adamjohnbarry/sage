@@ -23,35 +23,30 @@ const Login = () => {
 	// login to user account with given credentials
 	const login = async (e) => {
 		e.preventDefault();
-
 		setEmailError('');
 		setPasswordError('');
-
+	
 		const auth = getAuth();
-
-		signInWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				// Signed in
-				fetchUserAndGardenDetails(userCredential.user.uid)
-					.then(() => {
-						// Navigate to the 'My Garden' page after successful login and data fetch
-						router.replace({ pathname: '/home/my-garden' });
-					})
-					.catch((error) => {
-						console.error('Error fetching user and garden details:', error);
-					});
-			}).catch((err) => {
-				if (err.code === 'auth/invalid-email') {
-					setEmailError('Please enter a valid email.');
-				} else if (err.code === 'auth/missing-password') {
-					setPasswordError('Please fill in password field.');
-				} else if (err.code === 'auth/invalid-login-credentials') {
-					setPasswordError('Email or password is incorrect.');
-				} else {
-					console.log(`${err.code}: ${err.message}`);
-				}
-			});
+	
+		try {
+			const userCredential = await signInWithEmailAndPassword(auth, email, password);
+			// Signed in
+			await fetchUserAndGardenDetails(userCredential.user.uid);
+			// Navigate to the 'My Garden' page after successful login and data fetch
+			router.replace({ pathname: '/home/my-garden' });
+		} catch (err) {
+			if (err.code === 'auth/invalid-email') {
+				setEmailError('Please enter a valid email.');
+			} else if (err.code === 'auth/wrong-password') {
+				setPasswordError('Password is incorrect.'); // Use 'auth/wrong-password' for incorrect password
+			} else if (err.code === 'auth/user-not-found') {
+				setPasswordError('Email does not exist.'); // Use 'auth/user-not-found' for email not existing
+			} else {
+				console.log(`${err.code}: ${err.message}`);
+			}
+		}
 	};
+	
 
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
