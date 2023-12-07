@@ -14,7 +14,7 @@ import { MEMBERS } from '../../../assets/data/members';
 
 const GardenSettings = () => {
 	const router = useRouter();
-	const { garden, updateGardenDetails } = useUser();
+	const { garden, gardenDaysTimes, setGardenDaysTimes, updateGardenDetails } = useUser();
 	const { lang } = useContext(LangContext);
 
 	const [isChanged, setIsChanged] = useState(false);
@@ -22,6 +22,7 @@ const GardenSettings = () => {
 	const [inviteWord, setInviteWord] = useState(garden?.inviteWord);
 	const [gardenAddress, setGardenAddress] = useState(garden?.address);
 	const [members, setMembers] = useState(garden?.members ?? []);
+	const [meetingDays, setMeetingDays] = useState(gardenDaysTimes || {});
 
 	useEffect(() => {
 		setMembers(MEMBERS);
@@ -32,9 +33,10 @@ const GardenSettings = () => {
 		setIsChanged(
 			gardenName !== garden?.name ||
 			inviteWord !== garden?.inviteWord ||
-			gardenAddress !== garden?.address
+			gardenAddress !== garden?.address ||
+			JSON.stringify(meetingDays) !== JSON.stringify(gardenDaysTimes) // Compare stringified objects
 		);
-	}, [gardenName, inviteWord, gardenAddress]);
+	}, [gardenName, inviteWord, gardenAddress, meetingDays]);
 
 	const handleSave = () => {
 		if (isChanged) {
@@ -43,7 +45,10 @@ const GardenSettings = () => {
 				name: gardenName,
 				inviteWord: inviteWord,
 				address: gardenAddress,
+				meetingDays: meetingDays,
 			});
+
+			setGardenDaysTimes(meetingDays);
 		}
 		router.back();
 	};
@@ -103,6 +108,16 @@ const GardenSettings = () => {
 						/>
 					</View>
 				</View>
+				<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
+					<Text style={globalStyles.formLabel}>Meeting Days and Times</Text>
+					{/* Here, you should add the UI for updating meetingDays. This could be text inputs, dropdowns, etc. */}
+				</View>
+
+				{isChanged && (
+					<View style={globalStyles.buttonGroup}>
+						<Button text={lang.button.save} onPress={handleSave} color='black' />
+					</View>
+				)}
 				{isChanged && (
 					<View style={globalStyles.buttonGroup}>
 						<Button text={lang.button.save} onPress={handleSave} color='black' />
