@@ -11,6 +11,7 @@ const globalStyles = StyleSheet.create({
 	header: {
 		backgroundColor: colors.primary,
 		padding: spacing.lgSpacing,
+		paddingHorizontal: spacing.xlSpacing,
 		gap: spacing.xlSpacing,
 	},
 	headerNavigation: {
@@ -46,7 +47,7 @@ const globalStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
-		margin: spacing.lgSpacing,
+		margin: spacing.xlSpacing,
 	},
 	containerFlex: {
 		flex: 1,
@@ -54,7 +55,6 @@ const globalStyles = StyleSheet.create({
 	containerScroll: {
 		flex: 1,
 		flexGrow: 1,
-		marginBottom: spacing.xlSpacing,
 	},
 	containerWhite: {
 		backgroundColor: colors.white,
@@ -63,10 +63,10 @@ const globalStyles = StyleSheet.create({
 		gap: spacing.lgSpacing,
 	},
 	containerMargin: {
-		margin: spacing.lgSpacing,
+		margin: spacing.xlSpacing,
 	},
 	containerMarginHorizontal: {
-		marginHorizontal: spacing.lgSpacing,
+		marginHorizontal: spacing.xlSpacing,
 	},
 
 	// button
@@ -79,16 +79,16 @@ const globalStyles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between',
 		backgroundColor: colors.white,
-		marginTop: spacing.lgSpacing,
-		marginLeft: spacing.lgSpacing,
-		marginRight: spacing.lgSpacing,
+		marginTop: spacing.xlSpacing,
+		marginLeft: spacing.xlSpacing,
+		marginRight: spacing.xlSpacing,
 	},
 	formContainerScroll: {
 		flex: 1,
 		backgroundColor: colors.white,
-		marginTop: spacing.lgSpacing,
-		marginLeft: spacing.lgSpacing,
-		marginRight: spacing.lgSpacing,
+		marginTop: spacing.xlSpacing,
+		marginLeft: spacing.xlSpacing,
+		marginRight: spacing.xlSpacing,
 	},
 	form: {
 		flex: 1,

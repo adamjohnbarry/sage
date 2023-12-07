@@ -1,5 +1,8 @@
-import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { createContext, useState, useContext, useCallback, useEffect } from 'react';
+import { collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where, setDoc, addDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebaseConfig';
+
 
 const UserContext = createContext();
 
@@ -37,30 +40,115 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
+  const createUserAccount = useCallback(async (email, password) => {
+    console.log('ep: ', email, password)
+    if (!email || !password) {
+      console.error('Email or password is missing.');
+      return false;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const newUser = userCredential.user;
+
+      // Set initial user data in Firestore
+      const db = getFirestore();
+      await setDoc(doc(db, 'users', newUser.uid), {
+        email,
+        password, // Be cautious about storing plain passwords in Firestore
+        // other initial user data
+      });
+
+      setUser((currentUser) => ({
+        ...currentUser,
+        uid: newUser.uid,
+        email,
+        password,
+      }));
+
+      return true;
+    } catch (error) {
+      console.error('Error creating user account:', error);
+      return false;
+    }
+  }, []);
+
+
+  const joinGarden = useCallback(async (inviteWord) => {
+    if (!inviteWord) {
+      console.error('Invite word is missing.');
+      return false;
+    }
+
+    const db = getFirestore();
+    const gardenRef = collection(db, 'gardens');
+    const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
+    const gardens = await getDocs(containsGarden);
+
+    let garden;
+    gardens.forEach((gardenObj) => {
+      garden = { ...gardenObj.data(), id: gardenObj.id };
+    });
+
+    if (!garden) {
+      console.error('Garden not found.');
+      return false;
+    }
+
+    // Update user's gardenId and garden data
+    const userRef = doc(db, 'users', user.uid);
+    await updateDoc(userRef, { gardenId: garden.id });
+    setGarden(garden);
+
+    return true;
+  }, [user, setGarden]);
+
+
   const submitRegistration = useCallback(async () => {
     if (!user || !garden) {
       console.error('User or Garden data is incomplete.');
       return false;
     }
-  
+
     const db = getFirestore();
     try {
       // Update user in the database
       const userRef = doc(db, 'users', user.uid);
       await updateDoc(userRef, user);
-  
+
       // Add garden to the database
       const gardenRef = await addDoc(collection(db, 'gardens'), garden);
-      
+
       // Update user's gardenId
       await updateDoc(userRef, { gardenId: gardenRef.id });
-  
+
       return true;
     } catch (error) {
       console.error('Error submitting registration:', error);
       return false;
     }
   }, [user, garden]);
+
+
+  const updateUserPhoto = useCallback(async (photoUrl) => {
+    if (!user) {
+      console.error('No user to update.');
+      return;
+    }
+
+    const updatedUserData = { ...user, photo: photoUrl };
+    setUser(updatedUserData);
+
+    const db = getFirestore();
+    const userRef = doc(db, 'users', user.uid);
+
+    try {
+      await updateDoc(userRef, { photo: photoUrl });
+    } catch (error) {
+      console.error('Error updating user photo:', error);
+    }
+  }, [user]);
+
 
   const updateUserDetails = useCallback(async (newUserData) => {
     if (!user) {
@@ -103,15 +191,15 @@ export const UserProvider = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    console.log('UserContext user state updated: ', user);
+    console.log('USER UPDATED: ', user);
   }, [user]);
 
   useEffect(() => {
-    console.log('UserContext garden days times state updated: ', gardenDaysTimes);
+    console.log('DAYSTIMES UPDATED: ', gardenDaysTimes);
   }, [gardenDaysTimes]);
 
   useEffect(() => {
-    console.log('UserContext garden: ', garden);
+    console.log('GARDEN UPDATED: ', garden);
   }, [garden]);
 
 
@@ -126,7 +214,10 @@ export const UserProvider = ({ children }) => {
       updateGardenDetails,
       submitRegistration,
       gardenDaysTimes,
-      setGardenDaysTimes
+      setGardenDaysTimes,
+      createUserAccount,
+      joinGarden,
+      updateUserPhoto,
     }}>
       {children}
     </UserContext.Provider>

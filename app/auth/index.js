@@ -4,14 +4,13 @@ import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import validator from 'validator';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebaseConfig';
-import { setDoc, doc, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'expo-router';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const Register = () => {
 	const router = useRouter();
+	const { user, setUser, createUserAccount } = useUser();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
@@ -65,34 +64,36 @@ const Register = () => {
 		setConfirmPassword(text);
 	};
 
+
 	// create account with given user credentials
 	const createAccount = async (e) => {
 		e.preventDefault();
 
 		if (emailError || passwordError || confirmPasswordError) {
 			console.log(lang.error.userRegistration);
+			return;
 		} else {
-			const db = getFirestore();
-
-			await createUserWithEmailAndPassword(auth, email, password)
-				.then(async (userCredential) => {
-					// signed in
-					const user = userCredential.user;
-
-					try {
-						await setDoc(doc(db, 'users', user.uid), {});
-					} catch (err) {
-						console.log(`${err.code}: ${err.message}`);
-					}
-
-					router.push({
-						pathname: '/auth/upload-name',
-						params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
-					});
-				})
-				.catch((err) => {
-					console.log(`${err.code}: ${err.message}`);
+			console.log(email, password)
+			setUser((currentUser) => ({
+				...currentUser,
+				email,
+				password,
+			}));
+			console.log('user below ...');
+			console.log({
+				...user,
+				email,
+				password,
+			})
+			const success = await createUserAccount(email, password);
+			if (success) {
+				router.push({
+					pathname: '/auth/upload-name',
+					params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
 				});
+			} else {
+				console.log(lang.error.userRegistration);
+			}
 		}
 	};
 

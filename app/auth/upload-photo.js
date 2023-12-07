@@ -7,13 +7,14 @@ import FormButton from '../../assets/components/FormButton';
 import * as ImagePicker from 'expo-image-picker';
 import FormPhoto from '../../assets/components/FormPhoto';
 import { getAuth } from 'firebase/auth';
+import { useUser } from '../../assets/contexts/UserContext';
 
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
-import { doc, getFirestore, updateDoc } from 'firebase/firestore';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const UploadPhoto = () => {
 	const router = useRouter();
+	const { updateUserPhoto } = useUser();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
@@ -43,7 +44,6 @@ const UploadPhoto = () => {
 		const auth = getAuth();
 		const storage = getStorage();
 
-		// upload image to firestore
 		try {
 			const response = await fetch(uri);
 			const blob = await response.blob();
@@ -53,39 +53,13 @@ const UploadPhoto = () => {
 			const uploadedPhoto = await uploadBytes(storageRef, blob);
 			const downloadedPhoto = await getDownloadURL(storageRef);
 
-			setPhoto(downloadedPhoto);
-
-			setPhotoUploaded(true);
+			if (downloadedPhoto) {
+				setPhoto(downloadedPhoto);
+				setPhotoUploaded(true);
+				updateUserPhoto(downloadedPhoto); // Update photo in user context and database
+			}
 		} catch (err) {
 			console.log(lang.error.photoUploadError);
-		}
-	};
-
-	// update account with photo url
-	const updatePhotoURL = async (e) => {
-		e.preventDefault();
-
-		if (!photo || !photoUploaded) {
-			console.log(lang.error.photoUploadError);
-		} else {
-			const auth = getAuth();
-			const db = getFirestore();
-
-			const userRef = doc(db, 'users', auth.currentUser.uid);
-
-			// update the user's photo
-			try {
-				await updateDoc(userRef, {
-					photo,
-				});
-
-				router.push({
-					pathname: '/auth/join-group',
-					params: { index: 2, title: lang.auth.joinGroup.title, description: lang.auth.joinGroup.description },
-				});
-			} catch (err) {
-				console.log(`${err.code}: ${err.message}`);
-			}
 		}
 	};
 
@@ -112,7 +86,12 @@ const UploadPhoto = () => {
 							})
 						}
 					/>
-					<Button text={lang.button.finish} onPress={updatePhotoURL} />
+					<Button text={lang.button.finish} onPress={() =>
+						router.push({
+							pathname: '/auth/join-group',
+							params: { index: 2, title: lang.auth.joinGroup.title, description: lang.auth.joinGroup.description },
+						})
+					} />
 				</View>
 			</View>
 		</View>

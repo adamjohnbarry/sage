@@ -24,10 +24,12 @@ const Congratulations = () => {
 		submitData = async () => {
 			try {
 				const success = await submitRegistration();
-				if (confettiRef.current && success) {
-					confettiRef.current.startConfetti();
+				if (success) {
+					if (confettiRef.current) {
+						confettiRef.current.startConfetti();
+					}
 				} else {
-					setError('There was an error create your garden. Please try again.');
+					setError('There was an error in registering. Please try again.');
 				}
 			} catch (e) {
 				console.error(e);
@@ -38,6 +40,20 @@ const Congratulations = () => {
 		};
 		submitData();
 	}, []);
+
+	const renderGardenDaysTimes = () => {
+		const entries = Object.entries(gardenDaysTimes);
+
+		return entries.map(([day, times], index) => {
+			const timesStr = times.join(', ');
+			console.log('DT: ', day, timesStr)
+			return (
+				<Text key={index} style={styles.congratulationsGardenTime}>
+					{day} @ {timesStr}
+				</Text>
+			);
+		});
+	};
 
 	if (isLoading) {
 		return (
@@ -74,14 +90,9 @@ const Congratulations = () => {
 				<View style={styles.congratulations}>
 					<View>
 						<Text style={styles.congratulationsGardenName}>{garden?.name}</Text>
-						{gardenDaysTimes && gardenDaysTimes.length && gardenDaysTimes?.map((gardenDayTime, index) => {
-							const { days, times } = gardenDayTime;
-							return (
-								<Text key={index} style={styles.congratulationsGardenTime}>
-									{days} @ {times}
-								</Text>
-							);
-						})}
+						{gardenDaysTimes && gardenDaysTimes.length && (
+							renderGardenDaysTimes()
+						)}
 					</View>
 					<View>
 						<Text style={styles.congratulationsCongrats}>{lang.createGroup.congratulations.title}</Text>

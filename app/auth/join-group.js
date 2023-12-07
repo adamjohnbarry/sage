@@ -6,10 +6,11 @@ import globalStyles from '../../assets/styles/GlobalStyles';
 import { Link, useRouter } from 'expo-router';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const JoinGroup = () => {
 	const router = useRouter();
+	const {  joinGarden } = useUser();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
@@ -30,42 +31,15 @@ const JoinGroup = () => {
 
 	// handle joining a group if join button is selected
 	const joinGroup = async () => {
-		const auth = getAuth();
-		const db = getFirestore();
-
-		const gardenRef = collection(db, 'gardens');
-
-		const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
-		const gardens = await getDocs(containsGarden);
-
-		let garden;
-
-		// retreive garden that matches invite word
-		gardens.forEach((gardenObj) => {
-			garden = gardenObj.data();
-			garden.id = gardenObj.id;
-		});
-
 		if (inviteWord.length == 0) {
-			setInviteWordError(lang.error.inviteWordLengthError);
-		} else if (!garden) {
-			setInviteWordError(lang.error.inviteWordDoesntExistError);
-		} else {
-			const userRef = doc(db, 'users', auth.currentUser.uid);
-			const user = await getDoc(userRef);
-			const gardenRef = doc(db, 'gardens', garden.id);
+			setInviteWordError(lang.error.inviteWordEmpty);
+		}
 
-			// update the user's garden id to be this garden
-			await updateDoc(userRef, {
-				gardenId: garden.id,
-			});
-
-			// update garden to add user as new member
-			await updateDoc(gardenRef, {
-				members: [user.id],
-			});
-
+		const success = await joinGarden(inviteWord);
+		if (success) {
 			router.replace('/home/my-garden');
+	 	} else {
+			setInviteWordError(lang.error.inviteWordDoesntExistError);
 		}
 	};
 

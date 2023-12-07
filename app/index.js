@@ -30,7 +30,7 @@ const Root = () => {
 							color='green'
 							onPress={() =>
 								router.push({
-									pathname: '/auth/congratulations',
+									pathname: '/auth',
 									params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
 								})
 							}
