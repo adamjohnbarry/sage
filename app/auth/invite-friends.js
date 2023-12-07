@@ -44,6 +44,11 @@ const InviteFriends = () => {
 		setFilteredContacts(filteredContacts);
 	};
 
+	// handle inviting friends
+	const inviteFriends = () => {
+		router.push('/auth/congratulations');
+	};
+
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
 			<View style={globalStyles.formContainer}>
@@ -63,7 +68,7 @@ const InviteFriends = () => {
 				</View>
 				<View style={globalStyles.buttonGroup}>
 					<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
-					<Button text={lang.button.finish} />
+					<Button text={lang.button.finish} onPress={inviteFriends} />
 				</View>
 			</View>
 		</View>

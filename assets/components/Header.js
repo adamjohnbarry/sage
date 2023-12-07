@@ -5,7 +5,7 @@ import globalStyles from '../styles/GlobalStyles';
 import { useUser } from '../contexts/UserContext';
 
 const Header = ({ navigation, route, safeArea }) => {
-	const { user, gardenDaysTimes } = useUser();
+	const { user, garden, gardenDaysTimes } = useUser();
 
 	const formatGardenSchedule = (gardenDaysTimes) => {
 		return Object.entries(gardenDaysTimes || {})
@@ -14,8 +14,8 @@ const Header = ({ navigation, route, safeArea }) => {
 	};
 
 	// Extract garden details or provide default values
-	const gardenName = user?.garden?.name || 'My Garden';
-	const gardenAddress = user?.garden?.address || 'Address not set';
+	const gardenName = garden?.name || 'My Garden';
+	const gardenAddress = garden?.address || 'Address not set';
 
 	let title = route.name == 'my-garden' ? gardenName : route.params?.title || '';
 	let color = route.params?.color || colors.primary;

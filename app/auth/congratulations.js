@@ -5,48 +5,32 @@ import { Stack, useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
-
+import { useUser } from '../../assets/contexts/UserContext';
 import ConfettiCannon from 'react-native-confetti-cannon';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 
 const Congratulations = () => {
 	const router = useRouter();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
+	const { user, fetchUserAndGardenDetails } = useUser();
 
-	const [gardenName, setGardenName] = useState('');
-	const [gardenAddress, setGardenAddress] = useState('');
-	const [gardenDays, setGardenDays] = useState('');
-	const [gardenTimes, setGardenTimes] = useState('');
-
-	// as soon as we get to congratulations page update the garden name and day / time
-	useEffect(() => {
+	// as soon as we get to congratulations page log the user in
+	const login = async (e) => {
 		const auth = getAuth();
 		const db = getFirestore();
 
-		const userRef = doc(db, 'users', auth.currentUser.uid);
+		try {
+			await fetchUserAndGardenDetails(auth.currentUser.uid);
+			// Navigate to the 'My Garden' page after successful login and data fetch
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
-		const getGardenDetails = async () => {
-			const user = await getDoc(userRef);
-
-			const gardenRef = doc(db, 'gardens', user.data().gardenId);
-			const garden = await getDoc(gardenRef);
-
-			return garden;
-		};
-
-		// update the congratulations page to reflect garden's details
-		getGardenDetails()
-			.then((garden) => {
-				setGardenName(garden.data().name);
-				setGardenAddress(garden.data().address);
-				setGardenDays('Mondays & Thursdays');
-				setGardenTimes('3.30pm');
-			})
-			.catch((err) => {
-				console.log(`${err.code}: ${err.message}`);
-			});
+	useEffect(() => {
+		login();
 	}, []);
 
 	return (
@@ -58,8 +42,8 @@ const Congratulations = () => {
 				<ConfettiCannon count={600} origin={{ x: 0, y: 0 }} explosionSpeed={400} fallSpeed={4000} />
 				<View style={styles.congratulations}>
 					<View>
-						<Text style={styles.congratulationsGardenName}>{gardenName}</Text>
-						{/* <Text style={styles.congratulationsGardenTime}>
+						<Text style={styles.congratulationsGardenName}>{user?.garden?.name}</Text>
+						{/* {/* <Text style={styles.congratulationsGardenTime}>
 							{gardenDays} @ {gardenTimes}
 						</Text> */}
 					</View>
@@ -68,15 +52,7 @@ const Congratulations = () => {
 					</View>
 				</View>
 				<View style={globalStyles.buttonGroup}>
-					<Button
-						text={lang.button.home}
-						onPress={() =>
-							router.replace({
-								pathname: '/home/my-garden',
-								params: { title: gardenName, address: gardenAddress, days: gardenDays, times: gardenTimes },
-							})
-						}
-					/>
+					<Button text={lang.button.home} onPress={() => router.replace({ pathname: '/home/my-garden' })} />
 				</View>
 			</View>
 		</>

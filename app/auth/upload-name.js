@@ -4,12 +4,12 @@ import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { getAuth } from 'firebase/auth';
-import { doc, updateDoc, getFirestore } from 'firebase/firestore';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const UploadName = () => {
 	const router = useRouter();
+	const { user, setUser } = useUser();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
@@ -31,28 +31,11 @@ const UploadName = () => {
 	// update account with name
 	const updateDisplayName = async (e) => {
 		e.preventDefault();
-
-		if (nameError) {
-			console.log(lang.error.nameUploadError);
-		} else {
-			const auth = getAuth();
-			const db = getFirestore();
-
-			const userRef = doc(db, 'users', auth.currentUser.uid);
-
-			try {
-				await updateDoc(userRef, {
-					name,
-				});
-
-				router.push({
-					pathname: '/auth/upload-number',
-					params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
-				});
-			} catch (err) {
-				console.log(`${err.code}: ${err.message}`);
-			}
-		}
+		setUser({ ...user, name });
+		router.push({
+			pathname: '/auth/upload-number',
+			params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
+		});
 	};
 
 	return (
