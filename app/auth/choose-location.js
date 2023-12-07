@@ -1,6 +1,6 @@
 import { ScrollView, Text, View } from 'react-native';
 import FormInputText from '../../assets/components/FormInputText';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
@@ -18,26 +18,26 @@ const ChooseLocation = () => {
 	const gardens = lang.createGroup.chooseLocation.gardens;
 
 	const [privateAddress, setPrivateAddress] = useState('');
-	const [localAddress, setLocalAddress] = useState('');
 	const [localGardens, setLocalGardens] = useState(gardens);
-	const [selected, setSelected] = useState(false);
+	const [activeGardenItem, setActiveGardenItem] = useState();
 
-	function handleCardPress(garden) {
-		setLocalAddress(garden.name);
-	}
+	// handle garden item change
+	const handleGardenItemChange = (address) => {
+		setActiveGardenItem(activeGardenItem === address ? null : address);
+	};
 
-	const filterLocalGardens = (text) => {
-		setLocalAddress(text);
-
-		// const filteredGardens = gardens.filter((garden) => garden.name.toLowerCase().match(localAddress.toLowerCase()));
-
-		// setLocalGardens(filteredGardens);
+	// check if the garden item is active
+	const isGardenItemActive = (address) => {
+		return activeGardenItem === address;
 	};
 
 	// save garden location
-	const saveGardenLocation = async () => {
-		const address = localAddress || privateAddress; // use localAddress if it's selected, else use privateAddress
+	const saveGardenLocation = () => {
+		// use localAddress if it's selected, else use privateAddress
+		const address = activeGardenItem || privateAddress;
+
 		setGarden({ ...garden, address });
+
 		router.push({
 			pathname: '/auth/pick-day-and-time',
 			params: { index: 6, title: lang.createGroup.pickDayAndTime.title, description: lang.createGroup.pickDayAndTime.description },
@@ -56,7 +56,7 @@ const ChooseLocation = () => {
 					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
 						<Text style={globalStyles.formLabel}>{lang.form.localGarden.label}</Text>
 						{localGardens.map((garden, i) => (
-							<GardenItem key={i} {...garden} selected={selected} onSelect={() => handleCardPress(garden)} />
+							<GardenItem key={i} {...garden} onPress={() => handleGardenItemChange(garden.address)} active={isGardenItemActive(garden.address)} />
 						))}
 					</View>
 				</ScrollView>

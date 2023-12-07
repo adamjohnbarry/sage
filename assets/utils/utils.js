@@ -53,21 +53,21 @@ const langEN = {
 			description: 'Select a gardening location for your group. Allow Sage to access your location so we can find some gardens in your area.',
 			gardens: [
 				{
-					name: '45 University Ave, PA',
+					address: '45 University Ave, PA',
 					image:
 						'https://hips.hearstapps.com/hmg-prod/images/claude-monets-house-and-gardens-in-giverny-france-news-photo-1042013294-1562610151.jpg?crop=1.00xw:0.753xh;0,0.0671xh&resize=1200:*',
 					distance: 5,
 					driveTime: 12,
 				},
 				{
-					name: '23 Stanford Way, CA',
+					address: '23 Stanford Way, CA',
 					image:
 						'https://www.thespruce.com/thmb/IHY_gzo-3Y5terRR2mdPQf0gnSY=/4711x0/filters:no_upscale():max_bytes(150000):strip_icc()/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg',
 					distance: 1,
 					driveTime: 3,
 				},
 				{
-					name: '42 Mulholland Dr, UT',
+					address: '42 Mulholland Dr, UT',
 					image:
 						'https://www.bhg.com/thmb/SdH3liapyw5vZZf-LKe_MmgvYuA=/4000x0/filters:no_upscale():strip_icc()/BHG-What-Is-a-Permaculture-Garden-3AWGe3jUq5hAt8vbh3yisf-f3d0c14454b44bf5b319234918574b9e.jpg',
 					distance: 3,

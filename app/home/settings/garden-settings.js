@@ -42,10 +42,12 @@ const GardenSettings = () => {
 			.then((garden) => {
 				const gardenObj = garden.data();
 
+				console.log(gardenObj);
+
 				setGardenName(gardenObj.name);
 				setInviteWord(gardenObj.inviteWord);
-				setGardenAddress(gardenObj.gardenAddress);
-				setMembers(gardenObj.members);
+				// setGardenAddress(gardenObj.address);
+				setGardenAddress('45 University Ave, PA');
 			})
 			.catch((err) => {
 				console.log(`${err.code}: ${err.message}`);

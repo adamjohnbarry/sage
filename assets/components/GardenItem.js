@@ -1,20 +1,12 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, fontSizes, spacing } from '../theme/theme';
-import { useState } from 'react';
 
-const GardenItem = ({ name, image, distance, driveTime, onSelect }) => {
-	const [pressed, setPressed] = useState(false);
-
-	const handlePress = () => {
-		setPressed(prevState => !prevState);
-		onSelect && onSelect(); // Call the onSelect prop function
-	};
-
+const GardenItem = ({ address, image, distance, driveTime, onPress, active }) => {
 	return (
-		<Pressable style={[styles.gardenItem, pressed && styles.gardenItemPressed]} onPress={handlePress}>
+		<Pressable onPress={onPress} style={[styles.gardenItem, , active && styles.gardenItemPressed]}>
 			<Image source={{ uri: image }} style={styles.gardenItemImage} />
 			<View style={styles.gardenItemInfo}>
-				<Text style={styles.gardenItemInfoName}>{name}</Text>
+				<Text style={styles.gardenItemInfoName}>{address}</Text>
 				<Text style={styles.gardenItemInfoDescription}>
 					{distance} miles away · {driveTime} min drive
 				</Text>
