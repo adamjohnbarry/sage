@@ -31,7 +31,7 @@ const Root = () => {
 							color='green'
 							onPress={() =>
 								router.push({
-									pathname: '/auth',
+									pathname: '/auth/upload-photo',
 									params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
 								})
 							}

@@ -26,7 +26,7 @@ const Register = () => {
 	// error handling and email field updating on text change
 	const emailFieldChangeText = (text) => {
 		if (!validator.isEmail(text)) {
-			setEmailError('Please enter a properly formatted email.');
+			setEmailError(lang.error.emailFormat);
 		} else {
 			setEmailError('');
 		}
@@ -46,7 +46,7 @@ const Register = () => {
 				returnScore: false,
 			})
 		) {
-			setPasswordError('Password must be at least 8 characters long.');
+			setPasswordError(lang.error.passwordLength);
 		} else {
 			setPasswordError('');
 		}
@@ -57,7 +57,7 @@ const Register = () => {
 	// error handling and cofirm password field updating on text change
 	const confirmPasswordFieldChangeText = (text) => {
 		if (text !== password) {
-			setConfirmPasswordError('Passwords do not match.');
+			setConfirmPasswordError(lang.error.passwordMatching);
 		} else {
 			setConfirmPasswordError('');
 		}
@@ -70,12 +70,8 @@ const Register = () => {
 		e.preventDefault();
 
 		if (emailError || passwordError || confirmPasswordError) {
-			console.log('Could not register user.');
-		}
-		// else if (email already exists) {
-		// setEmailError('Email already exists');
-		// }
-		else {
+			console.log(lang.error.userRegistration);
+		} else {
 			const db = getFirestore();
 
 			await createUserWithEmailAndPassword(auth, email, password)

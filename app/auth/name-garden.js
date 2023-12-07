@@ -26,7 +26,7 @@ const NameGarden = () => {
 		try {
 			await addDoc(collection(db, 'gardens'), {
 				name: gardenName,
-				inviteWord,
+				inviteWord: inviteWord.toLowerCase(),
 				members: [
 					{
 						name: user.data().name,

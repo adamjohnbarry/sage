@@ -20,7 +20,7 @@ const UploadName = () => {
 	// error handling and name field updating on text change
 	const nameFieldChangeText = (text) => {
 		if (text.length == 0) {
-			setNameError('Name cannot be empty.');
+			setNameError(lang.error.nameEmpty);
 		} else {
 			setNameError('');
 		}
@@ -33,7 +33,7 @@ const UploadName = () => {
 		e.preventDefault();
 
 		if (nameError) {
-			console.log("Could not update user's name.");
+			console.log(lang.error.nameUploadError);
 		} else {
 			const auth = getAuth();
 			const db = getFirestore();

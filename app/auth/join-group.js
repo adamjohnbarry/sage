@@ -5,6 +5,7 @@ import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { Link, useRouter } from 'expo-router';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
 
 const JoinGroup = () => {
 	const router = useRouter();
@@ -13,13 +14,50 @@ const JoinGroup = () => {
 
 	const [inviteWord, setInviteWord] = useState('');
 
+	const [inviteWordError, setInviteWordError] = useState('');
+
+	// error handling and invite word field updating on text change
+	const inviteWordFieldChangeText = (text) => {
+		if (text.length == 0) {
+			setInviteWordError(lang.error.nameEmpty);
+		} else {
+			setInviteWordError('');
+		}
+
+		setInviteWord(text);
+	};
+
+	// handle joining a group if join button is selected
+	const joinGroup = async () => {
+		const db = getFirestore();
+
+		const gardenRef = collection(db, 'gardens');
+		const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
+
+		const gardens = await getDocs(containsGarden);
+
+		console.log('hi', gardens.length);
+
+		if (inviteWord.length == 0) {
+			setInviteWordError(lang.error.inviteWordLengthError);
+			// } else if () {
+			// 	setInviteWordError(lang.error.inviteWordExistsError);
+		} else {
+			router.replace({
+				pathname: '/home/my-garden',
+				params: { title: lang.myGarden.myGarden.title, description: lang.myGarden.myGarden.description },
+			});
+		}
+	};
+
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
 			<View style={globalStyles.formContainer}>
 				<View style={globalStyles.form}>
 					<View style={globalStyles.formGroup}>
 						<Text style={globalStyles.formLabel}>{lang.form.inviteWord.label}</Text>
-						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={(text) => setInviteWord(text)} />
+						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={inviteWordFieldChangeText} />
+						{inviteWordError && <Text style={globalStyles.formError}>{inviteWordError}</Text>}
 						<View style={globalStyles.formHelpContainer}>
 							<Link href='/auth/how-do-i-get-an-invite-word' style={globalStyles.formHelp}>
 								{lang.form.inviteWord.help}
@@ -41,15 +79,8 @@ const JoinGroup = () => {
 					<Button
 						text={lang.button.join}
 						color={inviteWord.length > 0 ? 'black' : 'grey'}
-						onPress={
-							inviteWord.length > 0
-								? () =>
-										router.replace({
-											pathname: '/home/my-garden',
-											params: { title: lang.myGarden.myGarden.title, description: lang.myGarden.myGarden.description },
-										})
-								: null
-						}
+						disabled={inviteWord.length == 0 ? true : false}
+						onPress={joinGroup}
 					/>
 				</View>
 			</View>

@@ -20,7 +20,7 @@ const UploadNumber = () => {
 	// error handling and phone number field updating on number change
 	const phoneNumberChangeNumber = (number) => {
 		if (!validator.isMobilePhone(number)) {
-			setPhoneNumberError('Please enter a valid phone number.');
+			setPhoneNumberError(lang.error.validPhoneNumber);
 		} else {
 			setPhoneNumberError('');
 		}
@@ -33,7 +33,7 @@ const UploadNumber = () => {
 		e.preventDefault();
 
 		if (phoneNumberError) {
-			console.log("Could not update user's number.");
+			console.log(lang.error.phoneNumberUploadError);
 		} else {
 			const auth = getAuth();
 			const db = getFirestore();

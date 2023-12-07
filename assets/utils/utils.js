@@ -8,6 +8,7 @@ const langEN = {
 		register: {
 			title: 'Create Account',
 			description: 'Before we get to gardening, we need some basic information about you!',
+			photoUploadSuccessful: 'Image successfully uploaded',
 		},
 		login: {
 			title: 'Log In',
@@ -188,6 +189,19 @@ const langEN = {
 		yes: 'Yes',
 		save: 'Save',
 		deleteAccount: 'Delete Account',
+	},
+	error: {
+		emailFormat: 'Please enter a properly formatted email.',
+		passwordLength: 'Password must be at least 8 characters long.',
+		passwordMatching: 'Passwords do not match.',
+		userRegistration: 'Could not register user.',
+		nameEmpty: 'Name cannot be empty.',
+		nameUploadError: "Could not update user's name.",
+		validPhoneNumber: 'Please enter a valid phone number.',
+		phoneNumberUploadError: "Could not update user's number.",
+		photoUploadError: "Could not update user's photo.",
+		inviteWordLengthError: 'Invite word cannot be empty.',
+		inviteWordExists: 'Invite word does not exist.',
 	},
 };
 
