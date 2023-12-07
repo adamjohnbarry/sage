@@ -46,6 +46,7 @@ const InviteFriends = () => {
 
 	// handle inviting friends
 	const inviteFriends = () => {
+		// TODO: implement invite functionality
 		router.push('/auth/congratulations');
 	};
 

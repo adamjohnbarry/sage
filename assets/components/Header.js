@@ -5,13 +5,12 @@ import globalStyles from '../styles/GlobalStyles';
 import { useUser } from '../contexts/UserContext';
 
 const Header = ({ navigation, route, safeArea }) => {
-	const { user, garden, gardenDaysTimes } = useUser();
+	const { garden, gardenDaysTimes } = useUser();
 
 	const formatGardenSchedule = (gardenDaysTimes) => {
-		// return Object.entries(gardenDaysTimes || {})
-		// 	.map(([day, times]) => `${day}: ${times.join(', ')}`)
-		// 	.join('; ');
-		return 'Mondays from 3-4pm';
+		return Object.entries(gardenDaysTimes || {})
+			.map(([day, times]) => `${day}: ${times.join(', ')}`)
+			.join('; ');
 	};
 
 	// Extract garden details or provide default values

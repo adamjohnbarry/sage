@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { colors, fontSizes } from '../theme/theme';
 
 const Button = ({ onPress, text, disabled, color = 'black' }) => {
@@ -29,9 +29,9 @@ const Button = ({ onPress, text, disabled, color = 'black' }) => {
 	}
 
 	return (
-		<Pressable onPress={onPress} disabled={disabled} style={[styles.button, buttonStyle]}>
+		<TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.button, buttonStyle]}>
 			<Text style={[styles.buttonText, buttonTextStyle]}>{text}</Text>
-		</Pressable>
+		</TouchableOpacity>
 	);
 };
 

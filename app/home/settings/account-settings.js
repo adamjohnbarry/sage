@@ -4,39 +4,31 @@ import { useContext, useEffect, useState } from 'react';
 import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
 import FormInputText from '../../../assets/components/FormInputText';
 import Button from '../../../assets/components/Button';
-import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { useRouter } from 'expo-router';
+import { useUser } from '../../../assets/contexts/UserContext';
 
 const AccountSettings = () => {
+	const router = useRouter();
+	const { user, updateUserDetails } = useUser();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
-	const [name, setName] = useState('Brendan McLaughlin');
+	const [name, setName] = useState(user?.name);
+	const [isChanged, setIsChanged] = useState(false);
 
-	// pre populate the account settings fields
 	useEffect(() => {
-		const auth = getAuth();
-		const db = getFirestore();
+		setIsChanged(name !== user?.name);
+	}, [name, user]);
 
-		const userRef = doc(db, 'users', auth.currentUser.uid);
-
-		const getUserDetails = async () => {
-			const user = await getDoc(userRef);
-
-			return user;
-		};
-
-		getUserDetails()
-			.then((user) => {
-				setName(user.data().name);
-			})
-			.catch((err) => {
-				console.log(`${err.code}: ${err.message}`);
+	const handleSave = async () => {
+		if (isChanged) {
+			await updateUserDetails({
+				...user,
+				name: name,
 			});
-	}, []);
-
-	// handle saving account details
-	const saveAccountDetails = () => {};
+		}
+		router.back();
+	}
 
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { paddingBottom: safeArea.paddingBottom }]}>
@@ -48,7 +40,7 @@ const AccountSettings = () => {
 					</View>
 				</View>
 				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.save} color='green' onPress={saveAccountDetails} />
+					<Button text={lang.button.save} color='black' onPress={handleSave} />
 				</View>
 			</View>
 		</View>

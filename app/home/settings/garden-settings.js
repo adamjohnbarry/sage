@@ -1,62 +1,57 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import * as SMS from 'expo-sms';
 import globalStyles from '../../../assets/styles/GlobalStyles';
 import { useContext, useEffect, useState } from 'react';
-import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
+import { LangContext } from '../../../assets/contexts/Contexts';
 import FormInputText from '../../../assets/components/FormInputText';
 import Button from '../../../assets/components/Button';
-import { getAuth } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import FormButton from '../../../assets/components/FormButton';
 import { useRouter } from 'expo-router';
-import { colors } from '../../../assets/theme/theme';
+import { colors, spacing, fontSizes } from '../../../assets/theme/theme';
 import InviteMember from '../../../assets/components/InviteMember';
+import { useUser } from '../../../assets/contexts/UserContext';
+import { MEMBERS } from '../../../assets/data/members';
 
 const GardenSettings = () => {
 	const router = useRouter();
-	const { safeArea } = useContext(SafeAreaContext);
+	const { garden, gardenDaysTimes, setGardenDaysTimes, updateGardenDetails } = useUser();
 	const { lang } = useContext(LangContext);
 
-	const [gardenName, setGardenName] = useState('');
-	const [inviteWord, setInviteWord] = useState('');
-	const [gardenAddress, setGardenAddress] = useState('');
-	const [members, setMembers] = useState([]);
+	const [isChanged, setIsChanged] = useState(false);
+	const [gardenName, setGardenName] = useState(garden?.name);
+	const [inviteWord, setInviteWord] = useState(garden?.inviteWord);
+	const [gardenAddress, setGardenAddress] = useState(garden?.address);
+	const [members, setMembers] = useState(garden?.members ?? []);
+	const [meetingDays, setMeetingDays] = useState(gardenDaysTimes || {});
 
-	// pre populate the garden settings fields
 	useEffect(() => {
-		const auth = getAuth();
-		const db = getFirestore();
-
-		const userRef = doc(db, 'users', auth.currentUser.uid);
-
-		const getGardenDetails = async () => {
-			const user = await getDoc(userRef);
-
-			const gardenRef = doc(db, 'gardens', user.data().gardenId);
-			const garden = await getDoc(gardenRef);
-
-			return garden;
-		};
-
-		getGardenDetails()
-			.then((garden) => {
-				const gardenObj = garden.data();
-
-				console.log(gardenObj);
-
-				setGardenName(gardenObj.name);
-				setInviteWord(gardenObj.inviteWord);
-				// setGardenAddress(gardenObj.address);
-				setGardenAddress('45 University Ave, PA');
-				setMembers([{
-					name: 'Me',
-					photo: require('../../../assets/images/nathan.webp'),
-				}]);
-			})
-			.catch((err) => {
-				console.log(`${err.code}: ${err.message}`);
-			});
+		setMembers(MEMBERS);
 	}, []);
+
+
+	useEffect(() => {
+		setIsChanged(
+			gardenName !== garden?.name ||
+			inviteWord !== garden?.inviteWord ||
+			gardenAddress !== garden?.address ||
+			JSON.stringify(meetingDays) !== JSON.stringify(gardenDaysTimes) // Compare stringified objects
+		);
+	}, [gardenName, inviteWord, gardenAddress, meetingDays]);
+
+	const handleSave = () => {
+		if (isChanged) {
+			updateGardenDetails({
+				...garden,
+				name: gardenName,
+				inviteWord: inviteWord,
+				address: gardenAddress,
+				meetingDays: meetingDays,
+			});
+
+			setGardenDaysTimes(meetingDays);
+		}
+		router.back();
+	};
 
 	const inviteMembers = async () => {
 		const isAvailable = await SMS.isAvailableAsync();
@@ -75,21 +70,31 @@ const GardenSettings = () => {
 			<ScrollView style={[globalStyles.formContainerScroll, globalStyles.containerScroll]}>
 				<View style={[globalStyles.form, globalStyles.containerFlex]}>
 					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
-						<Text style={globalStyles.formLabel}>{lang.form.groupMembers.label}</Text>
+						<Text style={globalStyles.formLabel}>{lang.form.groupMembers.label}
+						</Text>
 						{members.map((member, i) => (
 							<InviteMember key={i} {...member} />
 						))}
+						<TouchableOpacity style={styles.inviteButton} onPress={inviteMembers} color='white' >
+							<Text style={styles.buttonText}>{lang.button.inviteMembers}</Text>
+						</TouchableOpacity >
 					</View>
 					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
-						<Text style={globalStyles.formLabel}>{lang.form.gardenName.label}</Text>
+						<Text style={globalStyles.formLabel}>
+							{lang.form.gardenName.label}
+						</Text>
 						<FormInputText placeholder={lang.form.gardenName.placeholder} value={gardenName} onChangeText={(text) => setGardenName(text)} />
 					</View>
 					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
-						<Text style={globalStyles.formLabel}>{lang.form.inviteWord.label}</Text>
+						<Text style={globalStyles.formLabel}>
+							{lang.form.inviteWord.label}
+						</Text>
 						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={(text) => setInviteWord(text)} />
 					</View>
 					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
-						<Text style={globalStyles.formLabel}>{lang.form.changeLocation.label}</Text>
+						<Text style={globalStyles.formLabel}>
+							{lang.form.changeLocation.label}
+						</Text>
 						<FormButton
 							icon='map-pin'
 							rightIcon='chevron-right'
@@ -103,13 +108,39 @@ const GardenSettings = () => {
 						/>
 					</View>
 				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.inviteMembers} onPress={inviteMembers} color='white' />
-					<Button text={lang.button.save} color='green' />
+				<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
+					<Text style={globalStyles.formLabel}>Meeting Days and Times</Text>
+					{/* Here, you should add the UI for updating meetingDays. This could be text inputs, dropdowns, etc. */}
 				</View>
+
+				{isChanged && (
+					<View style={globalStyles.buttonGroup}>
+						<Button text={lang.button.save} onPress={handleSave} color='black' />
+					</View>
+				)}
+				{isChanged && (
+					<View style={globalStyles.buttonGroup}>
+						<Button text={lang.button.save} onPress={handleSave} color='black' />
+					</View>
+				)}
 			</ScrollView>
 		</View>
 	);
 };
 
 export default GardenSettings;
+
+const styles = StyleSheet.create({
+	inviteButton: {
+		backgroundColor: colors.primary,
+		borderRadius: 100,
+		padding: spacing.mdSpacing,
+		width: '100%',
+		marginTop: spacing.mdSpacing,
+	},
+	buttonText: {
+		textAlign: 'center',
+		fontSize: fontSizes.body,
+		fontWeight: 'bold',
+	},
+});

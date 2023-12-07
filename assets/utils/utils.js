@@ -192,6 +192,7 @@ const langEN = {
 		skip: 'Skip For Now',
 		view: 'View Your Garden',
 		home: 'Go Home',
+		restart: 'Restart',
 		yes: 'Yes',
 		save: 'Save',
 		deleteAccount: 'Delete Account',
