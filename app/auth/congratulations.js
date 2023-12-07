@@ -2,36 +2,56 @@ import { StyleSheet, Text, View } from 'react-native';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { Stack, useRouter } from 'expo-router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 import { useUser } from '../../assets/contexts/UserContext';
-import ConfettiCannon from 'react-native-confetti-cannon';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import Confetti from 'react-native-confetti';
+import { SageWordmark } from '../../assets/icons/sagewordmark';
 
 const Congratulations = () => {
 	const router = useRouter();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
-	const { user, fetchUserAndGardenDetails } = useUser();
+	const { garden, gardenDaysTimes, submitRegistration } = useUser();
 
-	// as soon as we get to congratulations page log the user in
-	const login = async (e) => {
-		const auth = getAuth();
-		const db = getFirestore();
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState(null);
 
-		try {
-			await fetchUserAndGardenDetails(auth.currentUser.uid);
-			// Navigate to the 'My Garden' page after successful login and data fetch
-		} catch (err) {
-			console.error(err);
-		}
-	};
+	const confettiRef = useRef(null);
 
 	useEffect(() => {
-		login();
+		submitData = async () => {
+			try {
+				const success = await submitRegistration();
+				if (confettiRef.current && success) {
+					confettiRef.current.startConfetti();
+				}
+			} catch (e) {
+				console.error(e);
+				setError('There was an error create your garden. Please try again.');
+			} finally {
+				setIsLoading(false);
+			}
+		};
+		submitData();
 	}, []);
+
+	if (isLoading) {
+		return (
+			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
+
+	if (error) {
+		return (
+			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
+				<Text>{error}</Text>
+			</View>
+		);
+	}
 
 	return (
 		<>
@@ -39,20 +59,26 @@ const Congratulations = () => {
 			<Stack.Screen options={{ headerShown: false }} />
 			{/* the main congratulations content for the container */}
 			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
-				<ConfettiCannon count={600} origin={{ x: 0, y: 0 }} explosionSpeed={400} fallSpeed={4000} />
+				<Confetti confettiCount={400} duration={4500} ref={confettiRef} />
+				<SageWordmark width={80}/>
 				<View style={styles.congratulations}>
 					<View>
-						<Text style={styles.congratulationsGardenName}>{user?.garden?.name}</Text>
-						{/* {/* <Text style={styles.congratulationsGardenTime}>
-							{gardenDays} @ {gardenTimes}
-						</Text> */}
+						<Text style={styles.congratulationsGardenName}>{garden?.name}</Text>
+						{gardenDaysTimes && gardenDaysTimes.length && gardenDaysTimes?.map((gardenDayTime, index) => {
+							const { days, times } = gardenDayTime;
+							return (
+								<Text key={index} style={styles.congratulationsGardenTime}>
+									{days} @ {times}
+								</Text>
+							);
+						})}
 					</View>
 					<View>
 						<Text style={styles.congratulationsCongrats}>{lang.createGroup.congratulations.title}</Text>
 					</View>
 				</View>
 				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.home} onPress={() => router.replace({ pathname: '/home/my-garden' })} />
+					<Button text={lang.button.home} onPress={() => { router.replace({ pathname: '/home/my-garden' }); if (confettiRef.current) confettiRef.current.stopConfetti(); }} />
 				</View>
 			</View>
 		</>
@@ -78,7 +104,7 @@ const styles = StyleSheet.create({
 		fontSize: fontSizes.body,
 	},
 	congratulationsCongrats: {
-		fontSize: fontSizes.h1,
+		fontSize: fontSizes.mainHeader,
 		fontWeight: 'bold',
 	},
 });

@@ -37,6 +37,31 @@ export const UserProvider = ({ children }) => {
     }
   }, []);
 
+  const submitRegistration = useCallback(async () => {
+    if (!user || !garden) {
+      console.error('User or Garden data is incomplete.');
+      return false;
+    }
+  
+    const db = getFirestore();
+    try {
+      // Update user in the database
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, user);
+  
+      // Add garden to the database
+      const gardenRef = await addDoc(collection(db, 'gardens'), garden);
+      
+      // Update user's gardenId
+      await updateDoc(userRef, { gardenId: gardenRef.id });
+  
+      return true;
+    } catch (error) {
+      console.error('Error submitting registration:', error);
+      return false;
+    }
+  }, [user, garden]);
+
   const updateUserDetails = useCallback(async (newUserData) => {
     if (!user) {
       console.error('No user to update.');
@@ -99,6 +124,7 @@ export const UserProvider = ({ children }) => {
       fetchUserAndGardenDetails,
       updateUserDetails,
       updateGardenDetails,
+      submitRegistration,
       gardenDaysTimes,
       setGardenDaysTimes
     }}>

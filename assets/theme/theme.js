@@ -16,7 +16,7 @@ const colors = {
 
 // font sizes
 const fontSizes = {
-	mainHeader: 38,
+	mainHeader: 36,
 	mainDescription: 20,
 	h1: 28,
 	h2: 22,
