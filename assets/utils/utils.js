@@ -1,7 +1,7 @@
 // english language
 const langEN = {
 	auth: {
-		intial: {
+		initial: {
 			title: 'Garden Together.',
 			description: 'Organize a gardening group in minutes and work towards your very own harvest.',
 		},
@@ -176,6 +176,10 @@ const langEN = {
 			label: 'Change Location',
 		},
 	},
+	langCode: {
+		english: 'EN',
+		german: 'DE',
+	},
 	button: {
 		continue: 'Continue',
 		cancel: 'Cancel',
@@ -212,4 +216,7 @@ const langEN = {
 	},
 };
 
-export { langEN };
+// german language
+const langDE = {};
+
+export { langEN, langDE };

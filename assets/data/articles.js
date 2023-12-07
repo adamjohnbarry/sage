@@ -13,7 +13,6 @@ export const ARTICLES = {
 				category: 'Vegetables',
 				text: 'These seven superfoods are easy to grow in your own backyard or patio garden.',
 			},
-
 		],
 
 		sections: {
@@ -30,7 +29,6 @@ export const ARTICLES = {
 					category: 'Fruits',
 					text: 'These seven superfoods are easy to grow in your own backyard or patio garden.',
 				},
-
 			],
 			'For your garden': [
 				{

@@ -8,15 +8,15 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 import LoginScreenImage from '../../assets/images/login-screen.png';
 import PersonButton from '../../assets/components/PersonButton';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useContext, useEffect } from 'react';
 import { Tabs } from 'expo-router';
 import { useUser } from '../../assets/contexts/UserContext';
 
 const MyGarden = () => {
 	const { user, fetchUserAndGardenDetails } = useUser();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	// send invite to a friend
 	const sendInvite = async () => {

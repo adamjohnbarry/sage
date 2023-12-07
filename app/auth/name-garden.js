@@ -4,14 +4,14 @@ import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const NameGarden = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [gardenName, setGardenName] = useState('');
 	const [inviteWord, setInviteWord] = useState('');

@@ -1,11 +1,11 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useContext } from 'react';
-import { LangContext } from '../../assets/contexts/contexts';
+import { LangContext } from '../../assets/contexts/Contexts';
 import InviteWordHelp from '../../assets/images/invite-word-help.png';
 import { fontSizes, spacing } from '../../assets/theme/theme';
 
 const HowDoIGetAnInviteWord = () => {
-	const lang = useContext(LangContext);
+	const { lang } = useContext(LangContext);
 
 	return (
 		<View style={[styles.howDoIGetAnInviteWord]}>

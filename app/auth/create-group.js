@@ -4,13 +4,13 @@ import globalStyles from '../../assets/styles/GlobalStyles';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
 const CreateGroup = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	return (
 		<View style={[styles.instructionsContainer, { paddingBottom: safeArea.paddingBottom }]}>

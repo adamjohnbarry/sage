@@ -6,12 +6,12 @@ import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
 import { getAuth } from 'firebase/auth';
 import { doc, updateDoc, getFirestore } from 'firebase/firestore';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 
 const UploadName = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [name, setName] = useState('');
 

@@ -1,8 +1,8 @@
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import * as SMS from 'expo-sms';
 import globalStyles from '../../../assets/styles/GlobalStyles';
 import { useContext, useEffect, useState } from 'react';
-import { LangContext, SafeAreaContext } from '../../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
 import FormInputText from '../../../assets/components/FormInputText';
 import Button from '../../../assets/components/Button';
 import { getAuth } from 'firebase/auth';
@@ -10,13 +10,12 @@ import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import FormButton from '../../../assets/components/FormButton';
 import { useRouter } from 'expo-router';
 import { colors } from '../../../assets/theme/theme';
-import { ScrollView } from 'react-native-gesture-handler';
 import InviteMember from '../../../assets/components/InviteMember';
 
 const GardenSettings = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [gardenName, setGardenName] = useState('');
 	const [inviteWord, setInviteWord] = useState('');
@@ -66,9 +65,9 @@ const GardenSettings = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { paddingBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<ScrollView style={[globalStyles.containerScroll]}>
+		<View style={[globalStyles.containerFlex, globalStyles.containerWhite]}>
+			<ScrollView style={[globalStyles.formContainerScroll, globalStyles.containerScroll]}>
+				<View style={[globalStyles.form, globalStyles.containerFlex]}>
 					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
 						<Text style={globalStyles.formLabel}>{lang.form.groupMembers.label}</Text>
 						{members.map((member, i) => (
@@ -97,12 +96,12 @@ const GardenSettings = () => {
 							}
 						/>
 					</View>
-				</ScrollView>
+				</View>
 				<View style={globalStyles.buttonGroup}>
 					<Button text={lang.button.inviteMembers} onPress={inviteMembers} color='white' />
 					<Button text={lang.button.save} color='green' />
 				</View>
-			</View>
+			</ScrollView>
 		</View>
 	);
 };

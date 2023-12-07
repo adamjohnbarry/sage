@@ -3,7 +3,7 @@ import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { Stack, useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -12,8 +12,8 @@ import { doc, getDoc, getFirestore } from 'firebase/firestore';
 
 const Congratulations = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [gardenName, setGardenName] = useState('');
 	const [gardenAddress, setGardenAddress] = useState('');

@@ -1,20 +1,19 @@
-import { FlatList, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import FormInputText from '../../assets/components/FormInputText';
 import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import GardenItem from '../../assets/components/GardenItem';
-import { spacing } from '../../assets/theme/theme';
 import Separator from '../../assets/components/Separator';
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
 
 const ChooseLocation = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const gardens = lang.createGroup.chooseLocation.gardens;
 

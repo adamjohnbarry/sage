@@ -6,13 +6,13 @@ import PhoneInput from 'react-native-phone-input';
 import validator from 'validator';
 import { useRouter } from 'expo-router';
 import { getAuth } from 'firebase/auth';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { doc, getFirestore, updateDoc } from 'firebase/firestore';
 
 const UploadNumber = () => {
 	const router = useRouter();
-	const safeArea = useContext(SafeAreaContext);
-	const lang = useContext(LangContext);
+	const { safeArea } = useContext(SafeAreaContext);
+	const { lang } = useContext(LangContext);
 
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [phoneNumberError, setPhoneNumberError] = useState('');
