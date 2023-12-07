@@ -31,7 +31,7 @@ const Root = () => {
 							color='green'
 							onPress={() =>
 								router.push({
-									pathname: '/auth/upload-photo',
+									pathname: '/auth/join-group',
 									params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
 								})
 							}

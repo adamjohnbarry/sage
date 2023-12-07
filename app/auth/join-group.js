@@ -5,7 +5,7 @@ import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { Link, useRouter } from 'expo-router';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { collection, getDoc, getDocs, getFirestore, query, where } from 'firebase/firestore';
 
 const JoinGroup = () => {
 	const router = useRouter();
@@ -32,21 +32,27 @@ const JoinGroup = () => {
 		const db = getFirestore();
 
 		const gardenRef = collection(db, 'gardens');
-		const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
 
+		const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
 		const gardens = await getDocs(containsGarden);
 
-		console.log('hi', gardens.length);
+		let garden;
+
+		// retreive garden that matches invite word
+		gardens.forEach((gardenObj) => {
+			garden = gardenObj.data();
+		});
 
 		if (inviteWord.length == 0) {
 			setInviteWordError(lang.error.inviteWordLengthError);
-			// } else if () {
-			// 	setInviteWordError(lang.error.inviteWordExistsError);
+		} else if (!garden) {
+			setInviteWordError(lang.error.inviteWordDoesntExistError);
 		} else {
-			router.replace({
-				pathname: '/home/my-garden',
-				params: { title: lang.myGarden.myGarden.title, description: lang.myGarden.myGarden.description },
-			});
+			console.log(garden);
+			// router.replace({
+			// 	pathname: '/home/my-garden',
+			// 	params: { title: lang.myGarden.myGarden.title, description: lang.myGarden.myGarden.description },
+			// });
 		}
 	};
 

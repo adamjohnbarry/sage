@@ -21,7 +21,7 @@ const langEN = {
 		howDoIGetAnInviteWord: {
 			title: 'How to get an invite word',
 			description:
-				'If you are trying to join a group, ask any of the current group members to send you the invite word.\n\nThey can find it by opening Sage and tapping the settings icon as shown below.',
+				'If you are trying to join a group, ask any of the current group members to send you the invite word.\n\nThey can find it by opening Sage, going to the settings page, and tapping the garden settings section.',
 		},
 	},
 	createGroup: {
@@ -201,7 +201,9 @@ const langEN = {
 		phoneNumberUploadError: "Could not update user's number.",
 		photoUploadError: "Could not update user's photo.",
 		inviteWordLengthError: 'Invite word cannot be empty.',
-		inviteWordExists: 'Invite word does not exist.',
+		inviteWordDoesntExistError: 'Invite word does not exist.',
+		inviteWordAlreadyExistsError: 'Invite word has already been taken.',
+		gardenNameEmpty: 'Garden name cannot be empty.',
 	},
 };
 

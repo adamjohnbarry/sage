@@ -16,12 +16,29 @@ const NameGarden = () => {
 	const [gardenName, setGardenName] = useState('');
 	const [inviteWord, setInviteWord] = useState('');
 
+	const [gardenNameError, setGardenNameError] = useState('');
+	const [inviteWordError, setInviteWordError] = useState('');
+
+	// error handling and garden name field updating on text change
+	const gardenNameFieldChangeText = (text) => {
+		if (text.length == 0) {
+			setGardenNameError(lang.error.gardenNameEmpty);
+		} else {
+			setGardenNameError('');
+		}
+
+		setGardenName(text);
+	};
+
 	const createNewGarden = async () => {
 		const auth = getAuth();
 		const db = getFirestore();
 
 		const userRef = doc(db, 'users', auth.currentUser.uid);
 		const user = await getDoc(userRef);
+
+		// check if garden name already exists
+		// inviteWordAlreadyExistsError
 
 		try {
 			await addDoc(collection(db, 'gardens'), {
@@ -58,11 +75,13 @@ const NameGarden = () => {
 				<View style={globalStyles.form}>
 					<View style={globalStyles.formGroup}>
 						<Text style={globalStyles.formLabel}>{lang.form.gardenName.label}</Text>
-						<FormInputText placeholder={lang.form.gardenName.placeholder} value={gardenName} onChangeText={(text) => setGardenName(text)} />
+						<FormInputText placeholder={lang.form.gardenName.placeholder} value={gardenName} onChangeText={gardenNameFieldChangeText} />
+						{gardenNameError && <Text style={globalStyles.formError}>{gardenNameError}</Text>}
 					</View>
 					<View style={globalStyles.formGroup}>
 						<Text style={globalStyles.formLabel}>{lang.form.inviteWord.label}</Text>
 						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={(text) => setInviteWord(text)} />
+						{inviteWordError && <Text style={globalStyles.formError}>{inviteWordError}</Text>}
 					</View>
 				</View>
 				<View style={globalStyles.buttonGroup}>
