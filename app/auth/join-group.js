@@ -48,7 +48,6 @@ const JoinGroup = () => {
 		} else if (!garden) {
 			setInviteWordError(lang.error.inviteWordDoesntExistError);
 		} else {
-			console.log(garden);
 			// router.replace({
 			// 	pathname: '/home/my-garden',
 			// 	params: { title: lang.myGarden.myGarden.title, description: lang.myGarden.myGarden.description },

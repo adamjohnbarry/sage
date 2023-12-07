@@ -20,6 +20,7 @@ const UploadPhoto = () => {
 	const [photo, setPhoto] = useState(
 		'https://media.licdn.com/dms/image/D4E03AQGVq7H6Aowx6g/profile-displayphoto-shrink_800_800/0/1701141939944?e=1706745600&v=beta&t=RW_G2QxAaxB4bUckWs00TUPe9fGCSbdcngVtnoZejEM'
 	);
+	const [photoUploaded, setPhotoUploaded] = useState(false);
 
 	// handle choosing a photo to upload from your library
 	const choosePhotoFromLibrary = async () => {
@@ -54,6 +55,8 @@ const UploadPhoto = () => {
 				getDownloadURL(storageRef)
 					.then((url) => {
 						setPhoto(url);
+
+						setPhotoUploaded(true);
 					})
 					.catch((err) => {
 						console.log(lang.errors.photoRetrievalError);
@@ -68,7 +71,7 @@ const UploadPhoto = () => {
 	const updatePhotoURL = async (e) => {
 		e.preventDefault();
 
-		if (!photo) {
+		if (!photo || !photoUploaded) {
 			console.log(lang.error.photoUploadError);
 		} else {
 			const auth = getAuth();

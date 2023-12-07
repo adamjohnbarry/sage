@@ -5,7 +5,7 @@ import Button from '../../assets/components/Button';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
-import { addDoc, collection, doc, getDoc, getFirestore, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const NameGarden = () => {
@@ -37,36 +37,50 @@ const NameGarden = () => {
 		const userRef = doc(db, 'users', auth.currentUser.uid);
 		const user = await getDoc(userRef);
 
-		// check if garden name already exists
-		// inviteWordAlreadyExistsError
+		const gardenRef = collection(db, 'gardens');
 
-		try {
-			await addDoc(collection(db, 'gardens'), {
-				name: gardenName,
-				inviteWord: inviteWord.toLowerCase(),
-				members: [
-					{
-						name: user.data().name,
-						phoneNumber: user.data().phoneNumber,
-					},
-				],
-			})
-				.then(async (gardenRef) => {
-					await updateDoc(userRef, {
-						gardenId: gardenRef.id,
-					});
-				})
-				.catch((err) => {
-					console.log(`${err.code}: ${err.message}`);
-				});
-		} catch (err) {
-			console.log(`${err.code}: ${err.message}`);
-		}
+		const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
+		const gardens = await getDocs(containsGarden);
 
-		router.push({
-			pathname: '/auth/choose-location',
-			params: { index: 5, title: lang.createGroup.chooseLocation.title, description: lang.createGroup.chooseLocation.description },
+		let garden;
+
+		// retreive garden that matches invite word
+		gardens.forEach((gardenObj) => {
+			garden = gardenObj.data();
 		});
+
+		// invite word already exists do nothing
+		if (garden) {
+			setInviteWordError(lang.error.inviteWordAlreadyExistsError);
+		} else {
+			try {
+				await addDoc(collection(db, 'gardens'), {
+					name: gardenName,
+					inviteWord: inviteWord.toLowerCase(),
+					members: [
+						{
+							name: user.data().name,
+							phoneNumber: user.data().phoneNumber,
+						},
+					],
+				})
+					.then(async (gardenRef) => {
+						await updateDoc(userRef, {
+							gardenId: gardenRef.id,
+						});
+					})
+					.catch((err) => {
+						console.log(`${err.code}: ${err.message}`);
+					});
+			} catch (err) {
+				console.log(`${err.code}: ${err.message}`);
+			}
+
+			router.push({
+				pathname: '/auth/choose-location',
+				params: { index: 5, title: lang.createGroup.chooseLocation.title, description: lang.createGroup.chooseLocation.description },
+			});
+		}
 	};
 
 	return (
