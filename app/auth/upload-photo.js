@@ -43,28 +43,22 @@ const UploadPhoto = () => {
 		const auth = getAuth();
 		const storage = getStorage();
 
-		const response = await fetch(uri);
-		const blob = await response.blob();
-
-		const storageRef = ref(storage, `images/${auth.currentUser.uid}`);
-
 		// upload image to firestore
-		uploadBytes(storageRef, blob)
-			.then((image) => {
-				// retrieve the photo from firebase and update it
-				getDownloadURL(storageRef)
-					.then((url) => {
-						setPhoto(url);
+		try {
+			const response = await fetch(uri);
+			const blob = await response.blob();
 
-						setPhotoUploaded(true);
-					})
-					.catch((err) => {
-						console.log(lang.errors.photoRetrievalError);
-					});
-			})
-			.catch((err) => {
-				console.log(lang.errors.photoUploadError);
-			});
+			const storageRef = ref(storage, `images/${auth.currentUser.uid}-${new Date().getTime()}`);
+
+			const uploadedPhoto = await uploadBytes(storageRef, blob);
+			const downloadedPhoto = await getDownloadURL(storageRef);
+
+			setPhoto(downloadedPhoto);
+
+			setPhotoUploaded(true);
+		} catch (err) {
+			console.log(lang.error.photoUploadError);
+		}
 	};
 
 	// update account with photo url

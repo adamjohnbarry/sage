@@ -75,9 +75,10 @@ const ChooseLocation = () => {
 					</View>
 					<Separator text='OR' />
 					<View style={globalStyles.containerScroll}>
+						<Text style={globalStyles.formLabel}>{lang.form.localGarden.label}</Text>
 						<FlatList
 							data={localGardens}
-							style={globalStyles.verticalScroll}
+							style={(globalStyles.verticalScroll, { marginTop: spacing.smSpacing })}
 							ItemSeparatorComponent={() => <View style={{ height: spacing.lgSpacing }} />}
 							renderItem={({ item }) => <GardenItem {...item} selected={selected} onSelect={() => updateLocalGarden(item)} />}
 							keyExtractor={(item, i) => i}

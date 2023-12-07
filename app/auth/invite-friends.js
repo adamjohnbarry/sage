@@ -16,6 +16,7 @@ const InviteFriends = () => {
 
 	const [searchContacts, setSearchContacts] = useState('');
 	const [contacts, setContacts] = useState();
+	const [filteredContacts, setFilteredContacts] = useState();
 
 	// get all of user's contacts
 	useEffect(() => {
@@ -28,24 +29,19 @@ const InviteFriends = () => {
 
 				if (data.length > 0) {
 					setContacts(data);
-					// console.log(data[1].phoneNumbers[0].digits);
+					setFilteredContacts(data);
 				}
 			}
 		})();
 	}, []);
 
-	const setGardenMembers = async () => {
-		const db = getFirestore();
+	// handle filtering the contacts
+	const filterContacts = (text) => {
+		setSearchContacts(text);
 
-		try {
-			// await updateDoc(userRef, {
-			// 	members,
-			// });
-		} catch (err) {
-			console.log(`${err.code}: ${err.message}`);
-		}
+		const filteredContacts = contacts.filter((contact) => contact.name.toLowerCase().includes(text.toLowerCase()));
 
-		router.push('/auth/congratulations');
+		setFilteredContacts(filteredContacts);
 	};
 
 	return (
@@ -53,11 +49,11 @@ const InviteFriends = () => {
 			<View style={globalStyles.formContainer}>
 				<View style={[globalStyles.form, globalStyles.containerFlex]}>
 					<View style={globalStyles.formGroup}>
-						<FormInputText placeholder={lang.form.searchContacts.placeholder} value={searchContacts} onChangeText={(text) => setSearchContacts(text)} />
+						<FormInputText placeholder={lang.form.searchContacts.placeholder} value={searchContacts} onChangeText={filterContacts} />
 					</View>
 					<View style={globalStyles.containerScroll}>
 						<FlatList
-							data={contacts}
+							data={filteredContacts}
 							style={globalStyles.verticalScroll}
 							ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
 							renderItem={({ item }) => <ContactItem {...item} />}
@@ -66,17 +62,8 @@ const InviteFriends = () => {
 					</View>
 				</View>
 				<View style={globalStyles.buttonGroup}>
-					<Button
-						text={lang.button.skip}
-						color='white'
-						onPress={() =>
-							router.push({
-								pathname: '/auth/congratulations',
-								params: { index: 0 },
-							})
-						}
-					/>
-					<Button text={lang.button.finish} onPress={setGardenMembers} />
+					<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
+					<Button text={lang.button.finish} />
 				</View>
 			</View>
 		</View>
