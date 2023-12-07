@@ -5,15 +5,14 @@ import globalStyles from '../../assets/styles/GlobalStyles';
 import PhoneInput from 'react-native-phone-input';
 import validator from 'validator';
 import { useRouter } from 'expo-router';
-import { getAuth } from 'firebase/auth';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/contexts';
-import { doc, getFirestore, updateDoc } from 'firebase/firestore';
+import { useUser } from '../../assets/contexts/UserContext';
 
 const UploadNumber = () => {
 	const router = useRouter();
+	const { user, setUser } = useUser();
 	const safeArea = useContext(SafeAreaContext);
 	const lang = useContext(LangContext);
-
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [phoneNumberError, setPhoneNumberError] = useState('');
 
@@ -35,23 +34,11 @@ const UploadNumber = () => {
 		if (phoneNumberError) {
 			console.log(lang.error.phoneNumberUploadError);
 		} else {
-			const auth = getAuth();
-			const db = getFirestore();
-
-			const userRef = doc(db, 'users', auth.currentUser.uid);
-
-			try {
-				await updateDoc(userRef, {
-					phoneNumber,
-				});
-
-				router.push({
-					pathname: '/auth/upload-photo',
-					params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
-				});
-			} catch (err) {
-				console.log(`${err.code}: ${err.message}`);
-			}
+			setUser({ ...user, phoneNumber })
+			router.push({
+				pathname: '/auth/upload-photo',
+				params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
+			});
 		}
 	};
 
