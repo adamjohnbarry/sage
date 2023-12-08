@@ -1,5 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { colors, spacing } from '../theme/theme';
+import globalStyles from '../styles/GlobalStyles';
 
 export const RadioButton = ({ label, value, checked, onPress }) => {
   return (
@@ -7,7 +9,7 @@ export const RadioButton = ({ label, value, checked, onPress }) => {
       <View style={styles.radioCircle}>
         {checked ? <View style={styles.selectedRb} /> : null}
       </View>
-      <Text style={styles.radioText}>{label}</Text>
+      <Text style={globalStyles.body}>{label}</Text>
     </TouchableOpacity>
   );
 };
@@ -16,19 +18,21 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: spacing.mdSpacing,
   },
   radioText: {
     marginLeft: 6,
     fontSize: 16,
-    color: '#000',
+    color: colors.black,
   },
   radioCircle: {
     height: 20,
     width: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#3740ff',
+    marginRight: spacing.smSpacing,
+    paddingTop: 1,
+    borderColor: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -36,6 +40,6 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#3740ff',
+    backgroundColor: colors.black,
   },
 });

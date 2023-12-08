@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import * as SMS from 'expo-sms';
 import { useContext, useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Modal, View, Text } from 'react-native';
+import { Dimensions, StyleSheet, Modal, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { RadioButton } from '../../assets/components/RadioButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import Attendance from '../../assets/components/Attendance';
@@ -12,7 +12,7 @@ import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 import { MEMBERS } from '../../assets/data/members';
 import globalStyles from '../../assets/styles/GlobalStyles';
-import { spacing } from '../../assets/theme/theme';
+import { spacing, colors, } from '../../assets/theme/theme';
 
 const MyGarden = () => {
 	const { user } = useUser();
@@ -91,7 +91,7 @@ const MyGarden = () => {
 
 	const handleMaybeAttending = () => {
 		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: -1 } : member)));
-		setShowAttendanceNotifcation(false);
+		setShowAttendanceNotifcation(true);
 		setShowAttendanceModal(false);
 	};
 
@@ -115,33 +115,35 @@ const MyGarden = () => {
 						setShowAttendanceModal(!showAttendanceModal);
 					}}
 				>
-					<View style={styles.modalOverlay}>
-						<View style={styles.modalContent}>
-							<Text style={styles.modalTitle}>Update Attendance</Text>
+					<TouchableWithoutFeedback onPress={() => setShowAttendanceModal(false)}>
+						<View style={styles.modalOverlay}>
+							<View style={styles.modalContent}>
+								<Text style={globalStyles.h3}>Update Attendance</Text>
 
-							<View style={styles.radioButtonContainer}>
-								<RadioButton
-									label="Attending"
-									value="attending"
-									checked={members.find((member) => member.name === 'Me').attendingNextSession === 1}
-									onPress={handleYesAttending}
-								/>
-								<RadioButton
-									label="Not Attending"
-									value="notAttending"
-									checked={members.find((member) => member.name === 'Me').attendingNextSession === 0}
-									onPress={handleNoAttending}
+								<View style={styles.radioButtonContainer}>
+									<RadioButton
+										label="Attending"
+										value="attending"
+										checked={members.find((member) => member.name === 'Me').attendingNextSession === 1}
+										onPress={handleYesAttending}
+									/>
+									<RadioButton
+										label="Not Attending"
+										value="notAttending"
+										checked={members.find((member) => member.name === 'Me').attendingNextSession === 0}
+										onPress={handleNoAttending}
 
-								/>
-								<RadioButton
-									label="Hasn't Responded"
-									value="hasntResponded"
-									checked={members.find((member) => member.name === 'Me').attendingNextSession === -1}
-									onPress={handleMaybeAttending}
-								/>
+									/>
+									<RadioButton
+										label="Hasn't Responded"
+										value="hasntResponded"
+										checked={members.find((member) => member.name === 'Me').attendingNextSession === -1}
+										onPress={handleMaybeAttending}
+									/>
+								</View>
 							</View>
 						</View>
-					</View>
+					</TouchableWithoutFeedback>
 				</Modal>
 			)}
 
@@ -186,21 +188,15 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dim the background
 	},
 	modalContent: {
-		backgroundColor: 'white',
-		padding: 20,
+		backgroundColor: colors.fogLight,
+		padding: spacing.xlSpacing,
 		borderRadius: 10,
-		width: '80%', // Set width of the modal
-		alignItems: 'center',
-	},
-	modalTitle: {
-		fontSize: 20,
-		fontWeight: 'bold',
-		marginBottom: 20,
+		width: '60%', // Set width of the modal
+		gap: spacing.lgSpacing,
 	},
 	radioButtonContainer: {
 		alignSelf: 'stretch', // Take full width of the modal
 		alignItems: 'flex-start',
-		marginBottom: 20,
 	},
 
 });
