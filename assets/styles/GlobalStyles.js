@@ -106,7 +106,8 @@ const globalStyles = StyleSheet.create({
 	},
 	formInput: {
 		height: 56,
-		padding: spacing.mdSpacing,
+		fontFamily: 'Adelle-Regular',
+		padding: spacing.lgSpacing,
 		borderRadius: spacing.borderRadius,
 		backgroundColor: colors.lightGrey,
 	},
@@ -144,6 +145,46 @@ const globalStyles = StyleSheet.create({
 	fontBold: {
 		fontWeight: 'bold',
 	},
+
+	body: {
+		fontSize: fontSizes.body,
+		fontFamily: 'Adelle-Regular',
+		lineHeight: 150 / 100 * fontSizes.body, // Assuming the Figma line-height is a percentage
+	},
+	mainHeader: {
+		fontSize: fontSizes.mainHeader,
+		fontFamily: 'Adelle-Bold',
+		lineHeight: 150 / 100 * fontSizes.h1,
+	},
+	h1: {
+		fontSize: fontSizes.h1,
+		fontFamily: 'Adelle-Bold',
+		lineHeight: 150 / 100 * fontSizes.h1,
+	},
+	h2: {
+		fontSize: fontSizes.h2,
+		fontFamily: 'Adelle-Semibold',
+		lineHeight: 150 / 100 * fontSizes.h2,
+	},
+	h3: {
+		fontSize: fontSizes.h3,
+		fontFamily: 'Adelle-Regular',
+		lineHeight: 150 / 100 * fontSizes.h3,
+	},
+	h4: {
+		fontSize: fontSizes.h4,
+		fontFamily: 'Adelle-Regular',
+		lineHeight: 150 / 100 * fontSizes.h4,
+	},
+	subtitle: {
+		fontSize: fontSizes.body, // Assuming subtitle uses the same size as body
+		fontFamily: 'Adelle-Bold',
+		// Line height 'Auto' typically means it is defaulted or not set
+	},
+
+
+
+
 });
 
 export default globalStyles;

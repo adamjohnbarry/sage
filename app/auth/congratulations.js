@@ -43,6 +43,13 @@ const Congratulations = () => {
 		submitData();
 	}, []);
 
+	useEffect(() => {
+		// Start confetti when loading is finished and there is no error
+		if (!isLoading && !error && confettiRef.current) {
+			confettiRef.current.startConfetti();
+		}
+	}, [isLoading, error]);
+
 	// render the day and time of your garden events
 	const renderGardenDaysTimes = () => {
 		const entries = Object.entries(gardenDaysTimes);
