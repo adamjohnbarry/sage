@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
 	tabContainer: {
 		flexDirection: 'column',
 		alignItems: 'center',
+		width: 100,
 	},
 	tabText: {
 		paddingTop: spacing.xsSpacing,

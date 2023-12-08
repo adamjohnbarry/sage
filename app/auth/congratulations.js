@@ -20,28 +20,22 @@ const Congratulations = () => {
 
 	const confettiRef = useRef(null);
 
-	// useEffect(() => {
-	// 	submitData = async () => {
-	// 		try {
-	// 			const success = await submitRegistration();
+	useEffect(() => {
+		submitData = async () => {
+			try {
+				const success = await submitRegistration();
+				if (!success) {
+					setError(lang.createGroup.congratulations.registrationError);
+				}
+			} catch (err) {
+				setError(lang.createGroup.congratulations.gardenCreationError);
+			} finally {
+				setIsLoading(false);
+			}
+		};
 
-	// 			// if registration worked
-	// 			if (success) {
-	// 				if (confettiRef.current) {
-	// 					confettiRef.current.startConfetti();
-	// 				}
-	// 			} else {
-	// 				setError(lang.createGroup.congratulations.registrationError);
-	// 			}
-	// 		} catch (err) {
-	// 			setError(lang.createGroup.congratulations.gardenCreationError);
-	// 		} finally {
-	// 			setIsLoading(false);
-	// 		}
-	// 	};
-
-	// 	submitData();
-	// }, []);
+		submitData();
+	}, []);
 
 	useEffect(() => {
 		// Start confetti when loading is finished and there is no error
