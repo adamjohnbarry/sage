@@ -24,7 +24,7 @@ export default function Attendance({ type, members, sendCheckIn }) {
 		<View style={styles.container}>
 			<Text style={styles.title}>{titleMap[type]}</Text>
 			{type === 'hasntResponded' && showNotification && <NotificationCard message={lang.myGarden.notification.message} onClose={() => handleClose()} />}
-			<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
+			<ScrollView style={styles.scroll} horizontal={true}>
 				{members.map((member) => (
 					<PersonButton key={member.name} photo={member.photo} firstName={member.name.split(' ')[0]} onPress={sendCheckIn} />
 				))}
@@ -41,5 +41,8 @@ const styles = StyleSheet.create({
 	title: {
 		...globalStyles.h3,
 		marginHorizontal: spacing.xlSpacing,
+	},
+	scroll: {
+		paddingHorizontal: spacing.xlSpacing,
 	},
 });
