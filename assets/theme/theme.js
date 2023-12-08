@@ -13,6 +13,7 @@ const colors = {
 	errorLight: '#FCE5E5',
 	sunrise: '#E2E0D9',
 	fog: '#E2D7D8',
+	fogLight: '#EEE7E8',
 };
 
 // font sizes

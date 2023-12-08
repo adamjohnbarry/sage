@@ -6,7 +6,7 @@ import { LangContext } from '../contexts/Contexts';
 import { spacing } from '../theme/theme';
 import NotificationCard from './NotificationCard';
 
-export default function Attendance({ type, members, sendCheckIn }) {
+export default function Attendance({ type, members, onMemberTap }) {
 	const [showNotification, setShowNotification] = useState(true);
 	const { lang } = useContext(LangContext);
 
@@ -26,7 +26,7 @@ export default function Attendance({ type, members, sendCheckIn }) {
 			{type === 'hasntResponded' && showNotification && <NotificationCard message={lang.myGarden.notification.message} onClose={() => handleClose()} />}
 			<ScrollView style={styles.scroll} horizontal={true}>
 				{members.map((member) => (
-					<PersonButton key={member.name} photo={member.photo} firstName={member.name.split(' ')[0]} onPress={sendCheckIn} />
+					<PersonButton key={member.name} member={member} onMemberTap={onMemberTap} />
 				))}
 			</ScrollView>
 		</View>
