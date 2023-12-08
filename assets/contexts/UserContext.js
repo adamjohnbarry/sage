@@ -176,6 +176,7 @@ export const UserProvider = ({ children }) => {
 
 	const updateGardenDetails = useCallback(
 		async (newGardenData) => {
+			console.log("new garden data? : ", newGardenData)
 			if (!user || !user.gardenId) {
 				console.error('No garden to update.');
 				return;

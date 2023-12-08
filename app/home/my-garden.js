@@ -21,7 +21,6 @@ const MyGarden = () => {
 	const [members, setMembers] = useState(MEMBERS);
 	const [showAttendanceNotification, setShowAttendanceNotifcation] = useState(true);
 	const [showAttendanceModal, setShowAttendanceModal] = useState(false);
-	const [selectedAttendanceOption, setSelectedAttendanceOption] = useState('hasntResponded');
 
 	useEffect(() => {
 		const userExists = members.some((member) => member.name === 'Me');
@@ -29,7 +28,7 @@ const MyGarden = () => {
 		if (!userExists) {
 			const newUser = {
 				name: 'Me',
-				photo: { uri: user.photo },
+				photo: { uri: user?.photo },
 				attendingNextSession: -1,
 			};
 			setMembers((currentMembers) => [...currentMembers, newUser]);
@@ -119,7 +118,6 @@ const MyGarden = () => {
 						<View style={styles.modalOverlay}>
 							<View style={styles.modalContent}>
 								<Text style={globalStyles.h3}>Update Attendance</Text>
-
 								<View style={styles.radioButtonContainer}>
 									<RadioButton
 										label="Attending"
@@ -147,7 +145,6 @@ const MyGarden = () => {
 				</Modal>
 			)}
 
-			{/* update the header to reflect the name */}
 			<ScrollView style={globalStyles.containerWhite}>
 				<ScrollView
 					style={styles.bannerScroll}
@@ -180,7 +177,6 @@ const styles = StyleSheet.create({
 		marginVertical: spacing.xlSpacing,
 		gap: spacing.mdSpacing,
 	},
-	// ...other styles
 	modalOverlay: {
 		flex: 1,
 		justifyContent: 'center',
@@ -191,11 +187,11 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.fogLight,
 		padding: spacing.xlSpacing,
 		borderRadius: 10,
-		width: '60%', // Set width of the modal
+		width: '60%',
 		gap: spacing.lgSpacing,
 	},
 	radioButtonContainer: {
-		alignSelf: 'stretch', // Take full width of the modal
+		alignSelf: 'stretch',
 		alignItems: 'flex-start',
 	},
 
