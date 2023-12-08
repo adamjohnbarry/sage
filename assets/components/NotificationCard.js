@@ -17,12 +17,12 @@ const NotificationCard = ({ message, onClose }) => {
 const styles = StyleSheet.create({
 	card: {
 		backgroundColor: colors.sunrise, // Replace with your actual color code
-		borderRadius: spacing.smSpacing,
+		borderRadius: spacing.mdSpacing,
 		padding: 16,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'start',
-		marginTop: spacing.mdSpacing,
+		marginHorizontal: spacing.xlSpacing,
 	},
 	message: {
 		fontSize: fontSizes.body,

@@ -30,7 +30,7 @@ const Button = ({ onPress, text, disabled, color = 'black' }) => {
 
 	return (
 		<TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.button, buttonStyle]}>
-			<Text style={[styles.buttonText, buttonTextStyle]}>{text}</Text>
+			<Text style={[styles.buttonText, buttonTextStyle, { fontFamily: 'Adelle-Bold' }]}>{text}</Text>
 		</TouchableOpacity>
 	);
 };

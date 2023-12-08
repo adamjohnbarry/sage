@@ -1,17 +1,17 @@
-import { FontAwesome5 } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import * as SMS from 'expo-sms';
 import { useContext, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Attendance from '../../assets/components/Attendance';
-import Card from '../../assets/components/Card';
 import Header from '../../assets/components/Header';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 import { MEMBERS } from '../../assets/data/members';
 import globalStyles from '../../assets/styles/GlobalStyles';
-import { colors, fontSizes, spacing } from '../../assets/theme/theme';
+import AttendanceNotification from '../../assets/components/AttendanceNotification';
+import GroupChatCard from '../../assets/components/GroupChatCard';
+import { spacing } from '../../assets/theme/theme';
 
 const MyGarden = () => {
 	const { user } = useUser();
@@ -38,7 +38,7 @@ const MyGarden = () => {
 	const hasntRespondedMembers = members.filter((member) => member.attendingNextSession === -1);
 
 	// send invite to a friend
-	const sendInvite = async () => {
+	const sendInvite = async (phoneNumbers) => {
 		const isAvailable = await SMS.isAvailableAsync();
 
 		if (isAvailable) {
@@ -77,89 +77,35 @@ const MyGarden = () => {
 			/>
 			{/* update the header to reflect the name */}
 			<ScrollView style={globalStyles.containerWhite}>
-				<View style={[globalStyles.container, globalStyles.containerMain]}>
+				<ScrollView
+					style={styles.bannerScroll}
+					horizontal={true}
+					showsHorizontalScrollIndicator={false}
+					decelerationRate={0}
+					snapToInterval={Dimensions.get('window').width - (2 * spacing.xlSpacing + spacing.mdSpacing) - 30}
+					snapToAlignment={"left"}
+					contentContainerStyle={{
+						paddingHorizontal: spacing.xlSpacing
+					}}
+				>
 					{showAttendanceNotification && (
-						<Card>
-							<View style={styles.cardHeader}>
-								<Text style={styles.cardTextMain}>Are you coming this Friday?</Text>
-								<Pressable style={styles.cardHeaderCancel}>
-									<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
-								</Pressable>
-							</View>
-							<View style={styles.cardButtonGroup}>
-								<TouchableOpacity onPress={handleYesAttending} style={styles.cardButton}>
-									<View style={[styles.cardButtonIcon, styles.cardButtonYes]}>
-										<FontAwesome5 name='check' size={fontSizes.body} color={colors.white} />
-									</View>
-									<Text style={styles.cardButtonText}>Yes</Text>
-								</TouchableOpacity>
-								<TouchableOpacity onPress={handleNoAttending} style={styles.cardButton}>
-									<View style={[styles.cardButtonIcon, styles.cardButtonNo]}>
-										<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
-									</View>
-									<Text style={styles.cardButtonText}>No</Text>
-								</TouchableOpacity>
-							</View>
-						</Card>
+						<AttendanceNotification onYesPress={handleYesAttending} onNoPress={handleNoAttending} />
 					)}
-					<Attendance type='attending' members={attendingMembers} sendInvite={sendInvite} />
-					<Attendance type='notAttending' members={notAttendingMembers} sendInvite={sendInvite} />
-					<Attendance type='hasntResponded' members={hasntRespondedMembers} sendInvite={sendInvite} />
-				</View>
+					<GroupChatCard onPress={() => sendInvite(members.filter(m => m.name !== 'Me').map(m => m.phone))}/>
+				</ScrollView>
+				<Attendance type='attending' members={attendingMembers} sendInvite={sendInvite} />
+				<Attendance type='notAttending' members={notAttendingMembers} sendInvite={sendInvite} />
+				<Attendance type='hasntResponded' members={hasntRespondedMembers} sendInvite={sendInvite} />
 			</ScrollView>
 		</>
 	);
 };
 
+export default MyGarden;
+
 const styles = StyleSheet.create({
-	// card
-	cardHeader: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
-	cardHeaderCancel: {
-		width: spacing.xlSpacing,
-		height: spacing.xlSpacing,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: colors.white + '25',
-		borderRadius: '50%',
-	},
-	cardTextMain: {
-		color: colors.white,
-		fontSize: fontSizes.body,
-	},
-	cardButtonGroup: {
-		flexDirection: 'row',
-		marginTop: spacing.lgSpacing,
-		gap: spacing.lgSpacing,
-	},
-	cardButton: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: colors.white + '25',
-		gap: spacing.xsSpacing,
-		padding: spacing.smSpacing,
-		borderRadius: '50%',
-	},
-	cardButtonIcon: {
-		width: spacing.xlSpacing,
-		height: spacing.xlSpacing,
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderRadius: '50%',
-	},
-	cardButtonText: {
-		color: colors.white,
-		fontSize: fontSizes.body,
-		fontWeight: 'bold',
-	},
-	cardButtonYes: {
-		backgroundColor: colors.success,
-	},
-	cardButtonNo: {
-		backgroundColor: colors.error,
+	bannerScroll: {
+		marginVertical: spacing.xlSpacing,
+		gap: spacing.mdSpacing,
 	},
 });
-
-export default MyGarden;
