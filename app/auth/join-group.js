@@ -1,15 +1,14 @@
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
 import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
 import FormInputText from '../../assets/components/FormInputText';
+import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
-import globalStyles from '../../assets/styles/GlobalStyles';
 
 const JoinGroup = () => {
 	const router = useRouter();
@@ -47,35 +46,33 @@ const JoinGroup = () => {
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-			<View style={globalStyles.containerFlex}>
-				<FormContainer safeArea={safeArea}>
-					<Form>
-						<FormGroup label={lang.form.inviteWord.label} error={inviteWordError} help={lang.form.inviteWord.help} helpHref='/auth/how-do-i-get-an-invite-word'>
-							<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={inviteWordFieldChangeText} />
-						</FormGroup>
-					</Form>
-					<ButtonGroup>
-						<Button
-							text={lang.button.createGroup}
-							color='white'
-							onPress={() =>
-								router.push({
-									pathname: '/auth/create-group',
-									params: { index: 3, title: lang.createGroup.createGroup.title, description: lang.createGroup.createGroup.description },
-								})
-							}
-						/>
-						<Button
-							text={lang.button.join}
-							color={inviteWord.length > 0 ? 'black' : 'grey'}
-							disabled={inviteWord.length == 0 ? true : false}
-							onPress={joinGroup}
-						/>
-					</ButtonGroup>
-				</FormContainer>
-			</View>
-		</TouchableWithoutFeedback>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<Form>
+					<FormGroup label={lang.form.inviteWord.label} error={inviteWordError} help={lang.form.inviteWord.help} helpHref='/auth/how-do-i-get-an-invite-word'>
+						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={inviteWordFieldChangeText} />
+					</FormGroup>
+				</Form>
+				<ButtonGroup>
+					<Button
+						text={lang.button.createGroup}
+						color='white'
+						onPress={() =>
+							router.push({
+								pathname: '/auth/create-group',
+								params: { index: 3, title: lang.createGroup.createGroup.title, description: lang.createGroup.createGroup.description },
+							})
+						}
+					/>
+					<Button
+						text={lang.button.join}
+						color={inviteWord.length > 0 ? 'black' : 'grey'}
+						disabled={inviteWord.length == 0 ? true : false}
+						onPress={joinGroup}
+					/>
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 

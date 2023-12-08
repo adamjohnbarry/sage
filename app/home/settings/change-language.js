@@ -28,9 +28,9 @@ const ChangeLanguage = () => {
 
 	// handle saving language
 	const saveLanguage = () => {
-		if (activeButton === 'EN') {
+		if (activeButton === lang.lang.english.langCode) {
 			setLang(langEN);
-		} else if (activeButton === 'DE') {
+		} else if (activeButton === lang.lang.german.langCode) {
 			setLang(langDE);
 		}
 	};
@@ -42,15 +42,15 @@ const ChangeLanguage = () => {
 					<FormGroup label={lang.form.changeLanguage.label}>
 						<FormButton
 							emoji='🇺🇸'
-							label='English'
-							onPress={() => handleLanguageChange(lang.langCode.english)}
-							active={isLanguageButtonActive(lang.langCode.english)}
+							label={lang.lang.english.name}
+							onPress={() => handleLanguageChange(lang.lang.english.langCode)}
+							active={isLanguageButtonActive(lang.lang.english.langCode)}
 						/>
 						<FormButton
 							emoji='🇩🇪'
 							label='German'
-							onPress={() => handleLanguageChange(lang.langCode.german)}
-							active={isLanguageButtonActive(lang.langCode.german)}
+							onPress={() => handleLanguageChange(lang.lang.german.langCode)}
+							active={isLanguageButtonActive(lang.lang.german.langCode)}
 						/>
 					</FormGroup>
 				</Form>

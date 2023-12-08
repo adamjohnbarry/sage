@@ -50,7 +50,7 @@ const langEN = {
 		},
 		chooseLocation: {
 			title: 'Choose Location',
-			description: 'Select a gardening location for your group. Allow Sage to access your location so we can find some gardens in your area.',
+			description: 'Select a gardening location for your group.',
 			separatorText: 'OR',
 			gardens: [
 				{
@@ -181,9 +181,15 @@ const langEN = {
 			label: 'Change Location',
 		},
 	},
-	langCode: {
-		english: 'EN',
-		german: 'DE',
+	lang: {
+		english: {
+			name: 'English',
+			langCode: 'EN',
+		},
+		german: {
+			name: 'German',
+			langCode: 'DE',
+		},
 	},
 	button: {
 		continue: 'Continue',

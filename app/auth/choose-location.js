@@ -7,6 +7,7 @@ import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
 import FormInputText from '../../assets/components/FormInputText';
 import GardenItem from '../../assets/components/GardenItem';
+import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import Separator from '../../assets/components/Separator';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
@@ -47,23 +48,29 @@ const ChooseLocation = () => {
 	};
 
 	return (
-		<FormContainer safeArea={safeArea}>
-			<ContainerScroll>
-				<FormGroup label={lang.form.privateGarden.label} spacing={true}>
-					<FormInputText placeholder={lang.form.privateGarden.placeholder} value={privateAddress} onChangeText={(text) => setPrivateAddress(text)} />
-				</FormGroup>
-				<Separator text={lang.createGroup.chooseLocation.separatorText} marginBottom={true} />
-				{/* FIX BELOW TO SPACING TRUE */}
-				<FormGroup label={lang.form.localGarden.label} spacing={true}>
-					{localGardens.map((garden, i) => (
-						<GardenItem key={i} {...garden} onPress={() => handleGardenItemChange(garden.address)} active={isGardenItemActive(garden.address)} />
-					))}
-				</FormGroup>
-			</ContainerScroll>
-			<ButtonGroup>
-				<Button text={lang.button.continue} onPress={saveGardenLocation} />
-			</ButtonGroup>
-		</FormContainer>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<ContainerScroll>
+					<FormGroup label={lang.form.privateGarden.label} spacing={true}>
+						<FormInputText placeholder={lang.form.privateGarden.placeholder} value={privateAddress} onChangeText={(text) => setPrivateAddress(text)} />
+					</FormGroup>
+					<Separator text={lang.createGroup.chooseLocation.separatorText} marginBottom={true} />
+					<FormGroup label={lang.form.localGarden.label}>
+						{localGardens.map((garden, i) => (
+							<GardenItem key={i} {...garden} onPress={() => handleGardenItemChange(garden.address)} active={isGardenItemActive(garden.address)} />
+						))}
+					</FormGroup>
+				</ContainerScroll>
+				<ButtonGroup>
+					<Button
+						text={lang.button.continue}
+						color={privateAddress || activeGardenItem ? 'black' : 'grey'}
+						disabled={privateAddress || activeGardenItem ? false : true}
+						onPress={saveGardenLocation}
+					/>
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 

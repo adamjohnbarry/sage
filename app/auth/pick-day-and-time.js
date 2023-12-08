@@ -1,11 +1,12 @@
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
 import ContainerScroll from '../../assets/components/ContainerScroll';
 import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
 import TimeSlot from '../../assets/components/TimeSlot';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
@@ -58,10 +59,7 @@ const PickDayAndTime = () => {
 		<FormContainer safeArea={safeArea}>
 			<ContainerScroll>
 				{lang.createGroup.pickDayAndTime.days.map((day, i) => (
-					<View
-						key={i}
-						style={[globalStyles.formGroup, globalStyles.formGroupSpacing, i == lang.createGroup.pickDayAndTime.days.length - 1 && { marginBottom: 0 }]}
-					>
+					<FormGroup key={i} spacing={i != lang.createGroup.pickDayAndTime.days.length - 1}>
 						<Text style={globalStyles.formLabel}>{day}</Text>
 						<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
 							{lang.createGroup.pickDayAndTime.times.map((time, i) => (
@@ -73,7 +71,7 @@ const PickDayAndTime = () => {
 								/>
 							))}
 						</ScrollView>
-					</View>
+					</FormGroup>
 				))}
 			</ContainerScroll>
 			<ButtonGroup>

@@ -55,6 +55,7 @@ const globalStyles = StyleSheet.create({
 	containerScroll: {
 		flex: 1,
 		flexGrow: 1,
+		marginBottom: spacing.lgSpacing,
 	},
 	containerWhite: {
 		backgroundColor: colors.white,

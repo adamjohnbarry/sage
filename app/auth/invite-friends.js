@@ -10,6 +10,7 @@ import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
 import FormInputText from '../../assets/components/FormInputText';
+import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { spacing } from '../../assets/theme/theme';
@@ -56,26 +57,28 @@ const InviteFriends = () => {
 	};
 
 	return (
-		<FormContainer safeArea={safeArea}>
-			<Form>
-				<FormGroup>
-					<FormInputText placeholder={lang.form.searchContacts.placeholder} value={searchContacts} onChangeText={filterContacts} />
-				</FormGroup>
-				<ContainerScroll>
-					<FlatList
-						data={filteredContacts}
-						style={globalStyles.verticalScroll}
-						ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
-						renderItem={({ item }) => <ContactItem {...item} />}
-						keyExtractor={(item, i) => i}
-					/>
-				</ContainerScroll>
-			</Form>
-			<ButtonGroup>
-				<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
-				<Button text={lang.button.finish} onPress={inviteFriends} />
-			</ButtonGroup>
-		</FormContainer>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<Form>
+					<FormGroup>
+						<FormInputText placeholder={lang.form.searchContacts.placeholder} value={searchContacts} onChangeText={filterContacts} />
+					</FormGroup>
+					<ContainerScroll>
+						<FlatList
+							data={filteredContacts}
+							style={globalStyles.verticalScroll}
+							ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
+							renderItem={({ item }) => <ContactItem {...item} />}
+							keyExtractor={(item, i) => i}
+						/>
+					</ContainerScroll>
+				</Form>
+				<ButtonGroup>
+					<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
+					<Button text={lang.button.finish} onPress={inviteFriends} />
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 

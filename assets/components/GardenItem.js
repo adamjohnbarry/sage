@@ -7,9 +7,10 @@ const GardenItem = ({ address, image, distance, driveTime, onPress, active }) =>
 			<Image source={{ uri: image }} style={styles.gardenItemImage} />
 			<View style={styles.gardenItemInfo}>
 				<Text style={styles.gardenItemInfoName}>{address}</Text>
-				<Text style={styles.gardenItemInfoDescription}>
-					{distance} miles away · {driveTime} min drive
-				</Text>
+				<View style={styles.gardenItemInfoDistance}>
+					<Text style={styles.gardenItemInfoDescription}>{distance} miles away</Text>
+					<Text style={styles.gardenItemInfoDescription}>{driveTime} min drive</Text>
+				</View>
 			</View>
 		</Pressable>
 	);
@@ -44,6 +45,9 @@ const styles = StyleSheet.create({
 	gardenItemInfoName: {
 		fontSize: fontSizes.h3,
 		fontWeight: 'bold',
+	},
+	gardenItemInfoDistance: {
+		gap: spacing.xsSpacing,
 	},
 	gardenItemInfoDescription: {
 		fontSize: fontSizes.body,

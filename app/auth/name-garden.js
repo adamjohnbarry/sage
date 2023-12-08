@@ -1,15 +1,14 @@
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
 import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
 import FormInputText from '../../assets/components/FormInputText';
+import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
-import globalStyles from '../../assets/styles/GlobalStyles';
 
 const NameGarden = () => {
 	const router = useRouter();
@@ -50,38 +49,31 @@ const NameGarden = () => {
 			return;
 		}
 
+		// TODO: this needs to push to db and check if invite word already exists
 		setGarden({ ...garden, name: gardenName, inviteWord: inviteWord.toLowerCase() });
 
 		router.push({
 			pathname: '/auth/choose-location',
-			params: { index: 5, title: lang.createGroup.inviteFriends.title, description: lang.createGroup.inviteFriends.description },
+			params: { index: 5, title: lang.createGroup.chooseLocation.title, description: lang.createGroup.chooseLocation.description },
 		});
-
-		// router.push('', pa{
-		// 	index: 5,
-		// 	title: lang.createGroup.chooseLocation.title,
-		// 	description: lang.createGroup.chooseLocation.description,
-		// });
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-			<View style={globalStyles.containerFlex}>
-				<FormContainer safeArea={safeArea}>
-					<Form>
-						<FormGroup label={lang.form.gardenName.label} error={gardenNameError}>
-							<FormInputText placeholder={lang.form.gardenName.placeholder} value={gardenName} onChangeText={handleGardenNameChange} />
-						</FormGroup>
-						<FormGroup label={lang.form.inviteWord.label} error={inviteWordError}>
-							<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={handleInviteWordChange} />
-						</FormGroup>
-					</Form>
-					<ButtonGroup>
-						<Button text={lang.button.continue} onPress={updateGardenDetails} />
-					</ButtonGroup>
-				</FormContainer>
-			</View>
-		</TouchableWithoutFeedback>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<Form>
+					<FormGroup label={lang.form.gardenName.label} error={gardenNameError}>
+						<FormInputText placeholder={lang.form.gardenName.placeholder} value={gardenName} onChangeText={handleGardenNameChange} />
+					</FormGroup>
+					<FormGroup label={lang.form.inviteWord.label} error={inviteWordError}>
+						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={handleInviteWordChange} />
+					</FormGroup>
+				</Form>
+				<ButtonGroup>
+					<Button text={lang.button.continue} onPress={updateGardenDetails} />
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 

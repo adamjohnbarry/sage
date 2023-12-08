@@ -1,8 +1,8 @@
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import globalStyles from '../styles/GlobalStyles';
 
 const ContainerScroll = ({ children }) => {
-	return <View style={globalStyles.containerScroll}>{children}</View>;
+	return <ScrollView style={globalStyles.containerScroll}>{children}</ScrollView>;
 };
 
 export default ContainerScroll;
