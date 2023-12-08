@@ -2,12 +2,14 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { auth } from '../../firebaseConfig';
+import { LangContext } from './Contexts';
 
 const UserContext = createContext();
 
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
+	const { lang } = useContext(LangContext);
 	const [user, setUser] = useState(null);
 	const [garden, setGarden] = useState(null);
 	const [gardenDaysTimes, setGardenDaysTimes] = useState({});
@@ -40,7 +42,6 @@ export const UserProvider = ({ children }) => {
 	}, []);
 
 	const createUserAccount = useCallback(async (email, password) => {
-		console.log('ep: ', email, password);
 		if (!email || !password) {
 			console.error('Email or password is missing.');
 			return false;
@@ -90,7 +91,7 @@ export const UserProvider = ({ children }) => {
 			});
 
 			if (!garden) {
-				console.error('Garden not found.');
+				console.log('Garden not found.');
 				return false;
 			}
 
@@ -107,27 +108,33 @@ export const UserProvider = ({ children }) => {
 	const submitRegistration = useCallback(async () => {
 		if (!user || !garden) {
 			console.error('User or Garden data is incomplete.');
-			return false;
+			return { success: false, message: lang.error.userRegistration };
 		}
 
 		const db = getFirestore();
 		try {
+			const gardensRef = collection(db, 'gardens');
+			const querySnapshot = await getDocs(query(gardensRef, where('inviteWord', '==', garden.inviteWord)));
+
+			if (!querySnapshot.empty) {
+				return { success: false, message: lang.error.inviteWordExistsError };
+			}
+
 			// Update user in the database
 			const userRef = doc(db, 'users', user.uid);
 			await updateDoc(userRef, user);
 
 			// Add garden to the database
-			const gardenRef = await addDoc(collection(db, 'gardens'), garden);
-
-			// Update user's gardenId
+			const gardenRef = await addDoc(gardensRef, garden);
 			await updateDoc(userRef, { gardenId: gardenRef.id });
 
-			return true;
+			return { success: true };
 		} catch (error) {
 			console.error('Error submitting registration:', error);
-			return false;
+			return { success: false, message: lang.error.userRegistration };
 		}
 	}, [user, garden]);
+
 
 	const updateUserPhoto = useCallback(
 		async (photoUrl) => {
@@ -197,6 +204,15 @@ export const UserProvider = ({ children }) => {
 		[user]
 	);
 
+	const checkInviteWordAvailability = useCallback(async (inviteWord) => {
+		const db = getFirestore();
+		const gardensRef = collection(db, 'gardens');
+		const querySnapshot = await getDocs(query(gardensRef, where('inviteWord', '==', inviteWord.toLowerCase())));
+	  
+		return querySnapshot.empty; // Returns true if invite word is available
+	  }, []);
+	  
+
 	useEffect(() => {
 		console.log('USER UPDATED: ', user);
 	}, [user]);
@@ -225,6 +241,7 @@ export const UserProvider = ({ children }) => {
 				createUserAccount,
 				joinGarden,
 				updateUserPhoto,
+				checkInviteWordAvailability,
 			}}
 		>
 			{children}

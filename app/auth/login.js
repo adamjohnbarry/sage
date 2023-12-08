@@ -7,6 +7,7 @@ import ButtonGroup from '../../assets/components/ButtonGroup';
 import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
+import globalStyles from '../../assets/styles/GlobalStyles';
 import FormInputText from '../../assets/components/FormInputText';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';

@@ -15,13 +15,13 @@ const _layout = () => {
 	const [lang, setLang] = useState(langEN);
 
 	return (
-		<UserProvider>
-			<SafeAreaContext.Provider value={{ safeArea }}>
-				<LangContext.Provider value={{ lang, setLang }}>
+		<LangContext.Provider value={{ lang, setLang }}>
+			<UserProvider>
+				<SafeAreaContext.Provider value={{ safeArea }}>
 					<Slot />
-				</LangContext.Provider>
-			</SafeAreaContext.Provider>
-		</UserProvider>
+				</SafeAreaContext.Provider>
+			</UserProvider>
+		</LangContext.Provider>
 	);
 };
 

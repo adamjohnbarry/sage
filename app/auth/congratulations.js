@@ -21,27 +21,24 @@ const Congratulations = () => {
 	const confettiRef = useRef(null);
 
 	useEffect(() => {
-		submitData = async () => {
-			try {
-				const success = await submitRegistration();
+		const submitData = async () => {
+			setIsLoading(true);
+			const { success, message } = await submitRegistration(lang);
 
-				// if registration worked
-				if (success) {
-					if (confettiRef.current) {
-						confettiRef.current.startConfetti();
-					}
-				} else {
-					setError(lang.createGroup.congratulations.registrationError);
+			if (success) {
+				if (confettiRef.current) {
+					confettiRef.current.startConfetti();
 				}
-			} catch (err) {
-				setError(lang.createGroup.congratulations.gardenCreationError);
-			} finally {
-				setIsLoading(false);
+			} else {
+				setError(message);
 			}
+
+			setIsLoading(false);
 		};
 
 		submitData();
-	}, []);
+	}, [lang]);
+
 
 	// render the day and time of your garden events
 	const renderGardenDaysTimes = () => {
