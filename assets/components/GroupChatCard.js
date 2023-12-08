@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import globalStyles from '../styles/GlobalStyles';
 import ChevronRight from '../icons/ChevronRight';
 import { spacing, colors, } from '../theme/theme';
@@ -7,9 +7,8 @@ import { MEMBERS } from '../data/members';
 import { Dimensions } from 'react-native';
 import Message from '../icons/message';
 
-export default function GroupChatCard() {
+export default function GroupChatCard({ onPress }) {
 
-    const windowWidth = Dimensions.get('window').width;
     const latestMessage = "Let's add some tulips this week...";
 
     // This function generates a random position for the image inside the circle
@@ -28,7 +27,7 @@ export default function GroupChatCard() {
 
 
     return (
-        <View style={styles.cardContainer}>
+        <TouchableOpacity style={styles.cardContainer} onPress={onPress}>
             <View style={styles.profileImagesContainer}>
                 {MEMBERS.slice(0, 3).map((member, index) => {
                     const imageSize = 26; // Use a fixed size for this example
@@ -51,14 +50,14 @@ export default function GroupChatCard() {
                 })}
             </View>
             <View style={styles.messageContainer}>
-                <View style={{flexDirection: 'row', gap: spacing.xsSpacing, alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', gap: spacing.xsSpacing, alignItems: 'center' }}>
                     <Message />
                     <Text style={globalStyles.subtitle}>Group Chat</Text>
                 </View>
                 <Text style={styles.messageText} numberOfLines={1}>{latestMessage}</Text>
             </View>
             <ChevronRight />
-        </View>
+        </TouchableOpacity>
     );
 }
 
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
         padding: spacing.lgSpacing,
         borderRadius: spacing.mdSpacing,
         backgroundColor: colors.fog,
-        marginBottom: 16,
         height: 104,
         width: Dimensions.get('window').width - 2 * spacing.xlSpacing,
     },

@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.secondary,
         padding: spacing.lgSpacing,
+        marginRight: spacing.mdSpacing,
         borderRadius: spacing.lgSpacing,
         justifyContent: 'center',
         height: 104,

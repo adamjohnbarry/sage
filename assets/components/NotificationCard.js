@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'start',
-		marginTop: spacing.mdSpacing,
+		marginHorizontal: spacing.xlSpacing,
 	},
 	message: {
 		fontSize: fontSizes.body,

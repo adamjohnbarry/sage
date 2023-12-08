@@ -128,17 +128,14 @@ const globalStyles = StyleSheet.create({
 		height: '100%',
 	},
 	horizontalScroll: {
-		paddingBottom: spacing.smSpacing,
+		paddingHorizontal: spacing.xlSpacing,
 	},
 
 	// main screen section
 	sectionTitleText: {
 		color: colors.black,
-		fontSize: fontSizes.h3,
-		fontWeight: 'bold',
-	},
-	sectionBodyContainer: {
-		marginTop: spacing.lgSpacing,
+		...this.h3,
+		paddingHorizontal: spacing.xlSpacing,
 	},
 
 	// fonts
@@ -168,7 +165,7 @@ const globalStyles = StyleSheet.create({
 	},
 	h3: {
 		fontSize: fontSizes.h3,
-		fontFamily: 'Adelle-Regular',
+		fontFamily: 'Adelle-Bold',
 		lineHeight: 150 / 100 * fontSizes.h3,
 	},
 	h4: {

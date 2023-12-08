@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import * as SMS from 'expo-sms';
 import { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Attendance from '../../assets/components/Attendance';
 import Header from '../../assets/components/Header';
@@ -11,6 +11,7 @@ import { MEMBERS } from '../../assets/data/members';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import AttendanceNotification from '../../assets/components/AttendanceNotification';
 import GroupChatCard from '../../assets/components/GroupChatCard';
+import { spacing } from '../../assets/theme/theme';
 
 const MyGarden = () => {
 	const { user } = useUser();
@@ -37,7 +38,7 @@ const MyGarden = () => {
 	const hasntRespondedMembers = members.filter((member) => member.attendingNextSession === -1);
 
 	// send invite to a friend
-	const sendInvite = async () => {
+	const sendInvite = async (phoneNumbers) => {
 		const isAvailable = await SMS.isAvailableAsync();
 
 		if (isAvailable) {
@@ -76,21 +77,35 @@ const MyGarden = () => {
 			/>
 			{/* update the header to reflect the name */}
 			<ScrollView style={globalStyles.containerWhite}>
-				<View style={[globalStyles.container, globalStyles.containerMain]}>
-					<ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-						{showAttendanceNotification && (
-							<AttendanceNotification onYesPress={handleYesAttending} onNoPress={handleNoAttending} />
-						)}
-						<GroupChatCard />
-					</ScrollView>
-
-					<Attendance type='attending' members={attendingMembers} sendInvite={sendInvite} />
-					<Attendance type='notAttending' members={notAttendingMembers} sendInvite={sendInvite} />
-					<Attendance type='hasntResponded' members={hasntRespondedMembers} sendInvite={sendInvite} />
-				</View>
+				<ScrollView
+					style={styles.bannerScroll}
+					horizontal={true}
+					showsHorizontalScrollIndicator={false}
+					decelerationRate={0}
+					snapToInterval={Dimensions.get('window').width - (2 * spacing.xlSpacing + spacing.mdSpacing) - 30}
+					snapToAlignment={"left"}
+					contentContainerStyle={{
+						paddingHorizontal: spacing.xlSpacing
+					}}
+				>
+					{showAttendanceNotification && (
+						<AttendanceNotification onYesPress={handleYesAttending} onNoPress={handleNoAttending} />
+					)}
+					<GroupChatCard onPress={() => sendInvite(members.filter(m => m.name !== 'Me').map(m => m.phone))}/>
+				</ScrollView>
+				<Attendance type='attending' members={attendingMembers} sendInvite={sendInvite} />
+				<Attendance type='notAttending' members={notAttendingMembers} sendInvite={sendInvite} />
+				<Attendance type='hasntResponded' members={hasntRespondedMembers} sendInvite={sendInvite} />
 			</ScrollView>
 		</>
 	);
 };
 
 export default MyGarden;
+
+const styles = StyleSheet.create({
+	bannerScroll: {
+		marginVertical: spacing.xlSpacing,
+		gap: spacing.mdSpacing,
+	},
+});
