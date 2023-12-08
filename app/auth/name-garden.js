@@ -15,7 +15,7 @@ const NameGarden = () => {
 	const router = useRouter();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
-	const { garden, setGarden, checkInviteWordAvailability, } = useUser();
+	const { garden, setGarden } = useUser();
 
 	const [gardenName, setGardenName] = useState('');
 	const [inviteWord, setInviteWord] = useState('');
@@ -38,12 +38,7 @@ const NameGarden = () => {
 		setInviteWord(text);
 	};
 
-	const updateGardenDetails = async () => {
-		const isAvailable = await checkInviteWordAvailability(inviteWord);
-		if (!isAvailable) {
-			setInviteWordError(lang.error.inviteWordAlreadyExistsError);
-			return;
-		}
+	const updateGardenDetails = () => {
 		if (!gardenName || gardenName.length === 0) {
 			setGardenNameError(lang.error.gardenNameEmpty);
 
@@ -62,6 +57,12 @@ const NameGarden = () => {
 			pathname: '/auth/choose-location',
 			params: { index: 5, title: lang.createGroup.inviteFriends.title, description: lang.createGroup.inviteFriends.description },
 		});
+
+		// router.push('', pa{
+		// 	index: 5,
+		// 	title: lang.createGroup.chooseLocation.title,
+		// 	description: lang.createGroup.chooseLocation.description,
+		// });
 	};
 
 	return (
