@@ -1,11 +1,11 @@
 import { Image, Pressable, StyleSheet, Text } from 'react-native';
 import { colors, fontSizes, spacing } from '../theme/theme';
 
-const PersonButton = ({ photo, firstName, onPress }) => {
+const PersonButton = ({ member, onMemberTap }) => {
 	return (
-		<Pressable style={styles.personButton} onPress={onPress}>
-			<Image source={photo} style={styles.personPhoto} />
-			<Text style={styles.personName}>{firstName}</Text>
+		<Pressable style={styles.personButton} onPress={() => onMemberTap(member)}>
+			<Image source={member.photo} style={styles.personPhoto} />
+			<Text style={styles.personName}>{member.name.split(' ')[0]}</Text>
 		</Pressable>
 	);
 };
