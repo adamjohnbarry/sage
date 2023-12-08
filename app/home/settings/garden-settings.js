@@ -17,12 +17,13 @@ import { colors, fontSizes, spacing } from '../../../assets/theme/theme';
 
 const GardenSettings = () => {
 	const router = useRouter();
-	const { garden, gardenDaysTimes, setGardenDaysTimes, updateGardenDetails } = useUser();
+	const { garden, gardenDaysTimes, setGardenDaysTimes, updateGardenDetails, checkInviteWordAvailability } = useUser();
 	const { lang } = useContext(LangContext);
 
 	const [isChanged, setIsChanged] = useState(false);
 	const [gardenName, setGardenName] = useState(garden?.name);
 	const [inviteWord, setInviteWord] = useState(garden?.inviteWord);
+	const [inviteWordError, setInviteWordError] = useState('');
 	const [gardenAddress, setGardenAddress] = useState(garden?.address);
 	const [members, setMembers] = useState(garden?.members ?? []);
 	const [meetingDays, setMeetingDays] = useState(gardenDaysTimes || {});
@@ -34,26 +35,34 @@ const GardenSettings = () => {
 	useEffect(() => {
 		setIsChanged(
 			gardenName !== garden?.name ||
-				inviteWord !== garden?.inviteWord ||
-				gardenAddress !== garden?.address ||
-				JSON.stringify(meetingDays) !== JSON.stringify(gardenDaysTimes) // compare stringified objects
+			inviteWord !== garden?.inviteWord ||
+			gardenAddress !== garden?.address ||
+			JSON.stringify(meetingDays) !== JSON.stringify(gardenDaysTimes) // compare stringified objects
 		);
 	}, [gardenName, inviteWord, gardenAddress, meetingDays]);
 
-	const handleSave = () => {
+	const handleSave = async () => {
 		if (isChanged) {
-			updateGardenDetails({
-				...garden,
-				name: gardenName,
-				inviteWord: inviteWord,
-				address: gardenAddress,
-				meetingDays: meetingDays,
-			});
+			console.log(inviteWord)
+			const isAvailable = await checkInviteWordAvailability(inviteWord);
+			console.log(isAvailable)
 
-			setGardenDaysTimes(meetingDays);
+			if (!isAvailable) {
+				setInviteWordError(lang.error.inviteWordAlreadyExistsError);
+				return;
+			} else {
+				updateGardenDetails({
+					...garden,
+					name: gardenName,
+					inviteWord: inviteWord,
+					address: gardenAddress,
+					meetingDays: meetingDays,
+				});
+
+				setGardenDaysTimes(meetingDays);
+				router.back();
+			}
 		}
-
-		router.back();
 	};
 
 	const inviteMembers = async () => {
@@ -81,7 +90,7 @@ const GardenSettings = () => {
 					<FormGroup label={lang.form.gardenName.label} spacing={true}>
 						<FormInputText placeholder={lang.form.gardenName.placeholder} value={gardenName} onChangeText={(text) => setGardenName(text)} />
 					</FormGroup>
-					<FormGroup label={lang.form.inviteWord.label} spacing={true}>
+					<FormGroup label={lang.form.inviteWord.label} spacing={true} error={inviteWordError}>
 						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={(text) => setInviteWord(text)} />
 					</FormGroup>
 					<FormGroup label={lang.form.changeLocation.label} spacing={true}>
