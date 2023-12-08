@@ -1,15 +1,14 @@
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
 import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
 import FormInputText from '../../assets/components/FormInputText';
+import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
-import globalStyles from '../../assets/styles/GlobalStyles';
 
 const UploadName = () => {
 	const router = useRouter();
@@ -35,28 +34,32 @@ const UploadName = () => {
 	// update account with name
 	const updateDisplayName = async (e) => {
 		e.preventDefault();
-		setUser({ ...user, name });
-		router.push({
-			pathname: '/auth/upload-number',
-			params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
-		});
+
+		if (!name) {
+			setNameError(lang.error.nameEmpty);
+		} else {
+			setUser({ ...user, name });
+
+			router.push({
+				pathname: '/auth/upload-number',
+				params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
+			});
+		}
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-			<View style={globalStyles.containerFlex}>
-				<FormContainer safeArea={safeArea}>
-					<Form>
-						<FormGroup label={lang.form.name.label} error={nameError}>
-							<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={nameFieldChangeText} />
-						</FormGroup>
-					</Form>
-					<ButtonGroup>
-						<Button text={lang.button.continue} onPress={updateDisplayName} />
-					</ButtonGroup>
-				</FormContainer>
-			</View>
-		</TouchableWithoutFeedback>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<Form>
+					<FormGroup label={lang.form.name.label} error={nameError}>
+						<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={nameFieldChangeText} />
+					</FormGroup>
+				</Form>
+				<ButtonGroup>
+					<Button text={lang.button.continue} onPress={updateDisplayName} />
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 

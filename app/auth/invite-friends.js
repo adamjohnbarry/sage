@@ -5,7 +5,6 @@ import { FlatList, View } from 'react-native';
 import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
 import ContactItem from '../../assets/components/ContactItem';
-import ContainerScroll from '../../assets/components/ContainerScroll';
 import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
@@ -56,26 +55,26 @@ const InviteFriends = () => {
 	};
 
 	return (
+		// <PressOutsideInput>
 		<FormContainer safeArea={safeArea}>
 			<Form>
 				<FormGroup>
 					<FormInputText placeholder={lang.form.searchContacts.placeholder} value={searchContacts} onChangeText={filterContacts} />
 				</FormGroup>
-				<ContainerScroll>
-					<FlatList
-						data={filteredContacts}
-						style={globalStyles.verticalScroll}
-						ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
-						renderItem={({ item }) => <ContactItem {...item} />}
-						keyExtractor={(item, i) => i}
-					/>
-				</ContainerScroll>
+				<FlatList
+					data={filteredContacts}
+					style={globalStyles.verticalScroll}
+					ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
+					renderItem={({ item }) => <ContactItem {...item} />}
+					keyExtractor={(item, i) => i}
+				/>
 			</Form>
 			<ButtonGroup>
 				<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
 				<Button text={lang.button.finish} onPress={inviteFriends} />
 			</ButtonGroup>
 		</FormContainer>
+		// </PressOutsideInput>
 	);
 };
 

@@ -13,7 +13,6 @@ const Root = () => {
   const router = useRouter();
   const { safeArea } = useContext(SafeAreaContext);
   const { lang } = useContext(LangContext);
-
   return (
     <View style={[globalStyles.containerFlex]}>
       <ImageBackground source={LoginScreenImage} resizeMode='cover' style={globalStyles.backgroundImage}>

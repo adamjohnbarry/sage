@@ -1,6 +1,6 @@
 import { Stack, useRouter } from 'expo-router';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useContext, useRef, useState } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Confetti from 'react-native-confetti';
 import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
@@ -20,28 +20,28 @@ const Congratulations = () => {
 
 	const confettiRef = useRef(null);
 
-	useEffect(() => {
-		submitData = async () => {
-			try {
-				const success = await submitRegistration();
+	// useEffect(() => {
+	// 	submitData = async () => {
+	// 		try {
+	// 			const success = await submitRegistration();
 
-				// if registration worked
-				if (success) {
-					if (confettiRef.current) {
-						confettiRef.current.startConfetti();
-					}
-				} else {
-					setError(lang.createGroup.congratulations.registrationError);
-				}
-			} catch (err) {
-				setError(lang.createGroup.congratulations.gardenCreationError);
-			} finally {
-				setIsLoading(false);
-			}
-		};
+	// 			// if registration worked
+	// 			if (success) {
+	// 				if (confettiRef.current) {
+	// 					confettiRef.current.startConfetti();
+	// 				}
+	// 			} else {
+	// 				setError(lang.createGroup.congratulations.registrationError);
+	// 			}
+	// 		} catch (err) {
+	// 			setError(lang.createGroup.congratulations.gardenCreationError);
+	// 		} finally {
+	// 			setIsLoading(false);
+	// 		}
+	// 	};
 
-		submitData();
-	}, []);
+	// 	submitData();
+	// }, []);
 
 	useEffect(() => {
 		// Start confetti when loading is finished and there is no error
@@ -68,9 +68,19 @@ const Congratulations = () => {
 	// while we are waiting for the congratulations page results
 	if (isLoading) {
 		return (
-			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
-				<Text>{lang.createGroup.congratulations.loading}</Text>
-			</View>
+			<>
+				{/* hide the header for this screen */}
+				<Stack.Screen options={{ headerShown: false }} />
+				{/* show the loading content */}
+				<View
+					style={[
+						styles.congratulationsContainer,
+						{ justifyContent: 'center', alignItems: 'center', paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom },
+					]}
+				>
+					<ActivityIndicator size='small' color={colors.black} />
+				</View>
+			</>
 		);
 	}
 

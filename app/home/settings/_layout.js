@@ -11,7 +11,7 @@ const _layout = () => {
 			screenOptions={{
 				header: (props) => <Header {...props} safeArea={safeArea} />,
 			}}
-		/>
+		></Stack>
 	);
 };
 

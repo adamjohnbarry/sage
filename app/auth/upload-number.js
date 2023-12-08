@@ -1,6 +1,5 @@
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 import validator from 'validator';
 import Button from '../../assets/components/Button';
@@ -8,6 +7,7 @@ import ButtonGroup from '../../assets/components/ButtonGroup';
 import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
+import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 import globalStyles from '../../assets/styles/GlobalStyles';
@@ -38,6 +38,8 @@ const UploadNumber = () => {
 
 		if (phoneNumberError) {
 			console.log(lang.error.phoneNumberUploadError);
+		} else if (!phoneNumber) {
+			setPhoneNumberError(lang.error.numberEmptyError);
 		} else {
 			setUser({ ...user, phoneNumber });
 
@@ -49,20 +51,18 @@ const UploadNumber = () => {
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-			<View style={globalStyles.containerFlex}>
-				<FormContainer safeArea={safeArea}>
-					<Form>
-						<FormGroup label={lang.form.phoneNumber.label} error={phoneNumberError}>
-							<PhoneInput value={phoneNumber} onChangePhoneNumber={phoneNumberChangeNumber} style={globalStyles.formInput} />
-						</FormGroup>
-					</Form>
-					<ButtonGroup>
-						<Button text={lang.button.continue} onPress={updatePhoneNumber} />
-					</ButtonGroup>
-				</FormContainer>
-			</View>
-		</TouchableWithoutFeedback>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<Form>
+					<FormGroup label={lang.form.phoneNumber.label} error={phoneNumberError}>
+						<PhoneInput value={phoneNumber} onChangePhoneNumber={phoneNumberChangeNumber} style={globalStyles.formInput} />
+					</FormGroup>
+				</Form>
+				<ButtonGroup>
+					<Button text={lang.button.continue} onPress={updatePhoneNumber} />
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 

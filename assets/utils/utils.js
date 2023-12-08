@@ -50,7 +50,7 @@ const langEN = {
 		},
 		chooseLocation: {
 			title: 'Choose Location',
-			description: 'Select a gardening location for your group. Allow Sage to access your location so we can find some gardens in your area.',
+			description: 'Select a gardening location for your group.',
 			separatorText: 'OR',
 			gardens: [
 				{
@@ -110,6 +110,16 @@ const langEN = {
 		accountSettings: {},
 		changeLocation: {
 			title: 'Change Location',
+		},
+		changeLanguage: {
+			english: {
+				name: 'English',
+				langCode: 'EN',
+			},
+			german: {
+				name: 'German',
+				langCode: 'DE',
+			},
 		},
 		settingsList: [
 			{ title: 'Garden Settings' },
@@ -181,10 +191,6 @@ const langEN = {
 			label: 'Change Location',
 		},
 	},
-	langCode: {
-		english: 'EN',
-		german: 'DE',
-	},
 	button: {
 		continue: 'Continue',
 		cancel: 'Cancel',
@@ -212,10 +218,11 @@ const langEN = {
 		nameEmpty: 'Name cannot be empty.',
 		nameUploadError: "Could not update user's name.",
 		validPhoneNumber: 'Please enter a valid phone number.',
+		numberEmptyError: 'Phone number cannot be empty.',
 		phoneNumberUploadError: "Could not update user's number.",
 		photoRetrievalError: "Could not retrieve user's photo.",
 		photoUploadError: "Could not update user's photo.",
-		inviteWordLengthError: 'Invite word cannot be empty.',
+		inviteWordEmptyError: 'Invite word cannot be empty.',
 		inviteWordDoesntExistError: 'Invite word does not exist.',
 		inviteWordAlreadyExistsError: 'Invite word has already been taken.',
 		gardenNameEmpty: 'Garden name cannot be empty.',

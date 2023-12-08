@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { View } from 'react-native';
 import Button from '../../../assets/components/Button';
 import ButtonGroup from '../../../assets/components/ButtonGroup';
 import Form from '../../../assets/components/Form';
@@ -7,14 +6,13 @@ import FormButton from '../../../assets/components/FormButton';
 import FormContainer from '../../../assets/components/FormContainer';
 import FormGroup from '../../../assets/components/FormGroup';
 import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
-import globalStyles from '../../../assets/styles/GlobalStyles';
 import { langDE, langEN } from '../../../assets/utils/utils';
 
 const ChangeLanguage = () => {
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang, setLang } = useContext(LangContext);
 
-	const [activeButton, setActiveButton] = useState(lang.langCode.english);
+	const [activeButton, setActiveButton] = useState(lang.settings.changeLanguage.english.langCode);
 
 	// handle language button changing
 	const handleLanguageChange = (id) => {
@@ -28,37 +26,37 @@ const ChangeLanguage = () => {
 
 	// handle saving language
 	const saveLanguage = () => {
-		if (activeButton === 'EN') {
+		if (activeButton === lang.settings.changeLanguage.english.langCode) {
 			setLang(langEN);
-		} else if (activeButton === 'DE') {
+		} else if (activeButton === lang.settings.changeLanguage.german.langCode) {
 			setLang(langDE);
 		}
+
+		router.back();
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { paddingBottom: safeArea.paddingBottom }]}>
-			<FormContainer>
-				<Form>
-					<FormGroup label={lang.form.changeLanguage.label}>
-						<FormButton
-							emoji='🇺🇸'
-							label='English'
-							onPress={() => handleLanguageChange(lang.langCode.english)}
-							active={isLanguageButtonActive(lang.langCode.english)}
-						/>
-						<FormButton
-							emoji='🇩🇪'
-							label='German'
-							onPress={() => handleLanguageChange(lang.langCode.german)}
-							active={isLanguageButtonActive(lang.langCode.german)}
-						/>
-					</FormGroup>
-				</Form>
-				<ButtonGroup>
-					<Button text={lang.button.save} color='green' onPress={saveLanguage} />
-				</ButtonGroup>
-			</FormContainer>
-		</View>
+		<FormContainer safeArea={safeArea}>
+			<Form>
+				<FormGroup label={lang.form.changeLanguage.label}>
+					<FormButton
+						emoji='🇺🇸'
+						label={lang.settings.changeLanguage.english.name}
+						onPress={() => handleLanguageChange(lang.settings.changeLanguage.english.langCode)}
+						active={isLanguageButtonActive(lang.settings.changeLanguage.english.langCode)}
+					/>
+					<FormButton
+						emoji='🇩🇪'
+						label={lang.settings.changeLanguage.german.name}
+						onPress={() => handleLanguageChange(lang.settings.changeLanguage.german.langCode)}
+						active={isLanguageButtonActive(lang.settings.changeLanguage.german.langCode)}
+					/>
+				</FormGroup>
+			</Form>
+			<ButtonGroup>
+				<Button text={lang.button.save} color='black' onPress={saveLanguage} />
+			</ButtonGroup>
+		</FormContainer>
 	);
 };
 

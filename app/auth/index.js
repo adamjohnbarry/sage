@@ -1,6 +1,5 @@
 import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import validator from 'validator';
 import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
@@ -8,9 +7,9 @@ import Form from '../../assets/components/Form';
 import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
 import FormInputText from '../../assets/components/FormInputText';
+import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
-import globalStyles from '../../assets/styles/GlobalStyles';
 
 const Register = () => {
 	const router = useRouter();
@@ -100,36 +99,34 @@ const Register = () => {
 	};
 
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-			<View style={globalStyles.containerFlex}>
-				<FormContainer safeArea={safeArea}>
-					<Form>
-						<FormGroup label={lang.form.email.label} error={emailError}>
-							<FormInputText placeholder={lang.form.email.placeholder} keyboardType='email-address' value={email} onChangeText={emailFieldChangeText} />
-						</FormGroup>
-						<FormGroup label={lang.form.passwordRegistration.label} error={passwordError}>
-							<FormInputText
-								placeholder={lang.form.passwordRegistration.placeholder}
-								value={password}
-								secureTextEntry={true}
-								onChangeText={passwordFieldChangeText}
-							/>
-						</FormGroup>
-						<FormGroup label={lang.form.confirmPassword.label} error={confirmPasswordError}>
-							<FormInputText
-								placeholder={lang.form.confirmPassword.placeholder}
-								value={confirmPassword}
-								secureTextEntry={true}
-								onChangeText={confirmPasswordFieldChangeText}
-							/>
-						</FormGroup>
-					</Form>
-					<ButtonGroup>
-						<Button text={lang.button.continue} onPress={createAccount} />
-					</ButtonGroup>
-				</FormContainer>
-			</View>
-		</TouchableWithoutFeedback>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<Form>
+					<FormGroup label={lang.form.email.label} error={emailError}>
+						<FormInputText placeholder={lang.form.email.placeholder} keyboardType='email-address' value={email} onChangeText={emailFieldChangeText} />
+					</FormGroup>
+					<FormGroup label={lang.form.passwordRegistration.label} error={passwordError}>
+						<FormInputText
+							placeholder={lang.form.passwordRegistration.placeholder}
+							value={password}
+							secureTextEntry={true}
+							onChangeText={passwordFieldChangeText}
+						/>
+					</FormGroup>
+					<FormGroup label={lang.form.confirmPassword.label} error={confirmPasswordError}>
+						<FormInputText
+							placeholder={lang.form.confirmPassword.placeholder}
+							value={confirmPassword}
+							secureTextEntry={true}
+							onChangeText={confirmPasswordFieldChangeText}
+						/>
+					</FormGroup>
+				</Form>
+				<ButtonGroup>
+					<Button text={lang.button.continue} onPress={createAccount} />
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 
