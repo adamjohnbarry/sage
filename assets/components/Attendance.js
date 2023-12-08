@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import PersonButton from '../../assets/components/PersonButton';
 import globalStyles from '../../assets/styles/GlobalStyles';
-import NotificationCard from './NotificationCard';
+import { LangContext } from '../contexts/Contexts';
 import { spacing } from '../theme/theme';
+import NotificationCard from './NotificationCard';
 
-export default function Attendance({ type, members, sendInvite }) {
+export default function Attendance({ type, members, sendCheckIn }) {
 	const [showNotification, setShowNotification] = useState(true);
+	const { lang } = useContext(LangContext);
+
 	const titleMap = {
-		attending: 'Attending',
-		notAttending: 'Not Attending',
-		hasntResponded: "Hasn't Responded",
+		attending: lang.myGarden.sections.attending,
+		notAttending: lang.myGarden.sections.notAttending,
+		hasntResponded: lang.myGarden.sections.hasntResponded,
 	};
 
 	function handleClose() {
@@ -20,12 +23,10 @@ export default function Attendance({ type, members, sendInvite }) {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>{titleMap[type]}</Text>
-			{type === 'hasntResponded' && showNotification && (
-				<NotificationCard message={`Message your group members to encourage them to attend this week!`} onClose={() => handleClose()} />
-			)}
+			{type === 'hasntResponded' && showNotification && <NotificationCard message={lang.myGarden.notification.message} onClose={() => handleClose()} />}
 			<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
 				{members.map((member) => (
-					<PersonButton key={member.name} photo={member.photo} firstName={member.name.split(' ')[0]} onPress={sendInvite} />
+					<PersonButton key={member.name} photo={member.photo} firstName={member.name.split(' ')[0]} onPress={sendCheckIn} />
 				))}
 			</ScrollView>
 		</View>
@@ -35,11 +36,10 @@ export default function Attendance({ type, members, sendInvite }) {
 const styles = StyleSheet.create({
 	container: {
 		marginBottom: spacing.lgSpacing,
-		gap: spacing.mdSpacing
+		gap: spacing.mdSpacing,
 	},
 	title: {
 		...globalStyles.h3,
 		marginHorizontal: spacing.xlSpacing,
 	},
-
 });

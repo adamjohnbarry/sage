@@ -38,8 +38,6 @@ const UploadNumber = () => {
 
 		if (phoneNumberError) {
 			console.log(lang.error.phoneNumberUploadError);
-		} else if (!phoneNumber) {
-			setPhoneNumberError(lang.error.numberEmptyError);
 		} else {
 			setUser({ ...user, phoneNumber });
 
@@ -59,7 +57,7 @@ const UploadNumber = () => {
 					</FormGroup>
 				</Form>
 				<ButtonGroup>
-					<Button text={lang.button.continue} onPress={updatePhoneNumber} />
+					<Button text={lang.button.continue} color={phoneNumber ? 'black' : 'grey'} disabled={phoneNumber ? false : true} onPress={updatePhoneNumber} />
 				</ButtonGroup>
 			</FormContainer>
 		</PressOutsideInput>

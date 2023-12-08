@@ -1,5 +1,5 @@
 import { Stack, useRouter } from 'expo-router';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import Confetti from 'react-native-confetti';
 import Button from '../../assets/components/Button';

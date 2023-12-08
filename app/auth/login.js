@@ -39,17 +39,7 @@ const Login = () => {
 
 			// navigate to the 'My Garden' page after successful login and data fetch
 			router.replace('/home/my-garden');
-		} catch (err) {
-			if (err.code === 'auth/invalid-email') {
-				setEmailError('Please enter a valid email.');
-			} else if (err.code === 'auth/wrong-password') {
-				setPasswordError('Password is incorrect.'); // Use 'auth/wrong-password' for incorrect password
-			} else if (err.code === 'auth/user-not-found') {
-				setPasswordError('Email does not exist.'); // Use 'auth/user-not-found' for email not existing
-			} else {
-				console.log(`${err.code}: ${err.message}`);
-			}
-		}
+		} catch (err) {}
 	};
 
 	return (

@@ -35,9 +35,7 @@ const UploadName = () => {
 	const updateDisplayName = async (e) => {
 		e.preventDefault();
 
-		if (!name) {
-			setNameError(lang.error.nameEmpty);
-		} else {
+		if (name) {
 			setUser({ ...user, name });
 
 			router.push({
@@ -56,7 +54,7 @@ const UploadName = () => {
 					</FormGroup>
 				</Form>
 				<ButtonGroup>
-					<Button text={lang.button.continue} onPress={updateDisplayName} />
+					<Button text={lang.button.continue} color={name ? 'black' : 'grey'} disabled={name ? false : true} onPress={updateDisplayName} />
 				</ButtonGroup>
 			</FormContainer>
 		</PressOutsideInput>

@@ -14,15 +14,16 @@ import FormContainer from '../../assets/components/FormContainer';
 import FormGroup from '../../assets/components/FormGroup';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 
+const DEFAULT_PHOTO =
+	'https://media.licdn.com/dms/image/D4E03AQGVq7H6Aowx6g/profile-displayphoto-shrink_800_800/0/1701141939944?e=1706745600&v=beta&t=RW_G2QxAaxB4bUckWs00TUPe9fGCSbdcngVtnoZejEM';
+
 const UploadPhoto = () => {
 	const router = useRouter();
 	const { updateUserPhoto } = useUser();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
-	const [photo, setPhoto] = useState(
-		'https://media.licdn.com/dms/image/D4E03AQGVq7H6Aowx6g/profile-displayphoto-shrink_800_800/0/1701141939944?e=1706745600&v=beta&t=RW_G2QxAaxB4bUckWs00TUPe9fGCSbdcngVtnoZejEM'
-	);
+	const [photo, setPhoto] = useState(DEFAULT_PHOTO);
 	const [photoUploaded, setPhotoUploaded] = useState(false);
 
 	// handle choosing a photo to upload from your library
@@ -66,6 +67,18 @@ const UploadPhoto = () => {
 		}
 	};
 
+	// save photo
+	const savePhoto = () => {
+		if (!photoUploaded) {
+			updateUserPhoto(DEFAULT_PHOTO);
+		}
+
+		router.push({
+			pathname: '/auth/join-group',
+			params: { index: 2, title: lang.auth.joinGroup.title, description: lang.auth.joinGroup.description },
+		});
+	};
+
 	return (
 		<FormContainer safeArea={safeArea}>
 			<Form>
@@ -77,15 +90,7 @@ const UploadPhoto = () => {
 				</FormGroup>
 			</Form>
 			<ButtonGroup>
-				<Button
-					text={lang.button.continue}
-					onPress={() =>
-						router.push({
-							pathname: '/auth/join-group',
-							params: { index: 2, title: lang.auth.joinGroup.title, description: lang.auth.joinGroup.description },
-						})
-					}
-				/>
+				<Button text={lang.button.continue} onPress={savePhoto} />
 			</ButtonGroup>
 		</FormContainer>
 	);

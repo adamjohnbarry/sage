@@ -1,16 +1,16 @@
 import { Tabs } from 'expo-router';
 import * as SMS from 'expo-sms';
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Attendance from '../../assets/components/Attendance';
+import AttendanceNotification from '../../assets/components/AttendanceNotification';
+import GroupChatCard from '../../assets/components/GroupChatCard';
 import Header from '../../assets/components/Header';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 import { MEMBERS } from '../../assets/data/members';
 import globalStyles from '../../assets/styles/GlobalStyles';
-import AttendanceNotification from '../../assets/components/AttendanceNotification';
-import GroupChatCard from '../../assets/components/GroupChatCard';
 import { spacing } from '../../assets/theme/theme';
 
 const MyGarden = () => {
@@ -26,7 +26,7 @@ const MyGarden = () => {
 		if (!userExists) {
 			const newUser = {
 				name: 'Me',
-				photo: { uri: user.photo }, // Use the URI directly for network images
+				photo: { uri: user.photo },
 				attendingNextSession: -1,
 			};
 			setMembers((currentMembers) => [...currentMembers, newUser]);
@@ -37,35 +37,45 @@ const MyGarden = () => {
 	const notAttendingMembers = members.filter((member) => member.attendingNextSession === 0);
 	const hasntRespondedMembers = members.filter((member) => member.attendingNextSession === -1);
 
-	// send invite to a friend
-	const sendInvite = async (phoneNumbers) => {
+	// send check in message to a friend
+	const sendGroupChatMessage = async (phoneNumbers) => {
 		const isAvailable = await SMS.isAvailableAsync();
 
 		if (isAvailable) {
-			const { result } = await SMS.sendSMSAsync([], lang.invite.textMessage, {});
-
-			console.log(result);
+			await SMS.sendSMSAsync(phoneNumbers, lang.myGarden.groupChat.groupChatMessage, {});
 		} else {
-			console.log('Cannot use SMS on this device.');
+			console.log(lang.error.cannotUseSMSError);
 		}
 	};
 
-	function handleYesAttending() {
+	// send check in message to a friend
+	const sendCheckIn = async (message) => {
+		const isAvailable = await SMS.isAvailableAsync();
+
+		if (isAvailable) {
+			await SMS.sendSMSAsync(['+16504444444'], message, {});
+		} else {
+			console.log(lang.error.cannotUseSMSError);
+		}
+	};
+
+	const handleYesAttending = () => {
 		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: 1 } : member)));
 		setShowAttendanceNotifcation(false);
-	}
+	};
 
-	function handleNoAttending() {
+	const handleNoAttending = () => {
 		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: 0 } : member)));
 		setShowAttendanceNotifcation(false);
-	}
+	};
 
-	useEffect(() => {
-		console.log('user', user);
-	}, [user]);
+	const handleMaybeAttending = () => {
+		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: -1 } : member)));
+		setShowAttendanceNotifcation(false);
+	};
 
 	// We directly use the garden information from the user context
-	const gardenName = user?.garden?.name || 'My Garden';
+	const gardenName = user?.garden?.name || lang.myGarden.default.title;
 
 	return (
 		<>
@@ -83,19 +93,19 @@ const MyGarden = () => {
 					showsHorizontalScrollIndicator={false}
 					decelerationRate={0}
 					snapToInterval={Dimensions.get('window').width - (2 * spacing.xlSpacing + spacing.mdSpacing) - 30}
-					snapToAlignment={"left"}
+					snapToAlignment={'left'}
 					contentContainerStyle={{
-						paddingHorizontal: spacing.xlSpacing
+						paddingHorizontal: spacing.xlSpacing,
 					}}
 				>
 					{showAttendanceNotification && (
-						<AttendanceNotification onYesPress={handleYesAttending} onNoPress={handleNoAttending} />
+						<AttendanceNotification onYesPress={handleYesAttending} onNoPress={handleNoAttending} onCancelPress={handleMaybeAttending} />
 					)}
-					<GroupChatCard onPress={() => sendInvite(members.filter(m => m.name !== 'Me').map(m => m.phone))}/>
+					<GroupChatCard onPress={() => sendGroupChatMessage(members.filter((m) => m.name !== 'Me').map((m) => m.phone))} />
 				</ScrollView>
-				<Attendance type='attending' members={attendingMembers} sendInvite={sendInvite} />
-				<Attendance type='notAttending' members={notAttendingMembers} sendInvite={sendInvite} />
-				<Attendance type='hasntResponded' members={hasntRespondedMembers} sendInvite={sendInvite} />
+				<Attendance type='attending' members={attendingMembers} sendCheckIn={() => sendCheckIn(lang.myGarden.chat.attendingMessage)} />
+				<Attendance type='notAttending' members={notAttendingMembers} sendCheckIn={() => sendCheckIn(lang.myGarden.chat.notAttendingMessage)} />
+				<Attendance type='hasntResponded' members={hasntRespondedMembers} sendCheckIn={() => sendCheckIn(lang.myGarden.chat.hasntRespondedMessage)} />
 			</ScrollView>
 		</>
 	);

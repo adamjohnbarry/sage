@@ -65,14 +65,24 @@ const GardenSettings = () => {
 		router.back();
 	};
 
+	// invite members to your garden
 	const inviteMembers = async () => {
 		const isAvailable = await SMS.isAvailableAsync();
 
 		if (isAvailable) {
-			await SMS.sendSMSAsync([], lang.invite.textMessage, {});
+			await SMS.sendSMSAsync([], lang.settings.gardenSettings.inviteTextMessage, {});
 		} else {
 			console.log(lang.error.cannotUseSMSError);
 		}
+	};
+
+	// remove member from your garden
+	const remove = (member) => {
+		let newMembers = members.filter((el) => el.phone !== member.phone);
+
+		setMembers(newMembers);
+
+		// do a context update
 	};
 
 	return (
@@ -82,7 +92,7 @@ const GardenSettings = () => {
 					<FormGroup label={lang.form.groupMembers.label} spacing={true}>
 						<View style={{ gap: spacing.smSpacing }}>
 							{members.map((member, i) => (
-								<InviteMember key={i} {...member} />
+								<InviteMember key={i} {...member} removeOnPress={() => remove(member)} />
 							))}
 						</View>
 						<TouchableOpacity style={styles.inviteButton} onPress={inviteMembers} color='white'>
@@ -110,7 +120,7 @@ const GardenSettings = () => {
 					</FormGroup>
 				</ContainerScroll>
 				<ButtonGroup>
-					<Button text={lang.button.save} onPress={handleSave} color={isChanged ? 'black' : 'grey'} disabled={isChanged ? false : true} />
+					<Button text={lang.button.save} onPress={handleSave} />
 				</ButtonGroup>
 			</FormContainer>
 		</PressOutsideInput>

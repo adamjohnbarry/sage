@@ -99,13 +99,36 @@ const langEN = {
 			title: 'Learn',
 		},
 	},
-	invite: {
-		textMessage:
-			'We would love for you to join our gardening group! We meet weekly on Fridays to work on our garden. Tap this to join us! https://wwww.sage.com/join/',
+	myGarden: {
+		default: {
+			title: 'My Garden',
+		},
+		sections: {
+			attending: 'Attending',
+			notAttending: 'Not Attending',
+			hasntResponded: "Hasn't Responded",
+		},
+		groupChat: {
+			title: 'Group Chat',
+			example: "Let's add some tulips this week...",
+			groupChatMessage: "Hey everybody, just checking in to see how you're all doing!",
+		},
+		chat: {
+			attendingMessage: "Hey, how are you getting on? Can't wait to see you this week!",
+			notAttendingMessage: "Hey, sorry to hear that you can't make it this week. Is everything ok? We hope to see you at the event next week though!",
+			hasntRespondedMessage: 'Hey, just checking in to see how you are doing? Is everything all good?',
+		},
+		notification: {
+			message: 'Message your group members to encourage them to attend this week!',
+		},
 	},
 	settings: {
 		settings: {
 			title: 'Settings',
+		},
+		gardenSettings: {
+			inviteTextMessage:
+				'We would love for you to join our gardening group! We meet weekly on Fridays to work on our garden. Tap this to join us! https://wwww.sage.com/join/',
 		},
 		accountSettings: {},
 		changeLocation: {
@@ -214,6 +237,7 @@ const langEN = {
 		emailFormat: 'Please enter a properly formatted email.',
 		passwordLength: 'Password must be at least 8 characters long.',
 		passwordMatching: 'Passwords do not match.',
+		emailExistsError: 'Email already exists.',
 		userRegistration: 'Could not register user.',
 		nameEmpty: 'Name cannot be empty.',
 		nameUploadError: "Could not update user's name.",

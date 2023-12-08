@@ -75,7 +75,7 @@ export const UserProvider = ({ children }) => {
 	const joinGarden = useCallback(
 		async (inviteWord) => {
 			if (!inviteWord) {
-				console.error('Invite word is missing.');
+				console.log('Invite word is missing.');
 				return false;
 			}
 
@@ -90,7 +90,7 @@ export const UserProvider = ({ children }) => {
 			});
 
 			if (!garden) {
-				console.error('Garden not found.');
+				console.log('Garden not found.');
 				return false;
 			}
 
@@ -201,10 +201,9 @@ export const UserProvider = ({ children }) => {
 		const db = getFirestore();
 		const gardenRef = collection(db, 'gardens');
 		const querySnapshot = await getDocs(query(gardenRef, where('inviteWord', '==', word.toLowerCase())));
-	
+
 		return querySnapshot.empty; // Returns true if no documents are found, false otherwise
 	};
-	
 
 	useEffect(() => {
 		console.log('USER UPDATED: ', user);

@@ -69,7 +69,12 @@ const NameGarden = () => {
 					</FormGroup>
 				</Form>
 				<ButtonGroup>
-					<Button text={lang.button.continue} onPress={updateGardenDetails} />
+					<Button
+						text={lang.button.continue}
+						color={gardenName && inviteWord ? 'black' : 'grey'}
+						disabled={gardenName && inviteWord ? false : true}
+						onPress={updateGardenDetails}
+					/>
 				</ButtonGroup>
 			</FormContainer>
 		</PressOutsideInput>

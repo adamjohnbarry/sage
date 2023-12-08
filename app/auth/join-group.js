@@ -38,6 +38,7 @@ const JoinGroup = () => {
 		}
 
 		const success = await joinGarden(inviteWord);
+
 		if (success) {
 			router.replace('/home/my-garden');
 		} else {

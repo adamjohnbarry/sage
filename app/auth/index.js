@@ -85,7 +85,7 @@ const Register = () => {
 			try {
 				success = await createUserAccount(email, password);
 			} catch (err) {
-				console.err(err);
+				setEmailError(lang.error.emailExistsError);
 			}
 
 			// if we successfully created the user's account
