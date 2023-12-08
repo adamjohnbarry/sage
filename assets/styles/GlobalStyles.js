@@ -47,7 +47,7 @@ const globalStyles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: colors.white,
-		margin: spacing.xlSpacing,
+		padding: spacing.xlSpacing,
 	},
 	containerFlex: {
 		flex: 1,
@@ -126,6 +126,7 @@ const globalStyles = StyleSheet.create({
 	// scroll list
 	verticalScroll: {
 		height: '100%',
+		marginBottom: spacing.lgSpacing,
 	},
 	horizontalScroll: {
 		paddingBottom: spacing.smSpacing,

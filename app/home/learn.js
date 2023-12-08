@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ArticleCard from '../../assets/components/ArticleCard';
 import FeaturedArticle from '../../assets/components/FeaturedArticle';
 import LearnHeader from '../../assets/components/LearnHeader';
+import { LangContext } from '../../assets/contexts/Contexts';
 import { ARTICLES } from '../../assets/data/articles';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
@@ -13,6 +14,7 @@ const HEADER_MIN_HEIGHT = 70; // Min height for the header when collapsed
 
 const Learn = () => {
 	const scrollY = useRef(new Animated.Value(0)).current; // Animated value for scroll
+	const { lang } = useContext(LangContext);
 	const [activeFilter, setActiveFilter] = useState(0);
 
 	// Header height interpolated with the scroll position
@@ -29,7 +31,7 @@ const Learn = () => {
 	return (
 		<View style={styles.container}>
 			<Animated.View style={[styles.header, { height: headerHeight }]}>
-				<LearnHeader title='Learn' filters={FILTERS} activeFilter={activeFilter} onFilterPress={onFilterPress} />
+				<LearnHeader title={lang.learn.learn.title} filters={FILTERS} activeFilter={activeFilter} onFilterPress={onFilterPress} />
 			</Animated.View>
 			<ScrollView
 				bounces={false}
@@ -41,7 +43,7 @@ const Learn = () => {
 				scrollEventThrottle={16} // Define how often the scroll event fires
 			>
 				<View>
-					<View height={180} style={{ marginBottom: -160, marginTop: -30, backgroundColor: colors.secondary }} />
+					<View height={180} style={{ marginBottom: -160, marginTop: -spacing.lgSpacing, backgroundColor: colors.secondary }} />
 					<View style={styles.articles}>
 						{ARTICLES[FILTERS[activeFilter]].featured && ARTICLES['For you'].featured.length > 0 && (
 							<ScrollView horizontal={true} style={styles.featured} showsHorizontalScrollIndicator={false}>

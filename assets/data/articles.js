@@ -14,7 +14,6 @@ export const ARTICLES = {
 				text: 'These seven superfoods are easy to grow in your own backyard or patio garden.',
 			},
 		],
-
 		sections: {
 			'Seasonal picks': [
 				{

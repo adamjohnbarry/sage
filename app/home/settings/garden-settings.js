@@ -1,23 +1,25 @@
 import { useRouter } from 'expo-router';
 import * as SMS from 'expo-sms';
 import { useContext, useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Button from '../../../assets/components/Button';
 import ButtonGroup from '../../../assets/components/ButtonGroup';
-import Form from '../../../assets/components/Form';
+import ContainerScroll from '../../../assets/components/ContainerScroll';
 import FormButton from '../../../assets/components/FormButton';
+import FormContainer from '../../../assets/components/FormContainer';
 import FormGroup from '../../../assets/components/FormGroup';
 import FormInputText from '../../../assets/components/FormInputText';
 import InviteMember from '../../../assets/components/InviteMember';
-import { LangContext } from '../../../assets/contexts/Contexts';
+import PressOutsideInput from '../../../assets/components/PressOutsideInput';
+import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
 import { useUser } from '../../../assets/contexts/UserContext';
 import { MEMBERS } from '../../../assets/data/members';
-import globalStyles from '../../../assets/styles/GlobalStyles';
 import { colors, fontSizes, spacing } from '../../../assets/theme/theme';
 
 const GardenSettings = () => {
 	const router = useRouter();
 	const { garden, gardenDaysTimes, setGardenDaysTimes, updateGardenDetails, checkInviteWordAvailability } = useUser();
+	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
 	const [isChanged, setIsChanged] = useState(false);
@@ -35,21 +37,18 @@ const GardenSettings = () => {
 	useEffect(() => {
 		setIsChanged(
 			gardenName !== garden?.name ||
-			inviteWord !== garden?.inviteWord ||
-			gardenAddress !== garden?.address ||
-			JSON.stringify(meetingDays) !== JSON.stringify(gardenDaysTimes) // compare stringified objects
+				inviteWord !== garden?.inviteWord ||
+				gardenAddress !== garden?.address ||
+				JSON.stringify(meetingDays) !== JSON.stringify(gardenDaysTimes) // compare stringified objects
 		);
 	}, [gardenName, inviteWord, gardenAddress, meetingDays]);
 
 	const handleSave = async () => {
 		if (isChanged) {
-			console.log(inviteWord)
 			const isAvailable = await checkInviteWordAvailability(inviteWord);
-			console.log(isAvailable)
 
 			if (!isAvailable) {
 				setInviteWordError(lang.error.inviteWordAlreadyExistsError);
-				return;
 			} else {
 				updateGardenDetails({
 					...garden,
@@ -60,9 +59,10 @@ const GardenSettings = () => {
 				});
 
 				setGardenDaysTimes(meetingDays);
-				router.back();
 			}
 		}
+
+		router.back();
 	};
 
 	const inviteMembers = async () => {
@@ -76,13 +76,15 @@ const GardenSettings = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite]}>
-			<ScrollView style={[globalStyles.formContainerScroll, globalStyles.containerScroll]}>
-				<Form>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
+				<ContainerScroll>
 					<FormGroup label={lang.form.groupMembers.label} spacing={true}>
-						{members.map((member, i) => (
-							<InviteMember key={i} {...member} />
-						))}
+						<View style={{ gap: spacing.smSpacing }}>
+							{members.map((member, i) => (
+								<InviteMember key={i} {...member} />
+							))}
+						</View>
 						<TouchableOpacity style={styles.inviteButton} onPress={inviteMembers} color='white'>
 							<Text style={styles.buttonText}>{lang.button.inviteMembers}</Text>
 						</TouchableOpacity>
@@ -106,10 +108,12 @@ const GardenSettings = () => {
 							}
 						/>
 					</FormGroup>
-				</Form>
-				<ButtonGroup>{isChanged && <Button text={lang.button.save} onPress={handleSave} color='black' />}</ButtonGroup>
-			</ScrollView>
-		</View>
+				</ContainerScroll>
+				<ButtonGroup>
+					<Button text={lang.button.save} onPress={handleSave} color={isChanged ? 'black' : 'grey'} disabled={isChanged ? false : true} />
+				</ButtonGroup>
+			</FormContainer>
+		</PressOutsideInput>
 	);
 };
 

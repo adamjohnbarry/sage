@@ -33,30 +33,28 @@ const NameGarden = () => {
 	};
 
 	const handleInviteWordChange = (text) => {
-		setInviteWordError('');
+		if (text.length == 0) {
+			setInviteWordError(lang.error.inviteWordEmptyError);
+		} else {
+			setInviteWordError('');
+		}
+
 		setInviteWord(text);
 	};
 
 	const updateGardenDetails = () => {
-		if (!gardenName || gardenName.length === 0) {
+		if (!gardenName) {
 			setGardenNameError(lang.error.gardenNameEmpty);
+		} else if (!inviteWord) {
+			setInviteWordError(lang.error.inviteWordEmptyError);
+		} else {
+			setGarden({ ...garden, name: gardenName, inviteWord: inviteWord.toLowerCase() });
 
-			return;
+			router.push({
+				pathname: '/auth/choose-location',
+				params: { index: 5, title: lang.createGroup.chooseLocation.title, description: lang.createGroup.chooseLocation.description },
+			});
 		}
-
-		if (!inviteWord || inviteWord.length === 0) {
-			setInviteWordError(lang.error.inviteWordEmpty);
-
-			return;
-		}
-
-		// TODO: this needs to push to db and check if invite word already exists
-		setGarden({ ...garden, name: gardenName, inviteWord: inviteWord.toLowerCase() });
-
-		router.push({
-			pathname: '/auth/choose-location',
-			params: { index: 5, title: lang.createGroup.chooseLocation.title, description: lang.createGroup.chooseLocation.description },
-		});
 	};
 
 	return (

@@ -1,15 +1,14 @@
 import { useRouter } from 'expo-router';
 import { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
 import Button from '../../../assets/components/Button';
 import ButtonGroup from '../../../assets/components/ButtonGroup';
 import Form from '../../../assets/components/Form';
 import FormContainer from '../../../assets/components/FormContainer';
 import FormGroup from '../../../assets/components/FormGroup';
 import FormInputText from '../../../assets/components/FormInputText';
+import PressOutsideInput from '../../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
 import { useUser } from '../../../assets/contexts/UserContext';
-import globalStyles from '../../../assets/styles/GlobalStyles';
 
 const AccountSettings = () => {
 	const router = useRouter();
@@ -37,8 +36,8 @@ const AccountSettings = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { paddingBottom: safeArea.paddingBottom }]}>
-			<FormContainer>
+		<PressOutsideInput>
+			<FormContainer safeArea={safeArea}>
 				<Form>
 					<FormGroup label={lang.form.name.label}>
 						<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={(text) => setName(text)} />
@@ -48,7 +47,7 @@ const AccountSettings = () => {
 					<Button text={lang.button.save} color='black' onPress={handleSave} />
 				</ButtonGroup>
 			</FormContainer>
-		</View>
+		</PressOutsideInput>
 	);
 };
 

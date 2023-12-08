@@ -38,6 +38,8 @@ const UploadNumber = () => {
 
 		if (phoneNumberError) {
 			console.log(lang.error.phoneNumberUploadError);
+		} else if (!phoneNumber) {
+			setPhoneNumberError(lang.error.numberEmptyError);
 		} else {
 			setUser({ ...user, phoneNumber });
 

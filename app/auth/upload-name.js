@@ -34,11 +34,17 @@ const UploadName = () => {
 	// update account with name
 	const updateDisplayName = async (e) => {
 		e.preventDefault();
-		setUser({ ...user, name });
-		router.push({
-			pathname: '/auth/upload-number',
-			params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
-		});
+
+		if (!name) {
+			setNameError(lang.error.nameEmpty);
+		} else {
+			setUser({ ...user, name });
+
+			router.push({
+				pathname: '/auth/upload-number',
+				params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
+			});
+		}
 	};
 
 	return (
