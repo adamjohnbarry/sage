@@ -10,6 +10,7 @@ import FormInputText from '../../assets/components/FormInputText';
 import PressOutsideInput from '../../assets/components/PressOutsideInput';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
+import globalStyles from '../../assets/styles/GlobalStyles';
 
 const Login = () => {
 	const router = useRouter();

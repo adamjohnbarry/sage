@@ -33,6 +33,7 @@ const NameGarden = () => {
 	};
 
 	const handleInviteWordChange = (text) => {
+		setInviteWordError('');
 		setInviteWord(text);
 	};
 

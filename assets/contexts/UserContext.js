@@ -197,6 +197,15 @@ export const UserProvider = ({ children }) => {
 		[user]
 	);
 
+	const checkInviteWordAvailability = async (word) => {
+		const db = getFirestore();
+		const gardenRef = collection(db, 'gardens');
+		const querySnapshot = await getDocs(query(gardenRef, where('inviteWord', '==', word.toLowerCase())));
+	
+		return querySnapshot.empty; // Returns true if no documents are found, false otherwise
+	};
+	
+
 	useEffect(() => {
 		console.log('USER UPDATED: ', user);
 	}, [user]);
@@ -225,6 +234,7 @@ export const UserProvider = ({ children }) => {
 				createUserAccount,
 				joinGarden,
 				updateUserPhoto,
+				checkInviteWordAvailability,
 			}}
 		>
 			{children}
