@@ -33,7 +33,7 @@ const Header = ({ navigation, route, safeArea }) => {
       )}
       <View style={globalStyles.headerBody}>
         <Text style={globalStyles.h1}>{title}</Text>
-        {/* {gardenAddress && route.name === 'my-garden' && (
+        {gardenAddress && route.name === 'my-garden' && (
           <Text style={[globalStyles.body, { fontSize: fontSizes.body }]}>
             Meets at <Text style={globalStyles.fontBold}>{gardenAddress}</Text>
             {gardenDaysTimes && (
@@ -43,7 +43,7 @@ const Header = ({ navigation, route, safeArea }) => {
               </Text>
             )}
           </Text>
-        )} */}
+        )}
       </View>
     </View>
   );
