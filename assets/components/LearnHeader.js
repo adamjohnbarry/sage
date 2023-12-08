@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
 const LearnHeader = ({ title, filters, activeFilter, onFilterPress }) => {

@@ -1,16 +1,18 @@
-import { Text, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { useRouter } from 'expo-router';
+import { getAuth } from 'firebase/auth';
 import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
-import { useRouter } from 'expo-router';
 import FormButton from '../../assets/components/FormButton';
-import * as ImagePicker from 'expo-image-picker';
 import FormPhoto from '../../assets/components/FormPhoto';
-import { getAuth } from 'firebase/auth';
 import { useUser } from '../../assets/contexts/UserContext';
 
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import Form from '../../assets/components/Form';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 const UploadPhoto = () => {
 	const router = useRouter();
@@ -50,13 +52,14 @@ const UploadPhoto = () => {
 
 			const storageRef = ref(storage, `images/${auth.currentUser.uid}-${new Date().getTime()}`);
 
-			const uploadedPhoto = await uploadBytes(storageRef, blob);
+			uploadedPhoto = await uploadBytesResumable(storageRef, blob);
+
 			const downloadedPhoto = await getDownloadURL(storageRef);
 
 			if (downloadedPhoto) {
 				setPhoto(downloadedPhoto);
 				setPhotoUploaded(true);
-				updateUserPhoto(downloadedPhoto); // Update photo in user context and database
+				updateUserPhoto(downloadedPhoto); // update photo in user context and database
 			}
 		} catch (err) {
 			console.log(lang.error.photoUploadError);
@@ -64,37 +67,27 @@ const UploadPhoto = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={globalStyles.form}>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.photo.label}</Text>
-						<FormPhoto source={photo} />
-					</View>
-					<View style={globalStyles.formGroup}>
-						<FormButton icon='photo-video' label={lang.form.chooseFromLibrary.label} onPress={choosePhotoFromLibrary} />
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button
-						text={lang.button.skip}
-						color='white'
-						onPress={() =>
-							router.push({
-								pathname: '/auth/join-group',
-								params: { index: 2, title: lang.auth.joinGroup.title, description: lang.auth.joinGroup.description },
-							})
-						}
-					/>
-					<Button text={lang.button.finish} onPress={() =>
+		<FormContainer safeArea={safeArea}>
+			<Form>
+				<FormGroup label={lang.form.photo.label}>
+					<FormPhoto source={photo} />
+				</FormGroup>
+				<FormGroup>
+					<FormButton icon='photo-video' label={lang.form.chooseFromLibrary.label} onPress={choosePhotoFromLibrary} />
+				</FormGroup>
+			</Form>
+			<ButtonGroup>
+				<Button
+					text={lang.button.continue}
+					onPress={() =>
 						router.push({
 							pathname: '/auth/join-group',
 							params: { index: 2, title: lang.auth.joinGroup.title, description: lang.auth.joinGroup.description },
 						})
-					} />
-				</View>
-			</View>
-		</View>
+					}
+				/>
+			</ButtonGroup>
+		</FormContainer>
 	);
 };
 

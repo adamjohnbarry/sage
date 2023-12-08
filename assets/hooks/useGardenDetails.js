@@ -1,6 +1,6 @@
-import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+import { useState } from 'react';
 
 const useGardenDetails = () => {
 	const [gardenDetails, setGardenDetails] = useState(null);
@@ -36,4 +36,3 @@ const useGardenDetails = () => {
 };
 
 export default useGardenDetails;
-

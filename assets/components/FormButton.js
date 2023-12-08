@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Pressable, StyleSheet, Text } from 'react-native';
 import globalStyles from '../styles/GlobalStyles';
 import { colors, fontSizes, spacing } from '../theme/theme';
 

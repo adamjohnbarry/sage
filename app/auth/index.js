@@ -1,12 +1,16 @@
-import { Text, View } from 'react-native';
-import FormInputText from '../../assets/components/FormInputText';
-import { useContext, useState } from 'react';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
-import validator from 'validator';
 import { useRouter } from 'expo-router';
+import { useContext, useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import validator from 'validator';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import Form from '../../assets/components/Form';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
+import FormInputText from '../../assets/components/FormInputText';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
+import globalStyles from '../../assets/styles/GlobalStyles';
 
 const Register = () => {
 	const router = useRouter();
@@ -64,74 +68,68 @@ const Register = () => {
 		setConfirmPassword(text);
 	};
 
-
 	// create account with given user credentials
 	const createAccount = async (e) => {
 		e.preventDefault();
 
 		if (emailError || passwordError || confirmPasswordError) {
-			console.log(lang.error.userRegistration);
 			return;
 		} else {
-			console.log(email, password)
 			setUser((currentUser) => ({
 				...currentUser,
 				email,
 				password,
 			}));
-			console.log('user below ...');
-			console.log({
-				...user,
-				email,
-				password,
-			})
-			const success = await createUserAccount(email, password);
+
+			let success;
+
+			try {
+				success = await createUserAccount(email, password);
+			} catch (err) {
+				console.err(err);
+			}
+
+			// if we successfully created the user's account
 			if (success) {
 				router.push({
 					pathname: '/auth/upload-name',
 					params: { index: 1, title: lang.auth.register.title, description: lang.auth.register.description },
 				});
-			} else {
-				console.log(lang.error.userRegistration);
 			}
 		}
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={globalStyles.form}>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.email.label}</Text>
-						<FormInputText placeholder={lang.form.email.placeholder} keyboardType='email-address' value={email} onChangeText={emailFieldChangeText} />
-						{emailError && <Text style={globalStyles.formError}>{emailError}</Text>}
-					</View>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.passwordRegistration.label}</Text>
-						<FormInputText
-							placeholder={lang.form.passwordRegistration.placeholder}
-							value={password}
-							secureTextEntry={true}
-							onChangeText={passwordFieldChangeText}
-						/>
-						{passwordError && <Text style={globalStyles.formError}>{passwordError}</Text>}
-					</View>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.confirmPassword.label}</Text>
-						<FormInputText
-							placeholder={lang.form.confirmPassword.placeholder}
-							value={confirmPassword}
-							secureTextEntry={true}
-							onChangeText={confirmPasswordFieldChangeText}
-						/>
-						{confirmPasswordError && <Text style={globalStyles.formError}>{confirmPasswordError}</Text>}
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.continue} onPress={createAccount} />
-				</View>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+			<View style={globalStyles.containerFlex}>
+				<FormContainer safeArea={safeArea}>
+					<Form>
+						<FormGroup label={lang.form.email.label} error={emailError}>
+							<FormInputText placeholder={lang.form.email.placeholder} keyboardType='email-address' value={email} onChangeText={emailFieldChangeText} />
+						</FormGroup>
+						<FormGroup label={lang.form.passwordRegistration.label} error={passwordError}>
+							<FormInputText
+								placeholder={lang.form.passwordRegistration.placeholder}
+								value={password}
+								secureTextEntry={true}
+								onChangeText={passwordFieldChangeText}
+							/>
+						</FormGroup>
+						<FormGroup label={lang.form.confirmPassword.label} error={confirmPasswordError}>
+							<FormInputText
+								placeholder={lang.form.confirmPassword.placeholder}
+								value={confirmPassword}
+								secureTextEntry={true}
+								onChangeText={confirmPasswordFieldChangeText}
+							/>
+						</FormGroup>
+					</Form>
+					<ButtonGroup>
+						<Button text={lang.button.continue} onPress={createAccount} />
+					</ButtonGroup>
+				</FormContainer>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 };
 

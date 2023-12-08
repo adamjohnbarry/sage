@@ -1,225 +1,233 @@
-import { createContext, useState, useContext, useCallback, useEffect } from 'react';
-import { collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where, setDoc, addDoc } from 'firebase/firestore';
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { auth } from '../../firebaseConfig';
-
 
 const UserContext = createContext();
 
 export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [garden, setGarden] = useState(null);
-  const [gardenDaysTimes, setGardenDaysTimes] = useState({});
+	const [user, setUser] = useState(null);
+	const [garden, setGarden] = useState(null);
+	const [gardenDaysTimes, setGardenDaysTimes] = useState({});
 
-  const fetchUserAndGardenDetails = useCallback(async (uid) => {
-    const db = getFirestore();
-    const userRef = doc(db, 'users', uid);
-    const userSnap = await getDoc(userRef);
+	const fetchUserAndGardenDetails = useCallback(async (uid) => {
+		const db = getFirestore();
+		const userRef = doc(db, 'users', uid);
+		const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      setUser((currentUser) => ({
-        ...currentUser,
-        ...userData,
-      }));
+		if (userSnap.exists()) {
+			const userData = userSnap.data();
+			setUser((currentUser) => ({
+				...currentUser,
+				...userData,
+			}));
 
-      const gardenRef = doc(db, 'gardens', userData.gardenId);
-      const gardenSnap = await getDoc(gardenRef);
-      if (gardenSnap.exists()) {
-        setGarden((currentGarden) => ({
-          ...currentGarden,
-          ...gardenSnap.data(),
-        }));
-      } else {
-        console.error('Garden details not found');
-      }
-    } else {
-      console.error('User details not found');
-    }
-  }, []);
+			const gardenRef = doc(db, 'gardens', userData.gardenId);
+			const gardenSnap = await getDoc(gardenRef);
+			if (gardenSnap.exists()) {
+				setGarden((currentGarden) => ({
+					...currentGarden,
+					...gardenSnap.data(),
+				}));
+			} else {
+				console.error('Garden details not found');
+			}
+		} else {
+			console.error('User details not found');
+		}
+	}, []);
 
-  const createUserAccount = useCallback(async (email, password) => {
-    console.log('ep: ', email, password)
-    if (!email || !password) {
-      console.error('Email or password is missing.');
-      return false;
-    }
+	const createUserAccount = useCallback(async (email, password) => {
+		console.log('ep: ', email, password);
+		if (!email || !password) {
+			console.error('Email or password is missing.');
+			return false;
+		}
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const newUser = userCredential.user;
+		try {
+			const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+			const newUser = userCredential.user;
 
-      // Set initial user data in Firestore
-      const db = getFirestore();
-      await setDoc(doc(db, 'users', newUser.uid), {
-        email,
-        password, // Be cautious about storing plain passwords in Firestore
-        // other initial user data
-      });
+			// Set initial user data in Firestore
+			const db = getFirestore();
+			await setDoc(doc(db, 'users', newUser.uid), {
+				email,
+				password, // Be cautious about storing plain passwords in Firestore
+				// other initial user data
+			});
 
-      setUser((currentUser) => ({
-        ...currentUser,
-        uid: newUser.uid,
-        email,
-        password,
-      }));
+			setUser((currentUser) => ({
+				...currentUser,
+				uid: newUser.uid,
+				email,
+				password,
+			}));
 
-      return true;
-    } catch (error) {
-      console.error('Error creating user account:', error);
-      return false;
-    }
-  }, []);
+			return true;
+		} catch (error) {
+			console.error('Error creating user account:', error);
+			return false;
+		}
+	}, []);
 
+	const joinGarden = useCallback(
+		async (inviteWord) => {
+			if (!inviteWord) {
+				console.error('Invite word is missing.');
+				return false;
+			}
 
-  const joinGarden = useCallback(async (inviteWord) => {
-    if (!inviteWord) {
-      console.error('Invite word is missing.');
-      return false;
-    }
+			const db = getFirestore();
+			const gardenRef = collection(db, 'gardens');
+			const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
+			const gardens = await getDocs(containsGarden);
 
-    const db = getFirestore();
-    const gardenRef = collection(db, 'gardens');
-    const containsGarden = query(gardenRef, where('inviteWord', '==', inviteWord.toLowerCase()));
-    const gardens = await getDocs(containsGarden);
+			let garden;
+			gardens.forEach((gardenObj) => {
+				garden = { ...gardenObj.data(), id: gardenObj.id };
+			});
 
-    let garden;
-    gardens.forEach((gardenObj) => {
-      garden = { ...gardenObj.data(), id: gardenObj.id };
-    });
+			if (!garden) {
+				console.error('Garden not found.');
+				return false;
+			}
 
-    if (!garden) {
-      console.error('Garden not found.');
-      return false;
-    }
+			// Update user's gardenId and garden data
+			const userRef = doc(db, 'users', user.uid);
+			await updateDoc(userRef, { gardenId: garden.id });
+			setGarden(garden);
 
-    // Update user's gardenId and garden data
-    const userRef = doc(db, 'users', user.uid);
-    await updateDoc(userRef, { gardenId: garden.id });
-    setGarden(garden);
+			return true;
+		},
+		[user, setGarden]
+	);
 
-    return true;
-  }, [user, setGarden]);
+	const submitRegistration = useCallback(async () => {
+		if (!user || !garden) {
+			console.error('User or Garden data is incomplete.');
+			return false;
+		}
 
+		const db = getFirestore();
+		try {
+			// Update user in the database
+			const userRef = doc(db, 'users', user.uid);
+			await updateDoc(userRef, user);
 
-  const submitRegistration = useCallback(async () => {
-    if (!user || !garden) {
-      console.error('User or Garden data is incomplete.');
-      return false;
-    }
+			// Add garden to the database
+			const gardenRef = await addDoc(collection(db, 'gardens'), garden);
 
-    const db = getFirestore();
-    try {
-      // Update user in the database
-      const userRef = doc(db, 'users', user.uid);
-      await updateDoc(userRef, user);
+			// Update user's gardenId
+			await updateDoc(userRef, { gardenId: gardenRef.id });
 
-      // Add garden to the database
-      const gardenRef = await addDoc(collection(db, 'gardens'), garden);
+			return true;
+		} catch (error) {
+			console.error('Error submitting registration:', error);
+			return false;
+		}
+	}, [user, garden]);
 
-      // Update user's gardenId
-      await updateDoc(userRef, { gardenId: gardenRef.id });
+	const updateUserPhoto = useCallback(
+		async (photoUrl) => {
+			if (!user) {
+				console.error('No user to update.');
+				return;
+			}
 
-      return true;
-    } catch (error) {
-      console.error('Error submitting registration:', error);
-      return false;
-    }
-  }, [user, garden]);
+			const updatedUserData = { ...user, photo: photoUrl };
+			setUser(updatedUserData);
 
+			const db = getFirestore();
+			const userRef = doc(db, 'users', user.uid);
 
-  const updateUserPhoto = useCallback(async (photoUrl) => {
-    if (!user) {
-      console.error('No user to update.');
-      return;
-    }
+			try {
+				await updateDoc(userRef, { photo: photoUrl });
+			} catch (error) {
+				console.error('Error updating user photo:', error);
+			}
+		},
+		[user]
+	);
 
-    const updatedUserData = { ...user, photo: photoUrl };
-    setUser(updatedUserData);
+	const updateUserDetails = useCallback(
+		async (newUserData) => {
+			if (!user) {
+				console.error('No user to update.');
+				return;
+			}
 
-    const db = getFirestore();
-    const userRef = doc(db, 'users', user.uid);
+			const db = getFirestore();
+			const userRef = doc(db, 'users', user.uid);
 
-    try {
-      await updateDoc(userRef, { photo: photoUrl });
-    } catch (error) {
-      console.error('Error updating user photo:', error);
-    }
-  }, [user]);
+			try {
+				await updateDoc(userRef, newUserData);
+				setUser((currentUser) => ({
+					...currentUser,
+					...newUserData,
+				}));
+			} catch (error) {
+				console.error('Error updating user details:', error);
+			}
+		},
+		[user]
+	);
 
+	const updateGardenDetails = useCallback(
+		async (newGardenData) => {
+			if (!user || !user.gardenId) {
+				console.error('No garden to update.');
+				return;
+			}
 
-  const updateUserDetails = useCallback(async (newUserData) => {
-    if (!user) {
-      console.error('No user to update.');
-      return;
-    }
+			const db = getFirestore();
+			const gardenRef = doc(db, 'gardens', user.gardenId);
 
-    const db = getFirestore();
-    const userRef = doc(db, 'users', user.uid);
+			try {
+				await updateDoc(gardenRef, newGardenData);
+				setGarden((currentGarden) => ({
+					...currentGarden,
+					...newGardenData,
+				}));
+			} catch (error) {
+				console.error('Error updating garden details:', error);
+			}
+		},
+		[user]
+	);
 
-    try {
-      await updateDoc(userRef, newUserData);
-      setUser((currentUser) => ({
-        ...currentUser,
-        ...newUserData,
-      }));
-    } catch (error) {
-      console.error('Error updating user details:', error);
-    }
-  }, [user]);
+	useEffect(() => {
+		console.log('USER UPDATED: ', user);
+	}, [user]);
 
-  const updateGardenDetails = useCallback(async (newGardenData) => {
-    if (!user || !user.gardenId) {
-      console.error('No garden to update.');
-      return;
-    }
+	useEffect(() => {
+		console.log('DAYSTIMES UPDATED: ', gardenDaysTimes);
+	}, [gardenDaysTimes]);
 
-    const db = getFirestore();
-    const gardenRef = doc(db, 'gardens', user.gardenId);
+	useEffect(() => {
+		console.log('GARDEN UPDATED: ', garden);
+	}, [garden]);
 
-    try {
-      await updateDoc(gardenRef, newGardenData);
-      setGarden((currentGarden) => ({
-        ...currentGarden,
-        ...newGardenData,
-      }));
-    } catch (error) {
-      console.error('Error updating garden details:', error);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    console.log('USER UPDATED: ', user);
-  }, [user]);
-
-  useEffect(() => {
-    console.log('DAYSTIMES UPDATED: ', gardenDaysTimes);
-  }, [gardenDaysTimes]);
-
-  useEffect(() => {
-    console.log('GARDEN UPDATED: ', garden);
-  }, [garden]);
-
-
-  return (
-    <UserContext.Provider value={{
-      user,
-      garden,
-      setUser,
-      setGarden,
-      fetchUserAndGardenDetails,
-      updateUserDetails,
-      updateGardenDetails,
-      submitRegistration,
-      gardenDaysTimes,
-      setGardenDaysTimes,
-      createUserAccount,
-      joinGarden,
-      updateUserPhoto,
-    }}>
-      {children}
-    </UserContext.Provider>
-  );
+	return (
+		<UserContext.Provider
+			value={{
+				user,
+				garden,
+				setUser,
+				setGarden,
+				fetchUserAndGardenDetails,
+				updateUserDetails,
+				updateGardenDetails,
+				submitRegistration,
+				gardenDaysTimes,
+				setGardenDaysTimes,
+				createUserAccount,
+				joinGarden,
+				updateUserPhoto,
+			}}
+		>
+			{children}
+		</UserContext.Provider>
+	);
 };

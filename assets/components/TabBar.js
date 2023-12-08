@@ -1,13 +1,12 @@
-import { StyleSheet, View, Text, Touchable } from 'react-native';
-import { colors, spacing } from '../theme/theme';
-import { useRouter } from 'expo-router';
-import { usePathname } from 'expo-router';
+import { BlurView } from 'expo-blur';
+import { usePathname, useRouter } from 'expo-router';
+import { StyleSheet, Text } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useUser } from '../contexts/UserContext';
 import Learn from '../icons/Learn';
 import MyGarden from '../icons/MyGarden';
 import Settings from '../icons/Settings';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { BlurView } from 'expo-blur';
-import { useUser } from '../contexts/UserContext';
+import { colors, spacing } from '../theme/theme';
 
 const TabBar = ({ safeArea }) => {
 	const { user } = useUser();

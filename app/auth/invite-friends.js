@@ -1,12 +1,17 @@
-import { FlatList, View } from 'react-native';
 import * as Contacts from 'expo-contacts';
-import { useContext, useEffect, useState } from 'react';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
-import FormInputText from '../../assets/components/FormInputText';
+import { useContext, useEffect, useState } from 'react';
+import { FlatList, View } from 'react-native';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
 import ContactItem from '../../assets/components/ContactItem';
+import ContainerScroll from '../../assets/components/ContainerScroll';
+import Form from '../../assets/components/Form';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
+import FormInputText from '../../assets/components/FormInputText';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
+import globalStyles from '../../assets/styles/GlobalStyles';
 import { spacing } from '../../assets/theme/theme';
 
 const InviteFriends = () => {
@@ -51,28 +56,26 @@ const InviteFriends = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={[globalStyles.form, globalStyles.containerFlex]}>
-					<View style={globalStyles.formGroup}>
-						<FormInputText placeholder={lang.form.searchContacts.placeholder} value={searchContacts} onChangeText={filterContacts} />
-					</View>
-					<View style={globalStyles.containerScroll}>
-						<FlatList
-							data={filteredContacts}
-							style={globalStyles.verticalScroll}
-							ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
-							renderItem={({ item }) => <ContactItem {...item} />}
-							keyExtractor={(item, i) => i}
-						/>
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
-					<Button text={lang.button.finish} onPress={inviteFriends} />
-				</View>
-			</View>
-		</View>
+		<FormContainer safeArea={safeArea}>
+			<Form>
+				<FormGroup>
+					<FormInputText placeholder={lang.form.searchContacts.placeholder} value={searchContacts} onChangeText={filterContacts} />
+				</FormGroup>
+				<ContainerScroll>
+					<FlatList
+						data={filteredContacts}
+						style={globalStyles.verticalScroll}
+						ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
+						renderItem={({ item }) => <ContactItem {...item} />}
+						keyExtractor={(item, i) => i}
+					/>
+				</ContainerScroll>
+			</Form>
+			<ButtonGroup>
+				<Button text={lang.button.skip} color='white' onPress={() => router.push('/auth/congratulations')} />
+				<Button text={lang.button.finish} onPress={inviteFriends} />
+			</ButtonGroup>
+		</FormContainer>
 	);
 };
 

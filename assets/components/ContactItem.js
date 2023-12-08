@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { colors, fontSizes, spacing } from '../theme/theme';
 import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { colors, fontSizes, spacing } from '../theme/theme';
 
 const ContactItem = ({ firstName, lastName }) => {
 	const [pressed, setPressed] = useState(false);

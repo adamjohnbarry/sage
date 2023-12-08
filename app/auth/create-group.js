@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useContext } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
@@ -30,7 +30,7 @@ const CreateGroup = () => {
 					<Text style={styles.timeGuideText}>{lang.createGroup.createGroup.timeGuide}</Text>
 				</View>
 			</View>
-			<View style={globalStyles.buttonGroup}>
+			<ButtonGroup>
 				<Button
 					text={lang.button.continue}
 					onPress={() =>
@@ -40,7 +40,7 @@ const CreateGroup = () => {
 						})
 					}
 				/>
-			</View>
+			</ButtonGroup>
 		</View>
 	);
 };
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 	instructions: {
 		flex: 1,
 		justifyContent: 'center',
+		paddingBottom: spacing.xlSpacing * 2,
 		gap: spacing.xlSpacing,
 	},
 	instructionsList: {

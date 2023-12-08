@@ -1,7 +1,7 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, fontSizes, spacing } from '../theme/theme';
 import { useContext } from 'react';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { LangContext } from '../contexts/Contexts';
+import { colors, fontSizes, spacing } from '../theme/theme';
 
 const InviteMember = ({ photo, name, removeOnPress }) => {
 	const { lang } = useContext(LangContext);

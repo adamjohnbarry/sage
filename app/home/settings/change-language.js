@@ -1,9 +1,13 @@
-import { Text, View } from 'react-native';
-import globalStyles from '../../../assets/styles/GlobalStyles';
-import { useContext, useEffect, useState } from 'react';
-import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
-import FormButton from '../../../assets/components/FormButton';
+import { useContext, useState } from 'react';
+import { View } from 'react-native';
 import Button from '../../../assets/components/Button';
+import ButtonGroup from '../../../assets/components/ButtonGroup';
+import Form from '../../../assets/components/Form';
+import FormButton from '../../../assets/components/FormButton';
+import FormContainer from '../../../assets/components/FormContainer';
+import FormGroup from '../../../assets/components/FormGroup';
+import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
+import globalStyles from '../../../assets/styles/GlobalStyles';
 import { langDE, langEN } from '../../../assets/utils/utils';
 
 const ChangeLanguage = () => {
@@ -33,10 +37,9 @@ const ChangeLanguage = () => {
 
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { paddingBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={globalStyles.form}>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.changeLanguage.label}</Text>
+			<FormContainer>
+				<Form>
+					<FormGroup label={lang.form.changeLanguage.label}>
 						<FormButton
 							emoji='🇺🇸'
 							label='English'
@@ -49,12 +52,12 @@ const ChangeLanguage = () => {
 							onPress={() => handleLanguageChange(lang.langCode.german)}
 							active={isLanguageButtonActive(lang.langCode.german)}
 						/>
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
+					</FormGroup>
+				</Form>
+				<ButtonGroup>
 					<Button text={lang.button.save} color='green' onPress={saveLanguage} />
-				</View>
-			</View>
+				</ButtonGroup>
+			</FormContainer>
 		</View>
 	);
 };

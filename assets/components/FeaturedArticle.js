@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
 export default function FeaturedArticle({ article }) {

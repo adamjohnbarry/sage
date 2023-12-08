@@ -1,10 +1,13 @@
-import { Text, View } from 'react-native';
-import FormInputText from '../../assets/components/FormInputText';
-import { useContext, useEffect, useState } from 'react';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'expo-router';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useContext, useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import Form from '../../assets/components/Form';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
+import FormInputText from '../../assets/components/FormInputText';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 
@@ -20,13 +23,6 @@ const Login = () => {
 	const [emailError, setEmailError] = useState('');
 	const [passwordError, setPasswordError] = useState('');
 
-	// useEffect(() => {
-	// 	router.replace({
-	// 		pathname: '/home/my-garden',
-	// 		params: { title: 'garden name', address: 'addy', days: 'Tues', times: '2-2' },
-	// 	});
-	// });
-
 	// login to user account with given credentials
 	const login = async (e) => {
 		e.preventDefault();
@@ -37,10 +33,11 @@ const Login = () => {
 
 		try {
 			const userCredential = await signInWithEmailAndPassword(auth, email, password);
-			// Signed in
+
 			await fetchUserAndGardenDetails(userCredential.user.uid);
-			// Navigate to the 'My Garden' page after successful login and data fetch
-			router.replace({ pathname: '/home/my-garden' });
+
+			// navigate to the 'My Garden' page after successful login and data fetch
+			router.replace('/home/my-garden');
 		} catch (err) {
 			if (err.code === 'auth/invalid-email') {
 				setEmailError('Please enter a valid email.');
@@ -55,30 +52,28 @@ const Login = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={globalStyles.form}>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.email.label}</Text>
-						<FormInputText placeholder={lang.form.email.placeholder} keyboardType='email-address' value={email} onChangeText={(text) => setEmail(text)} />
-						{emailError && <Text style={globalStyles.formError}>{emailError}</Text>}
-					</View>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.passwordLogin.label}</Text>
-						<FormInputText
-							placeholder={lang.form.passwordLogin.placeholder}
-							value={password}
-							secureTextEntry={true}
-							onChangeText={(text) => setPassword(text)}
-						/>
-						{passwordError && <Text style={globalStyles.formError}>{passwordError}</Text>}
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.login} onPress={login} />
-				</View>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+			<View style={globalStyles.containerFlex}>
+				<FormContainer safeArea={safeArea}>
+					<Form>
+						<FormGroup label={lang.form.email.label} error={emailError}>
+							<FormInputText placeholder={lang.form.email.placeholder} keyboardType='email-address' value={email} onChangeText={(text) => setEmail(text)} />
+						</FormGroup>
+						<FormGroup label={lang.form.passwordLogin.label} error={passwordError}>
+							<FormInputText
+								placeholder={lang.form.passwordLogin.placeholder}
+								value={password}
+								secureTextEntry={true}
+								onChangeText={(text) => setPassword(text)}
+							/>
+						</FormGroup>
+					</Form>
+					<ButtonGroup>
+						<Button text={lang.button.login} onPress={login} />
+					</ButtonGroup>
+				</FormContainer>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 };
 

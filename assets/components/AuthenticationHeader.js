@@ -1,8 +1,7 @@
-import { Text, View } from 'react-native';
-import { colors, fontSizes, spacing } from '../theme/theme';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Pressable } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import globalStyles from '../styles/GlobalStyles';
+import { colors, fontSizes, spacing } from '../theme/theme';
 
 const AuthenticationHeader = ({ navigation, route, safeArea }) => {
 	let index = 0;

@@ -1,17 +1,17 @@
-import * as SMS from 'expo-sms';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Card from '../../assets/components/Card';
-import globalStyles from '../../assets/styles/GlobalStyles';
 import { FontAwesome5 } from '@expo/vector-icons';
-import Header from '../../assets/components/Header';
-import { ScrollView } from 'react-native-gesture-handler';
-import { colors, fontSizes, spacing } from '../../assets/theme/theme';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { Tabs } from 'expo-router';
-import { useUser } from '../../assets/contexts/UserContext';
+import * as SMS from 'expo-sms';
+import { useContext, useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import Attendance from '../../assets/components/Attendance';
-import { useState, useEffect, useContext } from 'react';
+import Card from '../../assets/components/Card';
+import Header from '../../assets/components/Header';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
+import { useUser } from '../../assets/contexts/UserContext';
 import { MEMBERS } from '../../assets/data/members';
+import globalStyles from '../../assets/styles/GlobalStyles';
+import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
 const MyGarden = () => {
 	const { user } = useUser();
@@ -21,7 +21,7 @@ const MyGarden = () => {
 	const [showAttendanceNotification, setShowAttendanceNotifcation] = useState(true);
 
 	useEffect(() => {
-		const userExists = members.some(member => member.name === 'Me');
+		const userExists = members.some((member) => member.name === 'Me');
 
 		if (!userExists) {
 			const newUser = {
@@ -29,14 +29,13 @@ const MyGarden = () => {
 				photo: { uri: user.photo }, // Use the URI directly for network images
 				attendingNextSession: -1,
 			};
-			setMembers(currentMembers => [...currentMembers, newUser]);
+			setMembers((currentMembers) => [...currentMembers, newUser]);
 		}
 	}, [user, members]);
 
-	const attendingMembers = members.filter(member => member.attendingNextSession === 1);
-	const notAttendingMembers = members.filter(member => member.attendingNextSession === 0);
-	const hasntRespondedMembers = members.filter(member => member.attendingNextSession === -1);
-
+	const attendingMembers = members.filter((member) => member.attendingNextSession === 1);
+	const notAttendingMembers = members.filter((member) => member.attendingNextSession === 0);
+	const hasntRespondedMembers = members.filter((member) => member.attendingNextSession === -1);
 
 	// send invite to a friend
 	const sendInvite = async () => {
@@ -52,23 +51,14 @@ const MyGarden = () => {
 	};
 
 	function handleYesAttending() {
-		setMembers(currentMembers =>
-			currentMembers.map(member =>
-				member.name === 'Me' ? { ...member, attendingNextSession: 1 } : member
-			)
-		);
+		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: 1 } : member)));
 		setShowAttendanceNotifcation(false);
 	}
 
 	function handleNoAttending() {
-		setMembers(currentMembers =>
-			currentMembers.map(member =>
-				member.name === 'Me' ? { ...member, attendingNextSession: 0 } : member
-			)
-		);
+		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: 0 } : member)));
 		setShowAttendanceNotifcation(false);
 	}
-
 
 	useEffect(() => {
 		console.log('user', user);

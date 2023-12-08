@@ -51,6 +51,7 @@ const langEN = {
 		chooseLocation: {
 			title: 'Choose Location',
 			description: 'Select a gardening location for your group. Allow Sage to access your location so we can find some gardens in your area.',
+			separatorText: 'OR',
 			gardens: [
 				{
 					address: '45 University Ave, PA',
@@ -87,6 +88,10 @@ const langEN = {
 		},
 		congratulations: {
 			title: "Congrats! You're in.",
+			oops: 'Oops!',
+			loading: 'Loading...',
+			registrationError: 'There was an error in registering. Please try again.',
+			gardenCreationError: 'There was an error creating your garden. Please try again.',
 		},
 	},
 	learn: {
@@ -214,10 +219,11 @@ const langEN = {
 		inviteWordDoesntExistError: 'Invite word does not exist.',
 		inviteWordAlreadyExistsError: 'Invite word has already been taken.',
 		gardenNameEmpty: 'Garden name cannot be empty.',
+		cannotUseSMSError: 'Cannot use SMS on this device.',
 	},
 };
 
 // german language
 const langDE = {};
 
-export { langEN, langDE };
+export { langDE, langEN };

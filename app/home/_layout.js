@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
+import { useContext } from 'react';
 import Header from '../../assets/components/Header';
 import TabBar from '../../assets/components/TabBar';
-import { useContext } from 'react';
 import { SafeAreaContext } from '../../assets/contexts/Contexts';
 
 const _layout = () => {

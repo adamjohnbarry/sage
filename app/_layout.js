@@ -1,9 +1,9 @@
 import { Slot } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { UserProvider } from '../assets/contexts/UserContext';
-import { LangContext, SafeAreaContext } from '../assets/contexts/Contexts';
-import { langEN } from '../assets/utils/utils';
 import { useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LangContext, SafeAreaContext } from '../assets/contexts/Contexts';
+import { UserProvider } from '../assets/contexts/UserContext';
+import { langEN } from '../assets/utils/utils';
 
 const _layout = () => {
 	const insets = useSafeAreaInsets();

@@ -1,6 +1,6 @@
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { colors, fontSizes, spacing } from '../theme/theme';
-import { useState } from 'react';
 
 const TimeSlot = ({ time, lastSlot, onSelect }) => {
 	const [pressed, setPressed] = useState(false);

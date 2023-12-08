@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
-import { View, Text, Animated, StyleSheet, ScrollView, TouchableOpacity, LayoutRectangle } from 'react-native';
-import { colors, fontSizes, spacing } from '../../assets/theme/theme';
-import LearnHeader from '../../assets/components/LearnHeader';
-import FeaturedArticle from '../../assets/components/FeaturedArticle';
+import React, { useRef, useState } from 'react';
+import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ArticleCard from '../../assets/components/ArticleCard';
+import FeaturedArticle from '../../assets/components/FeaturedArticle';
+import LearnHeader from '../../assets/components/LearnHeader';
 import { ARTICLES } from '../../assets/data/articles';
+import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
 const FILTERS = Object.keys(ARTICLES);
 

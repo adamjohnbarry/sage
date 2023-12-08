@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
+import { useContext } from 'react';
 import AuthenticationHeader from '../../assets/components/AuthenticationHeader';
 import { SafeAreaContext } from '../../assets/contexts/Contexts';
-import { useContext } from 'react';
 
 const _layout = () => {
 	const { safeArea } = useContext(SafeAreaContext);

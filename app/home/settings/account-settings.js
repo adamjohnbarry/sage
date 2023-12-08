@@ -1,11 +1,15 @@
-import { Text, View } from 'react-native';
-import globalStyles from '../../../assets/styles/GlobalStyles';
-import { useContext, useEffect, useState } from 'react';
-import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
-import FormInputText from '../../../assets/components/FormInputText';
-import Button from '../../../assets/components/Button';
 import { useRouter } from 'expo-router';
+import { useContext, useEffect, useState } from 'react';
+import { View } from 'react-native';
+import Button from '../../../assets/components/Button';
+import ButtonGroup from '../../../assets/components/ButtonGroup';
+import Form from '../../../assets/components/Form';
+import FormContainer from '../../../assets/components/FormContainer';
+import FormGroup from '../../../assets/components/FormGroup';
+import FormInputText from '../../../assets/components/FormInputText';
+import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts';
 import { useUser } from '../../../assets/contexts/UserContext';
+import globalStyles from '../../../assets/styles/GlobalStyles';
 
 const AccountSettings = () => {
 	const router = useRouter();
@@ -20,6 +24,7 @@ const AccountSettings = () => {
 		setIsChanged(name !== user?.name);
 	}, [name, user]);
 
+	// handle saving account changes
 	const handleSave = async () => {
 		if (isChanged) {
 			await updateUserDetails({
@@ -27,22 +32,22 @@ const AccountSettings = () => {
 				name: name,
 			});
 		}
+
 		router.back();
-	}
+	};
 
 	return (
 		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { paddingBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={globalStyles.form}>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.name.label}</Text>
+			<FormContainer>
+				<Form>
+					<FormGroup label={lang.form.name.label}>
 						<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={(text) => setName(text)} />
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
+					</FormGroup>
+				</Form>
+				<ButtonGroup>
 					<Button text={lang.button.save} color='black' onPress={handleSave} />
-				</View>
-			</View>
+				</ButtonGroup>
+			</FormContainer>
 		</View>
 	);
 };

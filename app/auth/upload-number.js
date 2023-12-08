@@ -1,12 +1,16 @@
-import { Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
 import validator from 'validator';
-import { useRouter } from 'expo-router';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import Form from '../../assets/components/Form';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
+import globalStyles from '../../assets/styles/GlobalStyles';
 
 const UploadNumber = () => {
 	const router = useRouter();
@@ -46,19 +50,17 @@ const UploadNumber = () => {
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-			<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-				<View style={globalStyles.formContainer}>
-					<View style={globalStyles.form}>
-						<View style={globalStyles.formGroup}>
-							<Text style={globalStyles.formLabel}>{lang.form.phoneNumber.label}</Text>
-							<PhoneInput value={phoneNumber} defaultCountry='us' onChangePhoneNumber={phoneNumberChangeNumber} style={globalStyles.formInput} />
-							{phoneNumberError && <Text style={globalStyles.formError}>{phoneNumberError}</Text>}
-						</View>
-					</View>
-					<View style={globalStyles.buttonGroup}>
+			<View style={globalStyles.containerFlex}>
+				<FormContainer safeArea={safeArea}>
+					<Form>
+						<FormGroup label={lang.form.phoneNumber.label} error={phoneNumberError}>
+							<PhoneInput value={phoneNumber} onChangePhoneNumber={phoneNumberChangeNumber} style={globalStyles.formInput} />
+						</FormGroup>
+					</Form>
+					<ButtonGroup>
 						<Button text={lang.button.continue} onPress={updatePhoneNumber} />
-					</View>
-				</View>
+					</ButtonGroup>
+				</FormContainer>
 			</View>
 		</TouchableWithoutFeedback>
 	);

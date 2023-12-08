@@ -1,12 +1,13 @@
+import { useRouter } from 'expo-router';
+import { useContext } from 'react';
 import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import Button from '../assets/components/Button';
+import ButtonGroup from '../assets/components/ButtonGroup';
+import { LangContext, SafeAreaContext } from '../assets/contexts/Contexts';
 import LoginScreenImage from '../assets/images/login-screen.png';
 import SageLogo from '../assets/images/sage-white.png';
-import Button from '../assets/components/Button';
-import { useRouter } from 'expo-router';
-import { colors, fontSizes, spacing } from '../assets/theme/theme';
 import globalStyles from '../assets/styles/GlobalStyles';
-import { useContext } from 'react';
-import { LangContext, SafeAreaContext } from '../assets/contexts/Contexts';
+import { colors, fontSizes, spacing } from '../assets/theme/theme';
 
 const Root = () => {
 	const router = useRouter();
@@ -24,7 +25,7 @@ const Root = () => {
 						<Text style={styles.tagline}>{lang.auth.initial.title}</Text>
 						<Text style={styles.description}>{lang.auth.initial.description}</Text>
 					</View>
-					<View style={globalStyles.buttonGroup}>
+					<ButtonGroup>
 						<Button
 							text={lang.button.createAccount}
 							color='green'
@@ -44,7 +45,7 @@ const Root = () => {
 								})
 							}
 						/>
-					</View>
+					</ButtonGroup>
 				</View>
 			</ImageBackground>
 		</View>

@@ -1,12 +1,14 @@
-import { ScrollView, Text, View } from 'react-native';
-import FormInputText from '../../assets/components/FormInputText';
+import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
-import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import ContainerScroll from '../../assets/components/ContainerScroll';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
+import FormInputText from '../../assets/components/FormInputText';
 import GardenItem from '../../assets/components/GardenItem';
 import Separator from '../../assets/components/Separator';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 
 const ChooseLocation = () => {
@@ -45,26 +47,23 @@ const ChooseLocation = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<ScrollView style={[globalStyles.containerScroll]}>
-					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
-						<Text style={globalStyles.formLabel}>{lang.form.privateGarden.label}</Text>
-						<FormInputText placeholder={lang.form.privateGarden.placeholder} value={privateAddress} onChangeText={(text) => setPrivateAddress(text)} />
-					</View>
-					<Separator text='OR' marginBottom={true} />
-					<View style={[globalStyles.formGroup, globalStyles.formGroupSpacing]}>
-						<Text style={globalStyles.formLabel}>{lang.form.localGarden.label}</Text>
-						{localGardens.map((garden, i) => (
-							<GardenItem key={i} {...garden} onPress={() => handleGardenItemChange(garden.address)} active={isGardenItemActive(garden.address)} />
-						))}
-					</View>
-				</ScrollView>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.continue} onPress={saveGardenLocation} />
-				</View>
-			</View>
-		</View>
+		<FormContainer safeArea={safeArea}>
+			<ContainerScroll>
+				<FormGroup label={lang.form.privateGarden.label} spacing={true}>
+					<FormInputText placeholder={lang.form.privateGarden.placeholder} value={privateAddress} onChangeText={(text) => setPrivateAddress(text)} />
+				</FormGroup>
+				<Separator text={lang.createGroup.chooseLocation.separatorText} marginBottom={true} />
+				{/* FIX BELOW TO SPACING TRUE */}
+				<FormGroup label={lang.form.localGarden.label} spacing={true}>
+					{localGardens.map((garden, i) => (
+						<GardenItem key={i} {...garden} onPress={() => handleGardenItemChange(garden.address)} active={isGardenItemActive(garden.address)} />
+					))}
+				</FormGroup>
+			</ContainerScroll>
+			<ButtonGroup>
+				<Button text={lang.button.continue} onPress={saveGardenLocation} />
+			</ButtonGroup>
+		</FormContainer>
 	);
 };
 

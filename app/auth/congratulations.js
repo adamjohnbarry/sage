@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
 import { Stack, useRouter } from 'expo-router';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
-import { colors, fontSizes, spacing } from '../../assets/theme/theme';
-import { useUser } from '../../assets/contexts/UserContext';
+import { StyleSheet, Text, View } from 'react-native';
 import Confetti from 'react-native-confetti';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
+import { useUser } from '../../assets/contexts/UserContext';
 import { SageWordmark } from '../../assets/icons/sagewordmark';
+import { colors, fontSizes, spacing } from '../../assets/theme/theme';
 
 const Congratulations = () => {
 	const router = useRouter();
@@ -24,29 +24,32 @@ const Congratulations = () => {
 		submitData = async () => {
 			try {
 				const success = await submitRegistration();
+
+				// if registration worked
 				if (success) {
 					if (confettiRef.current) {
 						confettiRef.current.startConfetti();
 					}
 				} else {
-					setError('There was an error in registering. Please try again.');
+					setError(lang.createGroup.congratulations.registrationError);
 				}
-			} catch (e) {
-				console.error(e);
-				setError('There was an error create your garden. Please try again.');
+			} catch (err) {
+				setError(lang.createGroup.congratulations.gardenCreationError);
 			} finally {
 				setIsLoading(false);
 			}
 		};
+
 		submitData();
 	}, []);
 
+	// render the day and time of your garden events
 	const renderGardenDaysTimes = () => {
 		const entries = Object.entries(gardenDaysTimes);
 
 		return entries.map(([day, times], index) => {
 			const timesStr = times.join(', ');
-			console.log('DT: ', day, timesStr)
+
 			return (
 				<Text key={index} style={styles.congratulationsGardenTime}>
 					{day} @ {timesStr}
@@ -55,27 +58,35 @@ const Congratulations = () => {
 		});
 	};
 
+	// while we are waiting for the congratulations page results
 	if (isLoading) {
 		return (
 			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
-				<Text>Loading...</Text>
+				<Text>{lang.createGroup.congratulations.loading}</Text>
 			</View>
 		);
 	}
 
+	// if there is an error with user registration, inform the user
 	if (error) {
 		return (
 			<>
+				{/* hide the header for this screen */}
 				<Stack.Screen options={{ headerShown: false }} />
-				<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom, }]}>
+				{/* show the error message content */}
+				<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
 					<View style={styles.congratulations}>
-						<Text style={styles.congratulationsCongrats}>Oops!</Text>
+						<Text style={styles.congratulationsCongrats}>{lang.createGroup.congratulations.oops}</Text>
 						<Text style={styles.congratulationsGardenTime}>{error}</Text>
 					</View>
-					<Button text={lang.button.restart} onPress={() => { router.replace({ pathname: '/' }); }} />
+					<Button
+						text={lang.button.restart}
+						onPress={() => {
+							router.replace({ pathname: '/' });
+						}}
+					/>
 				</View>
 			</>
-
 		);
 	}
 
@@ -90,17 +101,21 @@ const Congratulations = () => {
 				<View style={styles.congratulations}>
 					<View>
 						<Text style={styles.congratulationsGardenName}>{garden?.name}</Text>
-						{gardenDaysTimes && gardenDaysTimes.length && (
-							renderGardenDaysTimes()
-						)}
+						{gardenDaysTimes && gardenDaysTimes.length && renderGardenDaysTimes()}
 					</View>
 					<View>
 						<Text style={styles.congratulationsCongrats}>{lang.createGroup.congratulations.title}</Text>
 					</View>
 				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.home} onPress={() => { router.replace({ pathname: '/home/my-garden' }); if (confettiRef.current) confettiRef.current.stopConfetti(); }} />
-				</View>
+				<ButtonGroup>
+					<Button
+						text={lang.button.home}
+						onPress={() => {
+							router.replace({ pathname: '/home/my-garden' });
+							if (confettiRef.current) confettiRef.current.stopConfetti();
+						}}
+					/>
+				</ButtonGroup>
 			</View>
 		</>
 	);

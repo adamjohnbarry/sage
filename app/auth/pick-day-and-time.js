@@ -1,12 +1,15 @@
-import { Text, View } from 'react-native';
-import { useContext, useState } from 'react';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
-import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
-import TimeSlot from '../../assets/components/TimeSlot';
+import { useContext, useState } from 'react';
+import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import ContainerScroll from '../../assets/components/ContainerScroll';
+import FormContainer from '../../assets/components/FormContainer';
+import TimeSlot from '../../assets/components/TimeSlot';
+import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
+import globalStyles from '../../assets/styles/GlobalStyles';
 
 const PickDayAndTime = () => {
 	const router = useRouter();
@@ -52,33 +55,31 @@ const PickDayAndTime = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<ScrollView style={[globalStyles.containerScroll]}>
-					{lang.createGroup.pickDayAndTime.days.map((day, i) => (
-						<View
-							key={i}
-							style={[globalStyles.formGroup, globalStyles.formGroupSpacing, i == lang.createGroup.pickDayAndTime.days.length - 1 && { marginBottom: 0 }]}
-						>
-							<Text style={globalStyles.formLabel}>{day}</Text>
-							<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
-								{lang.createGroup.pickDayAndTime.times.map((time, i) => (
-									<TimeSlot
-										key={i}
-										time={time}
-										onSelect={() => handleTimeSelection(day, time)}
-										lastSlot={i == lang.createGroup.pickDayAndTime.times.length - 1 ? true : false}
-									/>
-								))}
-							</ScrollView>
-						</View>
-					))}
-				</ScrollView>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.continue} onPress={setGardenDayAndTime} />
-				</View>
-			</View>
-		</View>
+		<FormContainer safeArea={safeArea}>
+			<ContainerScroll>
+				{lang.createGroup.pickDayAndTime.days.map((day, i) => (
+					<View
+						key={i}
+						style={[globalStyles.formGroup, globalStyles.formGroupSpacing, i == lang.createGroup.pickDayAndTime.days.length - 1 && { marginBottom: 0 }]}
+					>
+						<Text style={globalStyles.formLabel}>{day}</Text>
+						<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
+							{lang.createGroup.pickDayAndTime.times.map((time, i) => (
+								<TimeSlot
+									key={i}
+									time={time}
+									onSelect={() => handleTimeSelection(day, time)}
+									lastSlot={i == lang.createGroup.pickDayAndTime.times.length - 1 ? true : false}
+								/>
+							))}
+						</ScrollView>
+					</View>
+				))}
+			</ContainerScroll>
+			<ButtonGroup>
+				<Button text={lang.button.continue} onPress={setGardenDayAndTime} />
+			</ButtonGroup>
+		</FormContainer>
 	);
 };
 

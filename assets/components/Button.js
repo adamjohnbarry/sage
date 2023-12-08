@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { colors, fontSizes } from '../theme/theme';
 
 const Button = ({ onPress, text, disabled, color = 'black' }) => {

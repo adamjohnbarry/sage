@@ -23,6 +23,5 @@ export const MEMBERS = [
 		name: 'Luna',
 		photo: require('../../assets/images/luna.webp'),
 		attendingNextSession: 1,
-	}
-
+	},
 ];

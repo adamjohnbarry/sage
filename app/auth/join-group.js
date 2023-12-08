@@ -1,16 +1,19 @@
-import { Text, View } from 'react-native';
-import FormInputText from '../../assets/components/FormInputText';
+import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
-import { Link, useRouter } from 'expo-router';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import Form from '../../assets/components/Form';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
+import FormInputText from '../../assets/components/FormInputText';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
-import { collection, doc, getDoc, getDocs, getFirestore, query, updateDoc, where } from 'firebase/firestore';
 import { useUser } from '../../assets/contexts/UserContext';
+import globalStyles from '../../assets/styles/GlobalStyles';
 
 const JoinGroup = () => {
 	const router = useRouter();
-	const {  joinGarden } = useUser();
+	const { joinGarden } = useUser();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
@@ -38,46 +41,41 @@ const JoinGroup = () => {
 		const success = await joinGarden(inviteWord);
 		if (success) {
 			router.replace('/home/my-garden');
-	 	} else {
+		} else {
 			setInviteWordError(lang.error.inviteWordDoesntExistError);
 		}
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={globalStyles.form}>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.inviteWord.label}</Text>
-						<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={inviteWordFieldChangeText} />
-						{inviteWordError && <Text style={globalStyles.formError}>{inviteWordError}</Text>}
-						<View style={globalStyles.formHelpContainer}>
-							<Link href='/auth/how-do-i-get-an-invite-word' style={globalStyles.formHelp}>
-								{lang.form.inviteWord.help}
-							</Link>
-						</View>
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button
-						text={lang.button.createGroup}
-						color='white'
-						onPress={() =>
-							router.push({
-								pathname: '/auth/create-group',
-								params: { index: 3, title: lang.createGroup.createGroup.title, description: lang.createGroup.createGroup.description },
-							})
-						}
-					/>
-					<Button
-						text={lang.button.join}
-						color={inviteWord.length > 0 ? 'black' : 'grey'}
-						disabled={inviteWord.length == 0 ? true : false}
-						onPress={joinGroup}
-					/>
-				</View>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+			<View style={globalStyles.containerFlex}>
+				<FormContainer safeArea={safeArea}>
+					<Form>
+						<FormGroup label={lang.form.inviteWord.label} error={inviteWordError} help={lang.form.inviteWord.help} helpHref='/auth/how-do-i-get-an-invite-word'>
+							<FormInputText placeholder={lang.form.inviteWord.placeholder} value={inviteWord} onChangeText={inviteWordFieldChangeText} />
+						</FormGroup>
+					</Form>
+					<ButtonGroup>
+						<Button
+							text={lang.button.createGroup}
+							color='white'
+							onPress={() =>
+								router.push({
+									pathname: '/auth/create-group',
+									params: { index: 3, title: lang.createGroup.createGroup.title, description: lang.createGroup.createGroup.description },
+								})
+							}
+						/>
+						<Button
+							text={lang.button.join}
+							color={inviteWord.length > 0 ? 'black' : 'grey'}
+							disabled={inviteWord.length == 0 ? true : false}
+							onPress={joinGroup}
+						/>
+					</ButtonGroup>
+				</FormContainer>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 };
 

@@ -1,8 +1,8 @@
-import { Pressable, Text, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { colors, fontSizes, spacing } from '../theme/theme';
-import globalStyles from '../styles/GlobalStyles';
+import { Pressable, Text, View } from 'react-native';
 import { useUser } from '../contexts/UserContext';
+import globalStyles from '../styles/GlobalStyles';
+import { colors, fontSizes, spacing } from '../theme/theme';
 
 const Header = ({ navigation, route, safeArea }) => {
 	const { garden, gardenDaysTimes } = useUser();

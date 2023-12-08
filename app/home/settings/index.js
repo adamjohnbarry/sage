@@ -1,12 +1,11 @@
-import { ScrollView, View } from 'react-native';
-import globalStyles from '../../../assets/styles/GlobalStyles';
-import { getAuth, deleteUser } from 'firebase/auth';
-import SettingsButton from '../../../assets/components/SettingsButton';
-import { useContext } from 'react';
-import { LangContext } from '../../../assets/contexts/Contexts';
 import { useRouter } from 'expo-router';
+import { deleteUser, getAuth } from 'firebase/auth';
+import { useContext } from 'react';
+import { Alert, ScrollView, View } from 'react-native';
+import SettingsButton from '../../../assets/components/SettingsButton';
+import { LangContext } from '../../../assets/contexts/Contexts';
+import globalStyles from '../../../assets/styles/GlobalStyles';
 import { colors } from '../../../assets/theme/theme';
-import { Alert } from 'react-native';
 
 const Settings = () => {
 	const router = useRouter();

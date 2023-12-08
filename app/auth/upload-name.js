@@ -1,11 +1,15 @@
-import { Text, View } from 'react-native';
-import FormInputText from '../../assets/components/FormInputText';
-import { useContext, useState } from 'react';
-import Button from '../../assets/components/Button';
-import globalStyles from '../../assets/styles/GlobalStyles';
 import { useRouter } from 'expo-router';
+import { useContext, useState } from 'react';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import Button from '../../assets/components/Button';
+import ButtonGroup from '../../assets/components/ButtonGroup';
+import Form from '../../assets/components/Form';
+import FormContainer from '../../assets/components/FormContainer';
+import FormGroup from '../../assets/components/FormGroup';
+import FormInputText from '../../assets/components/FormInputText';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
+import globalStyles from '../../assets/styles/GlobalStyles';
 
 const UploadName = () => {
 	const router = useRouter();
@@ -39,20 +43,20 @@ const UploadName = () => {
 	};
 
 	return (
-		<View style={[globalStyles.containerFlex, globalStyles.containerWhite, { marginBottom: safeArea.paddingBottom }]}>
-			<View style={globalStyles.formContainer}>
-				<View style={globalStyles.form}>
-					<View style={globalStyles.formGroup}>
-						<Text style={globalStyles.formLabel}>{lang.form.name.label}</Text>
-						<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={nameFieldChangeText} />
-						{nameError && <Text style={globalStyles.formError}>{nameError}</Text>}
-					</View>
-				</View>
-				<View style={globalStyles.buttonGroup}>
-					<Button text={lang.button.continue} onPress={updateDisplayName} />
-				</View>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+			<View style={globalStyles.containerFlex}>
+				<FormContainer safeArea={safeArea}>
+					<Form>
+						<FormGroup label={lang.form.name.label} error={nameError}>
+							<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={nameFieldChangeText} />
+						</FormGroup>
+					</Form>
+					<ButtonGroup>
+						<Button text={lang.button.continue} onPress={updateDisplayName} />
+					</ButtonGroup>
+				</FormContainer>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 };
 
