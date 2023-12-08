@@ -17,13 +17,13 @@ const Root = () => {
 	return (
 		<View style={[globalStyles.containerFlex]}>
 			<ImageBackground source={LoginScreenImage} resizeMode='cover' style={globalStyles.backgroundImage}>
-				<View style={[globalStyles.containerMarginHorizontal, globalStyles.containerFlex, safeArea]}>
+				<View style={[, globalStyles.containerFlex, safeArea]}>
 					<View style={styles.headerContainer}>
 						<SageWordmark width={100} color='white' />
 					</View>
 					<View style={styles.bodyContainer}>
 						<Text style={[globalStyles.mainHeader, styles.tagline]}>{lang.auth.initial.title}</Text>
-						<Text style={[globalStyles.h3, styles.description]}>{lang.auth.initial.description}</Text>
+						<Text style={[globalStyles.h4, styles.description]}>{lang.auth.initial.description}</Text>
 					</View>
 					<ButtonGroup>
 						<Button
@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-end',
 		gap: spacing.mdSpacing,
 		paddingBottom: 2 * spacing.xlSpacing,
+		marginHorizontal: spacing.xlSpacing,
 	},
 	tagline: {
 		color: colors.white,

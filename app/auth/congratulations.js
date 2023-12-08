@@ -108,7 +108,7 @@ const Congratulations = () => {
 			{/* the main congratulations content for the container */}
 			<View style={[styles.congratulationsContainer, { paddingTop: safeArea.paddingTop, paddingBottom: safeArea.paddingBottom }]}>
 				<Confetti confettiCount={400} duration={4500} ref={confettiRef} />
-				<SageWordmark width={80} />
+				<SageWordmark width={80} style={{ marginHorizontal: spacing.xlSpacing }} />
 				<View style={styles.congratulations}>
 					<View>
 						<Text style={styles.congratulationsGardenName}>{garden?.name}</Text>
@@ -136,12 +136,12 @@ const styles = StyleSheet.create({
 	congratulationsContainer: {
 		flex: 1,
 		backgroundColor: colors.primary,
-		paddingHorizontal: spacing.lgSpacing,
 	},
 	congratulations: {
 		flex: 1,
 		justifyContent: 'center',
 		gap: spacing.xlSpacing,
+		marginHorizontal: spacing.xlSpacing,
 	},
 	congratulationsGardenName: {
 		fontSize: fontSizes.h2,

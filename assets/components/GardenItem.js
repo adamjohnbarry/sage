@@ -1,15 +1,16 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, fontSizes, spacing } from '../theme/theme';
+import globalStyles from '../styles/GlobalStyles';
 
 const GardenItem = ({ address, image, distance, driveTime, onPress, active }) => {
 	return (
 		<Pressable onPress={onPress} style={[styles.gardenItem, , active && styles.gardenItemPressed]}>
 			<Image source={{ uri: image }} style={styles.gardenItemImage} />
 			<View style={styles.gardenItemInfo}>
-				<Text style={styles.gardenItemInfoName}>{address}</Text>
+				<Text style={globalStyles.h3}>{address}</Text>
 				<View style={styles.gardenItemInfoDistance}>
-					<Text style={styles.gardenItemInfoDescription}>{distance} miles away</Text>
-					<Text style={styles.gardenItemInfoDescription}>{driveTime} min drive</Text>
+					<Text style={globalStyles.body}>{distance} miles away</Text>
+					<Text style={globalStyles.body}>{driveTime} min drive</Text>
 				</View>
 			</View>
 		</Pressable>
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
 		borderColor: colors.white,
 		borderRadius: spacing.borderRadius,
 		gap: spacing.mdSpacing,
+		marginHorizontal: spacing.mdSpacing,
 	},
 	gardenItemPressed: {
 		backgroundColor: colors.lightGrey,
@@ -40,17 +42,10 @@ const styles = StyleSheet.create({
 	},
 	gardenItemInfo: {
 		flexGrow: 1,
-		gap: spacing.mdSpacing,
-	},
-	gardenItemInfoName: {
-		fontSize: fontSizes.h3,
-		fontWeight: 'bold',
+		gap: spacing.xsSpacing,
 	},
 	gardenItemInfoDistance: {
 		gap: spacing.xsSpacing,
-	},
-	gardenItemInfoDescription: {
-		fontSize: fontSizes.body,
 	},
 });
 

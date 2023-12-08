@@ -64,7 +64,7 @@ const InviteFriends = () => {
 				<FlatList
 					data={filteredContacts}
 					style={globalStyles.verticalScroll}
-					ItemSeparatorComponent={() => <View style={{ height: spacing.mdSpacing }} />}
+					ItemSeparatorComponent={() => <View style={{ height: spacing.smSpacing }} />}
 					renderItem={({ item }) => <ContactItem {...item} />}
 					keyExtractor={(item, i) => i}
 				/>

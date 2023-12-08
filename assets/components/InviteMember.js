@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 	inviteMember: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		marginHorizontal: spacing.xlSpacing,
 	},
 	inviteMemberPhoto: {
 		height: spacing.xlSpacing * 2,

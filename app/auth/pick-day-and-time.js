@@ -61,7 +61,7 @@ const PickDayAndTime = () => {
 				{lang.createGroup.pickDayAndTime.days.map((day, i) => (
 					<FormGroup key={i} spacing={i != lang.createGroup.pickDayAndTime.days.length - 1}>
 						<Text style={globalStyles.formLabel}>{day}</Text>
-						<ScrollView style={globalStyles.horizontalScroll} horizontal={true}>
+						<ScrollView style={globalStyles.horizontalScroll} horizontal={true} showsHorizontalScrollIndicator={false}>
 							{lang.createGroup.pickDayAndTime.times.map((time, i) => (
 								<TimeSlot
 									key={i}

@@ -22,6 +22,7 @@ const fontSizes = {
 	h1: 28,
 	h2: 22,
 	h3: 18,
+	h4: 18,
 	body: 16,
 	navigation: 12,
 };

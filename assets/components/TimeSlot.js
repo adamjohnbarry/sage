@@ -22,8 +22,9 @@ const TimeSlot = ({ time, lastSlot, onSelect }) => {
 const styles = StyleSheet.create({
 	timeSlot: {
 		backgroundColor: colors.lightGrey,
-		padding: spacing.smSpacing,
-		marginRight: spacing.mdSpacing,
+		paddingVertical: spacing.smSpacing,
+		paddingHorizontal: spacing.mdSpacing,
+		marginRight: spacing.smSpacing,
 		borderRadius: '50%',
 	},
 	timeSlotLast: {

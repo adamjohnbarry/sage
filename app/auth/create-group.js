@@ -6,6 +6,7 @@ import Button from '../../assets/components/Button';
 import ButtonGroup from '../../assets/components/ButtonGroup';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
+import globalStyles from '../../assets/styles/GlobalStyles';
 
 const CreateGroup = () => {
 	const router = useRouter();
@@ -19,15 +20,15 @@ const CreateGroup = () => {
 					{lang.createGroup.createGroup.instructions.map((instruction, i) => (
 						<View key={i} style={styles.instruction}>
 							<View style={styles.instructionNumberContainer}>
-								<Text style={styles.instructionNumber}>{i + 1}</Text>
+								<Text style={globalStyles.h2}>{i + 1}</Text>
 							</View>
-							<Text style={styles.instructionText}>{instruction.description}</Text>
+							<Text style={globalStyles.h3}>{instruction.description}</Text>
 						</View>
 					))}
 				</View>
 				<View style={styles.timeGuide}>
 					<FontAwesome5 name='clock' size={fontSizes.body} color={colors.black} />
-					<Text style={styles.timeGuideText}>{lang.createGroup.createGroup.timeGuide}</Text>
+					<Text style={globalStyles.body}>{lang.createGroup.createGroup.timeGuide}</Text>
 				</View>
 			</View>
 			<ButtonGroup>
@@ -60,11 +61,13 @@ const styles = StyleSheet.create({
 	},
 	instructionsList: {
 		gap: spacing.xlSpacing,
+		marginBottom: spacing.lgSpacing,
+
 	},
 	instruction: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		gap: spacing.lgSpacing,
+		gap: spacing.mdSpacing,
 	},
 	instructionNumberContainer: {
 		width: 50,
@@ -76,22 +79,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
-	instructionNumber: {
-		fontSize: fontSizes.h3,
-		fontWeight: 'bold',
-	},
-	instructionText: {
-		fontSize: fontSizes.h3,
-		fontWeight: 'bold',
-	},
 	timeGuide: {
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
 		gap: spacing.smSpacing,
-	},
-	timeGuideText: {
-		fontSize: fontSizes.body,
 	},
 });
 

@@ -73,6 +73,7 @@ const globalStyles = StyleSheet.create({
 	// button
 	buttonGroup: {
 		gap: spacing.mdSpacing,
+		marginHorizontal: spacing.xlSpacing,
 	},
 
 	// form
@@ -81,8 +82,6 @@ const globalStyles = StyleSheet.create({
 		justifyContent: 'space-between',
 		backgroundColor: colors.white,
 		marginTop: spacing.xlSpacing,
-		marginLeft: spacing.xlSpacing,
-		marginRight: spacing.xlSpacing,
 	},
 	formContainerScroll: {
 		flex: 1,
@@ -104,6 +103,7 @@ const globalStyles = StyleSheet.create({
 	formLabel: {
 		fontSize: fontSizes.body,
 		fontWeight: 'bold',
+		marginHorizontal: spacing.xlSpacing,
 	},
 	formInput: {
 		height: 56,
@@ -111,6 +111,7 @@ const globalStyles = StyleSheet.create({
 		padding: spacing.lgSpacing,
 		borderRadius: spacing.borderRadius,
 		backgroundColor: colors.lightGrey,
+		marginHorizontal: spacing.xlSpacing,
 	},
 	formError: {
 		color: colors.error,
@@ -128,6 +129,7 @@ const globalStyles = StyleSheet.create({
 	verticalScroll: {
 		height: '100%',
 		marginBottom: spacing.lgSpacing,
+		marginHorizontal: spacing.mdSpacing,
 	},
 	horizontalScroll: {
 		paddingHorizontal: spacing.xlSpacing,

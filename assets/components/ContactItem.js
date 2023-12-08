@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		borderRadius: spacing.borderRadius,
-		gap: spacing.mdSpacing,
-		padding: spacing.smSpacing,
+		gap: spacing.smSpacing,
+		padding: spacing.mdSpacing,
 	},
 	contactItemPressed: {
 		backgroundColor: colors.lightGrey,
