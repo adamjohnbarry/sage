@@ -42,7 +42,7 @@ const Learn = () => {
 				)}
 				scrollEventThrottle={16} // Define how often the scroll event fires
 			>
-				<View>
+				<View style={{ marginBottom: spacing.xlSpacing }}>
 					<View height={180} style={{ marginBottom: -160, marginTop: -spacing.lgSpacing, backgroundColor: colors.secondary }} />
 					<View style={styles.articles}>
 						{ARTICLES[FILTERS[activeFilter]].featured && ARTICLES['For you'].featured.length > 0 && (
