@@ -15,7 +15,7 @@ import FormGroup from '../../assets/components/FormGroup';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 
 const DEFAULT_PHOTO =
-	'https://media.licdn.com/dms/image/D4E03AQGVq7H6Aowx6g/profile-displayphoto-shrink_800_800/0/1701141939944?e=1706745600&v=beta&t=RW_G2QxAaxB4bUckWs00TUPe9fGCSbdcngVtnoZejEM';
+	'https://i.seadn.io/gae/y2QcxTcchVVdUGZITQpr6z96TXYOV0p3ueLL_1kIPl7s-hHn3-nh8hamBDj0GAUNAndJ9_Yuo2OzYG5Nic_hNicPq37npZ93T5Nk-A?auto=format&dpr=1&w=1000';
 
 const UploadPhoto = () => {
 	const router = useRouter();

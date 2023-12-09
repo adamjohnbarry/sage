@@ -32,14 +32,29 @@ const Login = () => {
 
 		const auth = getAuth();
 
-		try {
-			const userCredential = await signInWithEmailAndPassword(auth, email, password);
+		let userCredential;
 
+		try {
+			userCredential = await signInWithEmailAndPassword(auth, email, password);
+		} catch (err) {
+			if (err.code === 'auth/invalid-email') {
+				setEmailError(lang.error.emailInvalidError);
+			} else if (err.code === 'auth/missing-password') {
+				setPasswordError(lang.error.passwordEmptyError);
+			} else if (err.code === 'auth/invalid-login-credentials') {
+				setPasswordError(lang.error.emailOrPasswordIncorrectError);
+			} else {
+				console.log(err);
+			}
+		}
+
+		try {
 			await fetchUserAndGardenDetails(userCredential.user.uid);
 
-			// navigate to the 'My Garden' page after successful login and data fetch
 			router.replace('/home/my-garden');
-		} catch (err) {}
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	return (

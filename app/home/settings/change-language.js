@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import Button from '../../../assets/components/Button';
 import ButtonGroup from '../../../assets/components/ButtonGroup';
@@ -9,6 +10,7 @@ import { LangContext, SafeAreaContext } from '../../../assets/contexts/Contexts'
 import { langDE, langEN } from '../../../assets/utils/utils';
 
 const ChangeLanguage = () => {
+	const router = useRouter();
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang, setLang } = useContext(LangContext);
 
