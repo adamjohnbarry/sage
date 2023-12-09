@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
 	instructionsList: {
 		gap: spacing.xlSpacing,
 		marginBottom: spacing.lgSpacing,
+		marginHorizontal: spacing.xlSpacing,
 
 	},
 	instruction: {
