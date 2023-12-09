@@ -20,9 +20,11 @@ const ChangeLocation = () => {
 
 	const gardens = lang.createGroup.chooseLocation.gardens;
 
+	const routerAddress = router.params?.address;
+
 	const [privateAddress, setPrivateAddress] = useState('');
 	const [localGardens, setLocalGardens] = useState(gardens);
-	const [activeGardenItem, setActiveGardenItem] = useState();
+	const [activeGardenItem, setActiveGardenItem] = useState(routerAddress || '');
 
 	// handle garden item change
 	const handleGardenItemChange = (address) => {

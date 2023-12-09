@@ -18,7 +18,7 @@ const PickDayAndTime = () => {
 	const { safeArea } = useContext(SafeAreaContext);
 	const { lang } = useContext(LangContext);
 
-	const [selectedTimes, setSelectedTimes] = useState();
+	const [selectedTimes, setSelectedTimes] = useState({});
 
 	function handleTimeSelection(day, time) {
 		// create a copy of the current state
@@ -29,6 +29,9 @@ const PickDayAndTime = () => {
 			// if the time is already selected, remove it
 			if (newSelectedTimes[day].includes(time)) {
 				newSelectedTimes[day] = newSelectedTimes[day].filter((item) => item !== time);
+				if (newSelectedTimes[day].length === 0) {
+					delete newSelectedTimes[day];
+				}
 			} else {
 				// if the time is not selected, add it
 				newSelectedTimes[day].push(time);
@@ -38,6 +41,7 @@ const PickDayAndTime = () => {
 			newSelectedTimes[day] = [time];
 		}
 
+		console.log('newSelectedTimes: ', newSelectedTimes);
 		// update the state with the new object
 		setSelectedTimes(newSelectedTimes);
 	}
@@ -75,7 +79,7 @@ const PickDayAndTime = () => {
 				))}
 			</ContainerScroll>
 			<ButtonGroup>
-				<Button text={lang.button.continue} color={selectedTimes ? 'black' : 'grey'} disabled={selectedTimes ? false : true} onPress={setGardenDayAndTime} />
+				<Button text={lang.button.continue} color={Object.entries(selectedTimes).length > 0 ? 'black' : 'grey'} disabled={selectedTimes ? false : true} onPress={setGardenDayAndTime} />
 			</ButtonGroup>
 		</FormContainer>
 	);
