@@ -113,9 +113,11 @@ const globalStyles = StyleSheet.create({
 	},
 	formError: {
 		color: colors.error,
+		marginHorizontal: spacing.xlSpacing,
 	},
 	formHelpContainer: {
 		alignItems: 'flex-end',
+		marginHorizontal: spacing.xlSpacing,
 	},
 	formHelp: {
 		color: colors.darkGrey,
@@ -131,6 +133,7 @@ const globalStyles = StyleSheet.create({
 	},
 	horizontalScroll: {
 		paddingBottom: spacing.smSpacing,
+		paddingHorizontal: spacing.xlSpacing,
 	},
 
 	// main screen section

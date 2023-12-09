@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 	profileImage: {
 		borderRadius: 100,
 		borderWidth: 2,
-		borderColor: '#EEE7E8',
+		borderColor: colors.fogLight,
 	},
 	messageContainer: {
 		flex: 1,

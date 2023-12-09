@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
 import * as SMS from 'expo-sms';
 import { useContext, useEffect, useState } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, Modal, View, Text, TouchableWithoutFeedback } from 'react-native';
+import { RadioButton } from '../../assets/components/RadioButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import Attendance from '../../assets/components/Attendance';
 import AttendanceNotification from '../../assets/components/AttendanceNotification';
@@ -11,7 +12,7 @@ import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 import { MEMBERS } from '../../assets/data/members';
 import globalStyles from '../../assets/styles/GlobalStyles';
-import { spacing } from '../../assets/theme/theme';
+import { spacing, colors, } from '../../assets/theme/theme';
 
 const MyGarden = () => {
 	const { user } = useUser();
@@ -19,6 +20,7 @@ const MyGarden = () => {
 	const { lang } = useContext(LangContext);
 	const [members, setMembers] = useState(MEMBERS);
 	const [showAttendanceNotification, setShowAttendanceNotifcation] = useState(true);
+	const [showAttendanceModal, setShowAttendanceModal] = useState(false);
 
 	useEffect(() => {
 		const userExists = members.some((member) => member.name === 'Me');
@@ -26,7 +28,7 @@ const MyGarden = () => {
 		if (!userExists) {
 			const newUser = {
 				name: 'Me',
-				photo: { uri: user.photo },
+				photo: { uri: user?.photo },
 				attendingNextSession: -1,
 			};
 			setMembers((currentMembers) => [...currentMembers, newUser]);
@@ -49,29 +51,47 @@ const MyGarden = () => {
 	};
 
 	// send check in message to a friend
-	const sendCheckIn = async (message) => {
+	const sendCheckIn = async (members, message) => {
 		const isAvailable = await SMS.isAvailableAsync();
 
 		if (isAvailable) {
-			await SMS.sendSMSAsync(['+16504444444'], message, {});
+			const phoneNumbers = members.map(member => member.phone).filter(phone => phone); // This will filter out any undefined or null phone numbers
+
+			if (phoneNumbers.length > 0) {
+				await SMS.sendSMSAsync(phoneNumbers, message, {});
+			} else {
+				console.log("No valid phone numbers found in members array.");
+			}
 		} else {
 			console.log(lang.error.cannotUseSMSError);
+		}
+	};
+
+
+	const handleMemberTap = (member, message) => {
+		if (member.name === 'Me') {
+			setShowAttendanceModal(true);
+		} else {
+			sendCheckIn([member], message);
 		}
 	};
 
 	const handleYesAttending = () => {
 		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: 1 } : member)));
 		setShowAttendanceNotifcation(false);
+		setShowAttendanceModal(false);
 	};
 
 	const handleNoAttending = () => {
 		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: 0 } : member)));
 		setShowAttendanceNotifcation(false);
+		setShowAttendanceModal(false);
 	};
 
 	const handleMaybeAttending = () => {
 		setMembers((currentMembers) => currentMembers.map((member) => (member.name === 'Me' ? { ...member, attendingNextSession: -1 } : member)));
-		setShowAttendanceNotifcation(false);
+		setShowAttendanceNotifcation(true);
+		setShowAttendanceModal(false);
 	};
 
 	// We directly use the garden information from the user context
@@ -85,7 +105,46 @@ const MyGarden = () => {
 					header: (props) => <Header {...props} title={gardenName} safeArea={safeArea} />,
 				}}
 			/>
-			{/* update the header to reflect the name */}
+			{showAttendanceModal && (
+				<Modal
+					animationType="fade"
+					transparent={true}
+					visible={showAttendanceModal}
+					onRequestClose={() => {
+						setShowAttendanceModal(!showAttendanceModal);
+					}}
+				>
+					<TouchableWithoutFeedback onPress={() => setShowAttendanceModal(false)}>
+						<View style={styles.modalOverlay}>
+							<View style={styles.modalContent}>
+								<Text style={globalStyles.h3}>Update Attendance</Text>
+								<View style={styles.radioButtonContainer}>
+									<RadioButton
+										label="Attending"
+										value="attending"
+										checked={members.find((member) => member.name === 'Me').attendingNextSession === 1}
+										onPress={handleYesAttending}
+									/>
+									<RadioButton
+										label="Not Attending"
+										value="notAttending"
+										checked={members.find((member) => member.name === 'Me').attendingNextSession === 0}
+										onPress={handleNoAttending}
+
+									/>
+									<RadioButton
+										label="Hasn't Responded"
+										value="hasntResponded"
+										checked={members.find((member) => member.name === 'Me').attendingNextSession === -1}
+										onPress={handleMaybeAttending}
+									/>
+								</View>
+							</View>
+						</View>
+					</TouchableWithoutFeedback>
+				</Modal>
+			)}
+
 			<ScrollView style={globalStyles.containerWhite}>
 				<ScrollView
 					style={styles.bannerScroll}
@@ -103,9 +162,9 @@ const MyGarden = () => {
 					)}
 					<GroupChatCard onPress={() => sendGroupChatMessage(members.filter((m) => m.name !== 'Me').map((m) => m.phone))} />
 				</ScrollView>
-				<Attendance type='attending' members={attendingMembers} sendCheckIn={() => sendCheckIn(lang.myGarden.chat.attendingMessage)} />
-				<Attendance type='notAttending' members={notAttendingMembers} sendCheckIn={() => sendCheckIn(lang.myGarden.chat.notAttendingMessage)} />
-				<Attendance type='hasntResponded' members={hasntRespondedMembers} sendCheckIn={() => sendCheckIn(lang.myGarden.chat.hasntRespondedMessage)} />
+				<Attendance type='attending' members={attendingMembers} onMemberTap={(member) => handleMemberTap(member, lang.myGarden.chat.attendingMessage)} />
+				<Attendance type='notAttending' members={notAttendingMembers} onMemberTap={(member) => handleMemberTap(member, lang.myGarden.chat.notAttendingMessage)} />
+				<Attendance type='hasntResponded' members={hasntRespondedMembers} onMemberTap={(member) => handleMemberTap(member, lang.myGarden.chat.hasntRespondedMessage)} />
 			</ScrollView>
 		</>
 	);
@@ -118,4 +177,22 @@ const styles = StyleSheet.create({
 		marginVertical: spacing.xlSpacing,
 		gap: spacing.mdSpacing,
 	},
+	modalOverlay: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dim the background
+	},
+	modalContent: {
+		backgroundColor: colors.fogLight,
+		padding: spacing.xlSpacing,
+		borderRadius: 10,
+		width: '60%',
+		gap: spacing.lgSpacing,
+	},
+	radioButtonContainer: {
+		alignSelf: 'stretch',
+		alignItems: 'flex-start',
+	},
+
 });

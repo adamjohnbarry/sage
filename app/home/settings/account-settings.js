@@ -43,9 +43,11 @@ const AccountSettings = () => {
 						<FormInputText placeholder={lang.form.name.placeholder} value={name} onChangeText={(text) => setName(text)} />
 					</FormGroup>
 				</Form>
-				<ButtonGroup>
-					<Button text={lang.button.save} color='black' onPress={handleSave} />
-				</ButtonGroup>
+				{isChanged && (
+					<ButtonGroup>
+						<Button text={lang.button.save} color='black' onPress={handleSave} />
+					</ButtonGroup>
+				)}
 			</FormContainer>
 		</PressOutsideInput>
 	);

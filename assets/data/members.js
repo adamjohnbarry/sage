@@ -20,7 +20,7 @@ export const MEMBERS = [
 	{
 		name: 'Jason Sweeney',
 		photo: require('../../assets/images/jason.webp'),
-		attendingNextSession: 0,
+		attendingNextSession: 1,
 		phone: '+12115678901',
 	},
 	{

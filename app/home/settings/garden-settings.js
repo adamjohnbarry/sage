@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, ScrollView, View } from 'react-native';
 import Button from '../../../assets/components/Button';
 import ButtonGroup from '../../../assets/components/ButtonGroup';
-import ContainerScroll from '../../../assets/components/ContainerScroll';
 import FormButton from '../../../assets/components/FormButton';
 import FormContainer from '../../../assets/components/FormContainer';
 import FormGroup from '../../../assets/components/FormGroup';
@@ -44,24 +43,29 @@ const GardenSettings = () => {
 	}, [gardenName, inviteWord, gardenAddress, meetingDays]);
 
 	const handleSave = async () => {
-		if (isChanged) {
+		if (inviteWord !== garden?.inviteWord) {
 			const isAvailable = await checkInviteWordAvailability(inviteWord);
-
+			console.log('isAvailable: ', isAvailable)
 			if (!isAvailable) {
 				setInviteWordError(lang.error.inviteWordAlreadyExistsError);
-			} else {
-				updateGardenDetails({
-					...garden,
-					name: gardenName,
-					inviteWord: inviteWord,
-					address: gardenAddress,
-					meetingDays: meetingDays,
-				});
-
-				setGardenDaysTimes(meetingDays);
+				return;
 			}
 		}
-
+		console.log('new garen data setttings: ', {
+			...garden,
+			name: gardenName,
+			inviteWord: inviteWord,
+			address: gardenAddress,
+			meetingDays: meetingDays,
+		})
+		updateGardenDetails({
+			...garden,
+			name: gardenName,
+			inviteWord: inviteWord,
+			address: gardenAddress,
+			meetingDays: meetingDays,
+		});
+		setGardenDaysTimes(meetingDays);
 		router.back();
 	};
 
@@ -110,20 +114,23 @@ const GardenSettings = () => {
 							<FormButton
 								icon='map-pin'
 								rightIcon='chevron-right'
-								label={gardenAddress}
+								label={garden?.address}
 								onPress={() =>
 									router.push({
 										pathname: '/home/settings/change-location',
-										params: { title: lang.settings.changeLocation.title, color: colors.white, hasBackButton: true },
+										params: { title: lang.settings.changeLocation.title, color: colors.white, hasBackButton: true, address: garden?.address },
 									})
 								}
 							/>
 						</FormGroup>
 					</View>
 				</ScrollView>
-				<ButtonGroup>
-					<Button text={lang.button.save} onPress={handleSave} />
-				</ButtonGroup>
+				{isChanged && (
+					<ButtonGroup>
+						<Button text={lang.button.save} onPress={handleSave} />
+					</ButtonGroup>
+				)}
+
 			</FormContainer>
 		</PressOutsideInput>
 	);
