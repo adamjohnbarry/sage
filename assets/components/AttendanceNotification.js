@@ -1,14 +1,18 @@
 // AttendanceCard.js
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useContext } from 'react';
 import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import globalStyles from '../../assets/styles/GlobalStyles';
 import { colors, fontSizes, spacing } from '../../assets/theme/theme';
+import { LangContext } from '../contexts/Contexts';
 
 const AttendanceNotification = ({ onYesPress, onNoPress, onCancelPress }) => {
+	const { lang } = useContext(LangContext);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.cardHeader}>
-				<Text style={styles.cardTextMain}>Are you coming this Friday?</Text>
+				<Text style={styles.cardTextMain}>{lang.myGarden.attendanceNotification.areYouComing}</Text>
 				<TouchableOpacity onPress={onCancelPress}>
 					<View style={styles.cardHeaderCancel}>
 						<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
@@ -20,13 +24,13 @@ const AttendanceNotification = ({ onYesPress, onNoPress, onCancelPress }) => {
 					<View style={[styles.cardButtonIcon, styles.cardButtonYes]}>
 						<FontAwesome5 name='check' size={fontSizes.body} color={colors.white} />
 					</View>
-					<Text style={styles.cardButtonText}>Yes</Text>
+					<Text style={styles.cardButtonText}>{lang.myGarden.attendanceNotification.yes}</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={onNoPress} style={styles.cardButton}>
 					<View style={[styles.cardButtonIcon, styles.cardButtonNo]}>
 						<FontAwesome5 name='times' size={fontSizes.body} color={colors.white} />
 					</View>
-					<Text style={styles.cardButtonText}>No</Text>
+					<Text style={styles.cardButtonText}>{lang.myGarden.attendanceNotification.no}</Text>
 				</TouchableOpacity>
 			</View>
 		</View>

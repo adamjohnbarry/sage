@@ -25,11 +25,17 @@ const Register = () => {
 	const [passwordError, setPasswordError] = useState('');
 	const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
+	const [isEmailValid, setIsEmailValid] = useState(false);
+	const [isPasswordValid, setIsPasswordValid] = useState(false);
+	const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
+
 	// error handling and email field updating on text change
 	const emailFieldChangeText = (text) => {
 		if (!validator.isEmail(text)) {
+			setIsEmailValid(false);
 			setEmailError(lang.error.emailFormat);
 		} else {
+			setIsEmailValid(true);
 			setEmailError('');
 		}
 
@@ -48,8 +54,10 @@ const Register = () => {
 				returnScore: false,
 			})
 		) {
+			setIsPasswordValid(false);
 			setPasswordError(lang.error.passwordLength);
 		} else {
+			setIsPasswordValid(true);
 			setPasswordError('');
 		}
 
@@ -59,8 +67,10 @@ const Register = () => {
 	// error handling and cofirm password field updating on text change
 	const confirmPasswordFieldChangeText = (text) => {
 		if (text !== password) {
+			setIsConfirmPasswordValid(false);
 			setConfirmPasswordError(lang.error.passwordMatching);
 		} else {
+			setIsConfirmPasswordValid(true);
 			setConfirmPasswordError('');
 		}
 
@@ -71,8 +81,12 @@ const Register = () => {
 	const createAccount = async (e) => {
 		e.preventDefault();
 
-		if (emailError || passwordError || confirmPasswordError) {
-			return;
+		if (!isEmailValid) {
+			setEmailError(lang.error.emailFormat);
+		} else if (!isPasswordValid) {
+			setPasswordError(lang.error.passwordLength);
+		} else if (!isConfirmPasswordValid) {
+			setConfirmPasswordError(lang.error.passwordMatching);
 		} else {
 			setUser((currentUser) => ({
 				...currentUser,
@@ -123,7 +137,12 @@ const Register = () => {
 					</FormGroup>
 				</Form>
 				<ButtonGroup>
-					<Button text={lang.button.continue} onPress={createAccount} />
+					<Button
+						text={lang.button.continue}
+						color={isEmailValid && isPasswordValid && isConfirmPasswordValid ? 'black' : 'grey'}
+						disabled={isEmailValid && isPasswordValid && isConfirmPasswordValid ? false : true}
+						onPress={createAccount}
+					/>
 				</ButtonGroup>
 			</FormContainer>
 		</PressOutsideInput>

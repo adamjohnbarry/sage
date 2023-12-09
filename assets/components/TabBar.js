@@ -13,7 +13,7 @@ const TabBar = ({ safeArea }) => {
 	const router = useRouter();
 	const currentPath = usePathname();
 
-	const isActive = (path) => currentPath === path;
+	const isActive = (path) => currentPath.includes(path);
 	const iconColor = (path) => (isActive(path) ? colors.black : 'rgba(0,0,0,0.5)');
 
 	return (

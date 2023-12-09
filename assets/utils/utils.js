@@ -102,6 +102,13 @@ const langEN = {
 	myGarden: {
 		default: {
 			title: 'My Garden',
+			meetsAt: 'Meets at',
+			on: 'on',
+		},
+		attendanceNotification: {
+			areYouComing: 'Are you coming this Friday?',
+			yes: 'Yes',
+			no: 'No',
 		},
 		sections: {
 			attending: 'Attending',
@@ -215,6 +222,7 @@ const langEN = {
 		},
 	},
 	button: {
+		back: 'Back',
 		continue: 'Continue',
 		cancel: 'Cancel',
 		createAccount: 'Create Account',
@@ -235,8 +243,11 @@ const langEN = {
 	},
 	error: {
 		emailFormat: 'Please enter a properly formatted email.',
+		emailInvalidError: 'Please enter a valid email',
+		emailOrPasswordIncorrectError: 'Email or password is incorrect.',
 		passwordLength: 'Password must be at least 8 characters long.',
 		passwordMatching: 'Passwords do not match.',
+		passwordEmptyError: 'Password cannot be empty.',
 		emailExistsError: 'Email already exists.',
 		userRegistration: 'Could not register user.',
 		nameEmpty: 'Name cannot be empty.',
@@ -255,6 +266,284 @@ const langEN = {
 };
 
 // german language
-const langDE = {};
+const langDE = {
+	auth: {
+		initial: {
+			title: 'Gemeinsam Gärtnern.',
+			description: 'Organisiere in Minuten eine Gartengruppe und arbeite auf deine eigene Ernte hin.',
+		},
+		register: {
+			title: 'Konto erstellen',
+			description: 'Bevor wir mit dem Gärtnern beginnen, benötigen wir einige grundlegende Informationen von dir!',
+			photoUploadSuccessful: 'Bild erfolgreich hochgeladen',
+		},
+		login: {
+			title: 'Einloggen',
+			description: 'Melde dich an, um ein Gartenereignis zu planen!',
+		},
+		joinGroup: {
+			title: 'Gruppe beitreten',
+			description: 'Jetzt, da du angemeldet bist, bringen wir dich in eine Gruppe.',
+		},
+		howDoIGetAnInviteWord: {
+			title: 'Wie bekomme ich ein Einladungswort',
+			description:
+				'Wenn du versuchst, einer Gruppe beizutreten, frage einen der aktuellen Gruppenmitglieder nach dem Einladungswort.\n\nSie können es finden, indem sie Sage öffnen, zur Einstellungsseite gehen und den Gartenbereich tippen.',
+		},
+	},
+	createGroup: {
+		createGroup: {
+			title: 'Gruppe erstellen',
+			description: 'Erstelle eine neue Gartengruppe und lade deine Freunde ein!',
+			timeGuide: 'Das dauert 3 Minuten oder weniger',
+			instructions: [
+				{
+					description: 'Namen wählen',
+				},
+				{
+					description: 'Garten auswählen',
+				},
+				{
+					description: 'Tag und Uhrzeit zum Gärtnern festlegen',
+				},
+				{
+					description: 'Freunde einladen',
+				},
+			],
+		},
+		nameGarden: {
+			title: 'Garten benennen',
+			description: 'Wähle einen Namen für deine Gartengruppe.',
+		},
+		chooseLocation: {
+			title: 'Ort auswählen',
+			description: 'Wähle einen Gartenstandort für deine Gruppe aus.',
+			separatorText: 'ODER',
+			gardens: [
+				{
+					address: '45 University Ave, PA',
+					image:
+						'https://hips.hearstapps.com/hmg-prod/images/claude-monets-house-and-gardens-in-giverny-france-news-photo-1042013294-1562610151.jpg?crop=1.00xw:0.753xh;0,0.0671xh&resize=1200:*',
+					distance: 5,
+					driveTime: 12,
+				},
+				{
+					address: '23 Stanford Way, CA',
+					image:
+						'https://www.thespruce.com/thmb/IHY_gzo-3Y5terRR2mdPQf0gnSY=/4711x0/filters:no_upscale():max_bytes(150000):strip_icc()/how-to-start-a-garden-from-scratch-2132778-hero-5f6138784a034bad8bf9607ccb18dbed.jpg',
+					distance: 1,
+					driveTime: 3,
+				},
+				{
+					address: '42 Mulholland Dr, UT',
+					image:
+						'https://www.bhg.com/thmb/SdH3liapyw5vZZf-LKe_MmgvYuA=/4000x0/filters:no_upscale():strip_icc()/BHG-What-Is-a-Permaculture-Garden-3AWGe3jUq5hAt8vbh3yisf-f3d0c14454b44bf5b319234918574b9e.jpg',
+					distance: 3,
+					driveTime: 7,
+				},
+			],
+		},
+		pickDayAndTime: {
+			title: 'Tag & Uhrzeit wählen',
+			description: 'Wähle den Tag und die Uhrzeit, an dem sich deine Gruppe im Garten treffen wird. Du kannst dies später ändern',
+			days: ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'],
+			times: [
+				'8 Uhr - 9 Uhr',
+				'9 Uhr - 10 Uhr',
+				'10 Uhr - 11 Uhr',
+				'11 Uhr - 12 Uhr',
+				'12 Uhr - 13 Uhr',
+				'13 Uhr - 14 Uhr',
+				'15 Uhr - 16 Uhr',
+				'17 Uhr - 18 Uhr',
+				'19 Uhr - 20 Uhr',
+				'20 Uhr - 21 Uhr',
+				'21 Uhr - 22 Uhr',
+				'22 Uhr - 23 Uhr',
+			],
+		},
+		inviteFriends: {
+			title: 'Freunde einladen',
+			description: 'Durchsuche deine Kontakte und wähle Freunde aus, die du einladen möchtest. Sie erhalten einen Text mit einem Einladungslink.',
+		},
+		congratulations: {
+			title: 'Herzlichen Glückwunsch! Du bist dabei.',
+			oops: 'Hoppla!',
+			loading: 'Lädt...',
+			registrationError: 'Es gab einen Fehler bei der Anmeldung. Bitte versuche es erneut.',
+			gardenCreationError: 'Es gab einen Fehler beim Erstellen deines Gartens. Bitte versuche es erneut.',
+		},
+	},
+	learn: {
+		learn: {
+			title: 'Lernen',
+		},
+	},
+	myGarden: {
+		default: {
+			title: 'Mein Garten',
+			meetsAt: 'Treffen um',
+			on: 'am',
+		},
+		attendanceNotification: {
+			areYouComing: 'Kommst du diesen Freitag?',
+			yes: 'Ja',
+			no: 'Nein',
+		},
+		sections: {
+			attending: 'Teilnahme',
+			notAttending: 'Nicht teilnehmen',
+			hasntResponded: 'Hat nicht geantwortet',
+		},
+		groupChat: {
+			title: 'Gruppenchat',
+			example: 'Lassen Sie uns diese Woche einige Tulpen hinzufügen...',
+			groupChatMessage: 'Hallo zusammen, ich wollte nachsehen, wie es euch allen geht!',
+		},
+		chat: {
+			attendingMessage: 'Hey, wie geht es dir? Ich freue mich darauf, dich diese Woche zu sehen!',
+			notAttendingMessage:
+				'Hey, es tut mir leid zu hören, dass du es diese Woche nicht schaffen kannst. Ist alles in Ordnung? Wir hoffen, dich nächste Woche bei der Veranstaltung zu sehen!',
+			hasntRespondedMessage: 'Hey, ich wollte nur nachsehen, wie es dir geht? Ist alles in Ordnung?',
+		},
+		notification: {
+			message: 'Schreibe deinen Gruppenmitgliedern, um sie zu ermutigen, diese Woche teilzunehmen!',
+		},
+	},
+	settings: {
+		settings: {
+			title: 'Einstellungen',
+		},
+		gardenSettings: {
+			inviteTextMessage:
+				'Wir würden uns freuen, wenn du unserer Garten-Gruppe beitreten würdest! Wir treffen uns wöchentlich freitags, um in unserem Garten zu arbeiten. Tippe hier, um uns beizutreten! https://wwww.sage.com/join/',
+		},
+		accountSettings: {},
+		changeLocation: {
+			title: 'Standort ändern',
+		},
+		changeLanguage: {
+			english: {
+				name: 'Englisch',
+				langCode: 'EN',
+			},
+			german: {
+				name: 'Deutsch',
+				langCode: 'DE',
+			},
+		},
+		settingsList: [
+			{ title: 'Garteneinstellungen' },
+			{ title: 'Kontoeinstellungen' },
+			{ title: 'Sprache ändern' },
+			{ title: 'Abmelden', message: 'Bist du sicher, dass du dich abmelden möchtest?' },
+			{ title: 'Konto löschen', message: 'Bist du sicher, dass du dein Konto löschen möchtest?' },
+		],
+	},
+	form: {
+		name: {
+			label: 'Vollständiger Name',
+			placeholder: 'Gib deinen vollständigen Namen ein',
+		},
+		email: {
+			label: 'E-Mail',
+			placeholder: 'Gib deine E-Mail ein',
+		},
+		phoneNumber: {
+			label: 'Telefonnummer',
+		},
+		passwordRegistration: {
+			label: 'Passwort',
+			placeholder: 'Wähle ein Passwort',
+		},
+		passwordLogin: {
+			label: 'Passwort',
+			placeholder: 'Gib dein Passwort ein',
+		},
+		confirmPassword: {
+			label: 'Passwort bestätigen',
+			placeholder: 'Bestätige dein Passwort',
+		},
+		photo: {
+			label: 'Profilfoto',
+		},
+		takePhoto: {
+			label: 'Foto aufnehmen',
+		},
+		chooseFromLibrary: {
+			label: 'Aus der Bibliothek auswählen',
+		},
+		inviteWord: {
+			label: 'Einladungswort',
+			placeholder: 'Gib ein Einladungswort ein',
+			help: 'Wie bekomme ich ein Einladungswort?',
+		},
+		gardenName: {
+			label: 'Gartenname',
+			placeholder: 'Gib einen Gartenname ein',
+		},
+		privateGarden: {
+			label: 'Privater Garten',
+			placeholder: 'Gib die Adresse deines privaten Gartens ein',
+		},
+		localGarden: {
+			label: 'Lokaler Garten',
+		},
+		searchContacts: {
+			placeholder: 'Kontakte durchsuchen',
+		},
+		groupMembers: {
+			label: 'Gruppenmitglieder',
+		},
+		changeLanguage: {
+			label: 'Sprache ändern',
+		},
+		changeLocation: {
+			label: 'Standort ändern',
+		},
+	},
+	button: {
+		back: 'Zurück',
+		continue: 'Weiter',
+		cancel: 'Abbrechen',
+		createAccount: 'Konto erstellen',
+		createGroup: 'Neue Gruppe erstellen',
+		finish: 'Fertigstellen',
+		join: 'Beitreten',
+		login: 'Anmelden',
+		invites: 'Einladungen senden',
+		skip: 'Jetzt überspringen',
+		view: 'Deinen Garten anzeigen',
+		home: 'Zur Startseite',
+		restart: 'Neustarten',
+		yes: 'Ja',
+		save: 'Speichern',
+		deleteAccount: 'Konto löschen',
+		inviteMembers: 'Mitglieder einladen',
+		remove: 'Entfernen',
+	},
+	error: {
+		emailFormat: 'Bitte geben Sie eine korrekt formatierte E-Mail-Adresse ein.',
+		emailInvalidError: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+		emailOrPasswordIncorrectError: 'E-Mail oder Passwort ist falsch.',
+		passwordLength: 'Das Passwort muss mindestens 8 Zeichen lang sein.',
+		passwordMatching: 'Die Passwörter stimmen nicht überein.',
+		passwordEmptyError: 'Das Passwort darf nicht leer sein.',
+		emailExistsError: 'E-Mail existiert bereits.',
+		userRegistration: 'Benutzer konnte nicht registriert werden.',
+		nameEmpty: 'Der Name darf nicht leer sein.',
+		nameUploadError: 'Der Name des Benutzers konnte nicht aktualisiert werden.',
+		validPhoneNumber: 'Bitte geben Sie eine gültige Telefonnummer ein.',
+		numberEmptyError: 'Die Telefonnummer darf nicht leer sein.',
+		phoneNumberUploadError: 'Die Telefonnummer des Benutzers konnte nicht aktualisiert werden.',
+		photoRetrievalError: 'Das Foto des Benutzers konnte nicht abgerufen werden.',
+		photoUploadError: 'Das Foto des Benutzers konnte nicht aktualisiert werden.',
+		inviteWordEmptyError: 'Das Einladungswort darf nicht leer sein.',
+		inviteWordDoesntExistError: 'Das Einladungswort existiert nicht.',
+		inviteWordAlreadyExistsError: 'Das Einladungswort wurde bereits verwendet.',
+		gardenNameEmpty: 'Der Gartenname darf nicht leer sein.',
+		cannotUseSMSError: 'SMS kann auf diesem Gerät nicht verwendet werden.',
+	},
+};
 
 export { langDE, langEN };
