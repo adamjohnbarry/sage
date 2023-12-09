@@ -8,9 +8,10 @@ const Header = ({ navigation, route, safeArea }) => {
   const { garden, gardenDaysTimes } = useUser();
 
   const formatGardenSchedule = (gardenDaysTimes) => {
+    console.log('GDT: ', gardenDaysTimes);
     return Object.entries(gardenDaysTimes || {})
-      .map(([day, times]) => `${day}: ${times.join(', ')}`)
-      .join('; ');
+      .map(([day, times]) => `${day} from ${times.join(', ')}`)
+      .join(', ');
   };
 
   // Extract garden details or provide default values
@@ -34,12 +35,12 @@ const Header = ({ navigation, route, safeArea }) => {
       <View style={globalStyles.headerBody}>
         <Text style={globalStyles.h1}>{title}</Text>
         {gardenAddress && route.name === 'my-garden' && (
-          <Text style={[globalStyles.body, { fontSize: fontSizes.body }]}>
-            Meets at <Text style={globalStyles.fontBold}>{gardenAddress}</Text>
+          <Text style={globalStyles.body}>
+            Meets at <Text style={globalStyles.subtitle}>{gardenAddress}</Text>
             {gardenDaysTimes && (
               <Text>
                 {' '}
-                on <Text style={globalStyles.fontBold}>{formatGardenSchedule(gardenDaysTimes)}</Text>
+                on <Text style={globalStyles.subtitle}>{formatGardenSchedule(gardenDaysTimes)}</Text>
               </Text>
             )}
           </Text>

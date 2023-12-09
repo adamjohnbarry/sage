@@ -11,6 +11,7 @@ import TimeSlot from '../../assets/components/TimeSlot';
 import { LangContext, SafeAreaContext } from '../../assets/contexts/Contexts';
 import { useUser } from '../../assets/contexts/UserContext';
 import globalStyles from '../../assets/styles/GlobalStyles';
+import { spacing } from '../../assets/theme/theme';
 
 const PickDayAndTime = () => {
 	const router = useRouter();

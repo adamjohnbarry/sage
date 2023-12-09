@@ -46,6 +46,7 @@ const Congratulations = () => {
 
 	// render the day and time of your garden events
 	const renderGardenDaysTimes = () => {
+		console.log(gardenDaysTimes);
 		const entries = Object.entries(gardenDaysTimes);
 
 		return entries.map(([day, times], index) => {
@@ -90,12 +91,14 @@ const Congratulations = () => {
 						<Text style={styles.congratulationsCongrats}>{lang.createGroup.congratulations.oops}</Text>
 						<Text style={styles.congratulationsGardenTime}>{error}</Text>
 					</View>
-					<Button
-						text={lang.button.restart}
-						onPress={() => {
-							router.replace({ pathname: '/' });
-						}}
-					/>
+					<ButtonGroup>
+						<Button
+							text={lang.button.restart}
+							onPress={() => {
+								router.replace({ pathname: '/' });
+							}}
+						/>
+					</ButtonGroup>
 				</View>
 			</>
 		);

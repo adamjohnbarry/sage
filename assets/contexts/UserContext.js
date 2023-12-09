@@ -112,15 +112,25 @@ export const UserProvider = ({ children }) => {
 
 		const db = getFirestore();
 		try {
-			// Update user in the database
-			const userRef = doc(db, 'users', user.uid);
-			await updateDoc(userRef, user);
-
 			// Add garden to the database
 			const gardenRef = await addDoc(collection(db, 'gardens'), garden);
+			const newGardenId = gardenRef.id; // This is the new garden ID from the database
 
-			// Update user's gardenId
-			await updateDoc(userRef, { gardenId: gardenRef.id });
+			// Update user's gardenId in the database
+			const userRef = doc(db, 'users', user.uid);
+			await updateDoc(userRef, { gardenId: newGardenId });
+
+			// Update user's gardenId in the state
+			setUser((currentUser) => ({
+				...currentUser,
+				gardenId: newGardenId,
+			}));
+
+			// Also update the garden object in the state with the new ID
+			setGarden((currentGarden) => ({
+				...currentGarden,
+				id: newGardenId,
+			}));
 
 			return true;
 		} catch (error) {
@@ -178,6 +188,7 @@ export const UserProvider = ({ children }) => {
 		async (newGardenData) => {
 			console.log("new garden data? : ", newGardenData)
 			if (!user || !user.gardenId) {
+				console.log(user)
 				console.error('No garden to update.');
 				return;
 			}
