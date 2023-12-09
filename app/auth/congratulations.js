@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		gap: spacing.xlSpacing,
 		marginHorizontal: spacing.xlSpacing,
+		paddingBottom: 48,
 	},
 	congratulationsGardenName: {
 		fontSize: fontSizes.h2,

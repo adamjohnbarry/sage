@@ -114,11 +114,11 @@ const GardenSettings = () => {
 							<FormButton
 								icon='map-pin'
 								rightIcon='chevron-right'
-								label={gardenAddress}
+								label={garden?.address}
 								onPress={() =>
 									router.push({
 										pathname: '/home/settings/change-location',
-										params: { title: lang.settings.changeLocation.title, color: colors.white, hasBackButton: true },
+										params: { title: lang.settings.changeLocation.title, color: colors.white, hasBackButton: true, address: garden?.address },
 									})
 								}
 							/>
